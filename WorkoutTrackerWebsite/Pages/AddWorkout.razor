@@ -1,0 +1,188 @@
+﻿@page "/AddWorkout"
+<PageTitle>AddWorkout</PageTitle>
+
+
+<div style="max-width:550px;" class="container p-3 m-auto align-content-center">
+    <EditForm Model="Workout" OnValidSubmit="Save">
+        <div class="mb-3">
+            <h3>Workout Date</h3>
+            <label for="WorkoutDate" class="form-label">Add Workout's Date</label>
+            <InputDate class="form-control" id="WorkoutDate" @bind-Value="Workout.Date" />
+        </div>
+
+
+
+
+
+
+        <div class="mb-3">
+            <h4>Workout Rounds</h4>
+            <div class="container border p-3 m-2">
+                @if (Workout.Rounds != null)
+                {
+                    @foreach (Models.Round round in Workout.Rounds)
+                    {
+                        @if (@round.Exercise != null && @round.Exercise.Name != null)
+                        {
+                            <h5 class="container border p-3"> Round @round.RoundNumber : @round.Exercise.Name</h5>
+                        }
+                        else
+                        {
+                            <h5 class="container border"> Round @round.RoundNumber</h5>
+                        }
+                        <div class="container">
+                            <div class="mb-3">
+                                <label for="RoundExercice" class="form-label">Choose Exercice</label>
+                                @if (round.Exercise != null)
+                                {
+                                    <InputSelect class="form-control" id="RoundExercice" @bind-Value="@round.Exercise.Name">
+                                        @foreach (Models.Exercise exercice in exercises)
+                                        {
+                                            <option value="@exercice.Name">@exercice.Name</option>
+                                        }
+                                    </InputSelect>
+                                }
+                            </div>
+                        </div>
+
+
+                        @if (round.Sets != null)
+                        {
+                            foreach (Models.Set set in round.Sets)
+                            {
+                                <div class="container border p-3 m-2">
+                                    <h6> Set : @set.SetNumber </h6>
+                                    <label for="SetWeight" class="form-label">Set Weight</label>
+                                    <InputNumber class="form-control" id="SetWeight" @bind-Value="set.Weight" />
+                                    <label for="SetReps" class="form-label">Set Reps</label>
+                                    <InputNumber class="form-control mb-3" id="SetReps" @bind-Value="set.Reps" />
+
+
+                                    @*@if (round.Exercise != null)
+                    {
+                    <h3>@round.Exercise.Name</h3>
+                    }
+                    <h4> Reps : @set.Reps Reps</h4>
+                    <h4> Weight : @set.Weight Kg</h4>*@
+                                </div>
+
+
+                            }
+                        }
+                        <button class="btn btn-primary mb-3" @onclick="@(() => AddSet(round))">Add a new Set</button>
+                    }
+                }
+            </div>
+        </div>
+        <button class="btn btn-primary mb-3" @onclick="AddRound">Add a new round</button>
+
+        <div class="mb-3">
+            <label for="AddExercise" class="form-label">Add New Exercise</label>
+            <InputText class="form-control" id="AddExercise" @bind-Value="Exercise.Name" />
+            <button class="btn btn-primary mt-3" @onclick="AddExercise">Add new exercise</button>
+        </div>
+
+        <button class="btn btn-primary mb-3" type="submit">Save Workout</button>
+
+    </EditForm>
+    
+    <h3>Workout in : @Workout.Date</h3>
+    @if (Workout.Rounds != null)
+    {
+        <div style="max-width:400px;" class="container">
+            @foreach (var round in Workout.Rounds)
+            {
+                if (round.Exercise != null)
+                {
+                    <h4>@round.Exercise.Name</h4>
+                }
+                if (round.Sets != null)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Set</th>
+                                <th scope="col">Weight</th>
+                                <th scope="col">Reps</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                @foreach (var set in round.Sets)
+                                {
+                                <tr>
+                                    <th scope="row">@set.SetNumber</th>
+                                    <td>@set.Weight Kg</td>
+                                    <td>@set.Reps rep</td>
+                                </tr>
+                                }
+                            
+
+                        </tbody>
+                    </table>
+
+                }
+            }
+        </div>
+    }
+    
+</div>
+@code {
+    Models.Workout Workout = new();
+    Models.Exercise Exercise = new();
+    List<Models.Exercise> exercises = new();
+    int roundN = 0;
+    int setN = 0;
+
+    private void AddRound()
+    {
+        Models.Round round = new();
+        if (Workout.Rounds == null)
+        {
+            roundN = 0;
+            Workout.Rounds = new List<Models.Round>();
+        }
+        roundN++;
+        round.RoundNumber = roundN;
+        round.Exercise = new Models.Exercise();
+        Workout.Rounds.Add(round);
+    }
+    private void AddExercise()
+    {
+        Models.Exercise exercise = new();
+        if (exercises == null)
+        {
+            exercises = new List<Models.Exercise>();
+        }
+        exercise.Name = Exercise.Name;
+        exercises.Add(exercise);
+    }
+
+
+    private void AddSet(Models.Round round)
+    {
+        Models.Set set = new();
+
+        //set.Weight = 0;
+        //set.Reps = 0;
+        if (round.Sets == null)
+        {
+            round.Sets = new List<Models.Set>();
+            set.SetNumber = 1;
+        }
+        else
+        {
+            set.SetNumber = round.Sets.Count+1;
+
+        }
+        round.Sets.Add(set);
+    }
+
+
+
+
+    private void Save()
+    {
+
+    }
+}
