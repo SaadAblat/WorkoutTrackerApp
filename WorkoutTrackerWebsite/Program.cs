@@ -11,9 +11,18 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
-builder.Services.AddDbContext<WorkoutsTrackerDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("WorkoutTrackerConnection")));
+// Data Access
+var cs = builder.Configuration.GetConnectionString("WorkoutTrackerConnection");
 
+builder.Services.AddDbContextFactory<WorkoutsTrackerDbContext>(
+    options => options.UseSqlServer(cs));
+
+builder.Services.AddDbContext<WorkoutsTrackerDbContext>(
+    options => options.UseSqlServer(cs));
+
+
+
+// Identity (Authentification)
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
@@ -43,6 +52,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 

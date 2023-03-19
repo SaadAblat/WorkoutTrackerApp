@@ -3,47 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace WorkoutTrackerWebsite.Migrations
 {
     /// <inheritdoc />
-    public partial class migrationWithAuthentification : Migration
+    public partial class basic1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Set_Rounds_RoundId",
-                table: "Set");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Workouts_Users_UserId",
-                table: "Workouts");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Workouts_UserId",
-                table: "Workouts");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Set",
-                table: "Set");
-
-            migrationBuilder.RenameTable(
-                name: "Set",
-                newName: "Sets");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Set_RoundId",
-                table: "Sets",
-                newName: "IX_Sets_RoundId");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Sets",
-                table: "Sets",
-                column: "Id");
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -81,6 +50,31 @@ namespace WorkoutTrackerWebsite.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Exercises",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Exercises", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workouts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workouts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -189,6 +183,61 @@ namespace WorkoutTrackerWebsite.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Rounds",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoundNumber = table.Column<int>(type: "int", nullable: false),
+                    ExerciseName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WorkoutId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rounds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rounds_Workouts_WorkoutId",
+                        column: x => x.WorkoutId,
+                        principalTable: "Workouts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SetNumber = table.Column<int>(type: "int", nullable: false),
+                    Reps = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    RoundId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sets_Rounds_RoundId",
+                        column: x => x.RoundId,
+                        principalTable: "Rounds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Exercises",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("0439e40e-c770-49bd-8a89-c8fed1358a94"), "Squat" },
+                    { new Guid("2a7cafd5-7dcd-4c76-b837-e2407032a8fc"), "Overhead-Press" },
+                    { new Guid("4d7f2576-edec-4876-b470-f5cbeb34d1a7"), "Deadlift" },
+                    { new Guid("9e91059c-4a69-4137-8aba-e1c72394ba84"), "Biceps-Curl" },
+                    { new Guid("da63010c-1384-45c7-8e82-0c245cd2e824"), "Push-Ups" },
+                    { new Guid("e479446b-b17a-4114-bca5-4439058e5c4b"), "Pull-Ups" },
+                    { new Guid("f739ac07-148f-466b-b753-d15801a01b73"), "Bench-Press" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -228,21 +277,20 @@ namespace WorkoutTrackerWebsite.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Sets_Rounds_RoundId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Rounds_WorkoutId",
+                table: "Rounds",
+                column: "WorkoutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sets_RoundId",
                 table: "Sets",
-                column: "RoundId",
-                principalTable: "Rounds",
-                principalColumn: "Id");
+                column: "RoundId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Sets_Rounds_RoundId",
-                table: "Sets");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -259,60 +307,22 @@ namespace WorkoutTrackerWebsite.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Exercises");
+
+            migrationBuilder.DropTable(
+                name: "Sets");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Sets",
-                table: "Sets");
+            migrationBuilder.DropTable(
+                name: "Rounds");
 
-            migrationBuilder.RenameTable(
-                name: "Sets",
-                newName: "Set");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Sets_RoundId",
-                table: "Set",
-                newName: "IX_Set_RoundId");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Set",
-                table: "Set",
-                column: "Id");
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Workouts_UserId",
-                table: "Workouts",
-                column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Set_Rounds_RoundId",
-                table: "Set",
-                column: "RoundId",
-                principalTable: "Rounds",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Workouts_Users_UserId",
-                table: "Workouts",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.DropTable(
+                name: "Workouts");
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿@page "/AddWorkout"
+@using WorkoutTrackerWebsite.Data;
+@using Microsoft.EntityFrameworkCore;
 <PageTitle>AddWorkout</PageTitle>
+@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
 
 
 <div class="text-center">
@@ -20,27 +23,25 @@
                 
                     @if (Workout.Rounds != null)
                     {
-                        @foreach (Models.Round round in Workout.Rounds)
+                        @foreach (Models.RoundModel round in Workout.Rounds)
                         {
                         <div style="min-width:300px; max-width:600px;" class="m-auto mb-3 p-3 rounded border border-dark border-2">
-                                @if (@round.Exercise != null)
-                                {
-                                <div class="card-title fs-4 bg-light"> Round @round.RoundNumber : @round.Exercise.Name</div>
-                                }
+                                
+                                <div class="card-title fs-4 bg-light"> Round @round.RoundNumber : @round.ExerciseName</div>
+
 
                                 <label class="m-1 fs-5">Choose Exercice</label>
-                                @if (round.Exercise != null)
-                                {
-                                    <div class="m-2">
-                                    <InputSelect style="min-width:100px;min-height:30px;" class="form-select" id="RoundExercice" @bind-Value="@round.Exercise.Name">
-                                        <option value="">Select an exercise...</option>
-                                        @foreach (Models.Exercise exercice in exercises)
-                                        {
-                                            <option value="@exercice.Name">@exercice.Name</option>
-                                        }
-                                    </InputSelect>
-                                    </div>
-                                }
+                            <div class="m-2">
+                                <InputSelect style="min-width:100px;min-height:30px;" class="form-select" id="RoundExercice" @bind-Value="@round.ExerciseName">
+                                    <option value="">Select an exercise...</option>
+                                    @foreach (Models.ExerciseModel exercice in _exercises)
+                                    {
+                                        <option value="@exercice.Name">@exercice.Name</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                                    
+                                
                                 @*<div class="m-2">or</div>
                                 <div class="m-2">
                                     <label for="AddExercise">Add a new Exercise</label>
@@ -61,7 +62,7 @@
                                         <tbody>
                                             @if (round.Sets != null)
                                             {
-                                                foreach (Models.Set set in round.Sets)
+                                                foreach (Models.SetModel set in round.Sets)
                                                 {
                                                     <tr>
                                                         <th scope="row">@set.SetNumber</th>
@@ -91,10 +92,38 @@
         </div>
 
         <div class="m-5 text-center">
-            <button type="submit" style="min-width:800px" class="btn btn-success btn-lg"> SAVE WORKOUT</button>
+            <button type="submit" style="min-width:800px" class="btn btn-success btn-lg" @onclick="AddWorkoutAsync"> SAVE WORKOUT</button>
         </div>
         
     </EditForm>
+</div>
+
+<div>
+    @foreach(var wrk in _workouts)
+    {
+
+        <div>@wrk.Date</div>
+        if (wrk.Rounds != null)
+        {
+            foreach (var round in wrk.Rounds)
+            {
+                <div>@round.ExerciseName</div>
+
+                
+                if (round.Sets != null)
+                {
+                    foreach(var set in round.Sets)
+                    {
+
+                        <div>Set @set.SetNumber @set.Weight Kg X @set.Reps rep</div>
+                    }
+                    
+                }
+            }
+        }
+        <button class="btn btn-danger btn-lg" @onclick="@(() =>DeleteWorkout(wrk.Id))">Delete Workout</button>
+        
+    }
 </div>
 
 <h3 class="mt-5">Workout in : @Workout.Date</h3>
@@ -103,10 +132,7 @@
         <div style="max-width:400px;" class="container">
             @foreach (var round in Workout.Rounds)
             {
-                if (round.Exercise != null)
-                {
-                    <h4>@round.Exercise.Name</h4>
-                }
+            <h4>@round.ExerciseName</h4>
                 if (round.Sets != null)
                 {
                     <table class="table">
@@ -138,70 +164,61 @@
     
 
 @code {
-    Models.Workout Workout = new();
-    Models.Exercise Exercise = new();
-
-    List<Models.Exercise> exercises = new()
-    {
-        new Models.Exercise()
-        {
-            Name="BenchPress"
-        },
-        new Models.Exercise()
-        {
-            Name="Squat"
-        },
-        new Models.Exercise()
-        {
-            Name="Deadlift"
-        },
-        new Models.Exercise()
-        {
-            Name="RomanianDeadlift"
-        },
-    };
+    Models.WorkoutModel Workout = new();
+    List<Models.WorkoutModel> _workouts = new();
     int roundN = 0;
     int setN = 0;
+    Models.ExerciseModel Exercise = new();
+    List<Models.ExerciseModel> _exercises = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            _workouts = await repo.GetAllWorkoutsAsync();
+            _exercises = await repo.GetAllExercisesAsync();
+        }
+    }
+
+    async Task DeleteWorkout(Guid id)
+    {
+
+        _workouts.Remove(_workouts.First(w => w.Id == id));
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            await repo.DeleteWorkoutAsync(id);
+
+        }
+
+    } 
 
     private void AddRound()
     {
-        Models.Round round = new();
+        Models.RoundModel round = new();
         if (Workout.Rounds == null)
         {
             roundN = 1;
-            Workout.Rounds = new List<Models.Round>();
+            Workout.Rounds = new List<Models.RoundModel>();
         }
         round.RoundNumber = Workout.Rounds.Count + 1;
-        round.Exercise = new Models.Exercise();
         Workout.Rounds.Add(round);
     }
-    private void DeleteRound(Models.Round round)
+
+    private void DeleteRound(Models.RoundModel round)
     {
         if (Workout.Rounds != null)
         {
             Workout.Rounds.Remove(round);
-
         }
     }
-    private void AddExercise()
-    {
-        Models.Exercise exercise = new();
-        if (exercises == null)
-        {
-            exercises = new List<Models.Exercise>();
-        }
-        exercise= Exercise;
-        exercises.Add(exercise);
-        Exercise = new Models.Exercise();
-    }
 
-
-    private void AddSet(Models.Round round)
+    private void AddSet(Models.RoundModel round)
     {
-        Models.Set set = new();
+        Models.SetModel set = new();
         if (round.Sets == null)
         {
-            round.Sets = new List<Models.Set>();
+            round.Sets = new List<Models.SetModel>();
             set.SetNumber = 1;
         }
         else
@@ -211,7 +228,8 @@
         }
         round.Sets.Add(set);
     }
-    private void DeleteSet(Models.Round round, Models.Set set)
+
+    private void DeleteSet(Models.RoundModel round, Models.SetModel set)
     {
         if (round.Sets != null)
         {
@@ -221,11 +239,18 @@
                 round.Sets[i].SetNumber = i + 1;
             }
         }
-        
+
     }
 
+    private async Task AddWorkoutAsync()
+    {
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            await repo.AddWorkout(Workout);
+            _workouts.Add(Workout);
 
-
+        }
+    }
 
     private void Save()
     {

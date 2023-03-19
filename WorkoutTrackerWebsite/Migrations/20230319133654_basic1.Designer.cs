@@ -12,8 +12,8 @@ using WorkoutTrackerWebsite.Data;
 namespace WorkoutTrackerWebsite.Migrations
 {
     [DbContext(typeof(WorkoutsTrackerDbContext))]
-    [Migration("20230317160909_migrationWithAuthentification")]
-    partial class migrationWithAuthentification
+    [Migration("20230319133654_basic1")]
+    partial class basic1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,7 +223,7 @@ namespace WorkoutTrackerWebsite.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.Exercise", b =>
+            modelBuilder.Entity("WorkoutTrackerWebsite.Models.ExerciseModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -234,37 +234,69 @@ namespace WorkoutTrackerWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercise");
+                    b.ToTable("Exercises");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f739ac07-148f-466b-b753-d15801a01b73"),
+                            Name = "Bench-Press"
+                        },
+                        new
+                        {
+                            Id = new Guid("0439e40e-c770-49bd-8a89-c8fed1358a94"),
+                            Name = "Squat"
+                        },
+                        new
+                        {
+                            Id = new Guid("4d7f2576-edec-4876-b470-f5cbeb34d1a7"),
+                            Name = "Deadlift"
+                        },
+                        new
+                        {
+                            Id = new Guid("e479446b-b17a-4114-bca5-4439058e5c4b"),
+                            Name = "Pull-Ups"
+                        },
+                        new
+                        {
+                            Id = new Guid("da63010c-1384-45c7-8e82-0c245cd2e824"),
+                            Name = "Push-Ups"
+                        },
+                        new
+                        {
+                            Id = new Guid("2a7cafd5-7dcd-4c76-b837-e2407032a8fc"),
+                            Name = "Overhead-Press"
+                        },
+                        new
+                        {
+                            Id = new Guid("9e91059c-4a69-4137-8aba-e1c72394ba84"),
+                            Name = "Biceps-Curl"
+                        });
                 });
 
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.Round", b =>
+            modelBuilder.Entity("WorkoutTrackerWebsite.Models.RoundModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ExerciseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("ExerciseName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoundNumber")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("WorkoutId")
+                    b.Property<Guid>("WorkoutId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExerciseId");
 
                     b.HasIndex("WorkoutId");
 
                     b.ToTable("Rounds");
                 });
 
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.Set", b =>
+            modelBuilder.Entity("WorkoutTrackerWebsite.Models.SetModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,7 +305,7 @@ namespace WorkoutTrackerWebsite.Migrations
                     b.Property<int>("Reps")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("RoundId")
+                    b.Property<Guid>("RoundId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("SetNumber")
@@ -289,7 +321,7 @@ namespace WorkoutTrackerWebsite.Migrations
                     b.ToTable("Sets");
                 });
 
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.Workout", b =>
+            modelBuilder.Entity("WorkoutTrackerWebsite.Models.WorkoutModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -357,32 +389,34 @@ namespace WorkoutTrackerWebsite.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.Round", b =>
+            modelBuilder.Entity("WorkoutTrackerWebsite.Models.RoundModel", b =>
                 {
-                    b.HasOne("WorkoutTrackerWebsite.Models.Exercise", "Exercise")
-                        .WithMany()
-                        .HasForeignKey("ExerciseId");
-
-                    b.HasOne("WorkoutTrackerWebsite.Models.Workout", null)
+                    b.HasOne("WorkoutTrackerWebsite.Models.WorkoutModel", "Workout")
                         .WithMany("Rounds")
-                        .HasForeignKey("WorkoutId");
+                        .HasForeignKey("WorkoutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Exercise");
+                    b.Navigation("Workout");
                 });
 
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.Set", b =>
+            modelBuilder.Entity("WorkoutTrackerWebsite.Models.SetModel", b =>
                 {
-                    b.HasOne("WorkoutTrackerWebsite.Models.Round", null)
+                    b.HasOne("WorkoutTrackerWebsite.Models.RoundModel", "Round")
                         .WithMany("Sets")
-                        .HasForeignKey("RoundId");
+                        .HasForeignKey("RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Round");
                 });
 
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.Round", b =>
+            modelBuilder.Entity("WorkoutTrackerWebsite.Models.RoundModel", b =>
                 {
                     b.Navigation("Sets");
                 });
 
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.Workout", b =>
+            modelBuilder.Entity("WorkoutTrackerWebsite.Models.WorkoutModel", b =>
                 {
                     b.Navigation("Rounds");
                 });

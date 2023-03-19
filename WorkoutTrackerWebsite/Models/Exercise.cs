@@ -1,8 +1,10 @@
 ﻿namespace WorkoutTrackerWebsite.Models
 {
-    public class Exercise
+    
+    public class ExerciseModel
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
+
     }
 }
