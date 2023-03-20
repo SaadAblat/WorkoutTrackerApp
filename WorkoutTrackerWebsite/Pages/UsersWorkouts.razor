@@ -1,0 +1,42 @@
+﻿@page "/UsersWorkouts"
+@using Microsoft.AspNetCore.Identity;
+@using WorkoutTrackerWebsite.Data;
+@using Microsoft.EntityFrameworkCore;
+@using WorkoutTrackerWebsite.Models;
+@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
+<PageTitle>My Workouts</PageTitle>
+
+<div class="container">
+    <h1>@userName Workouts !</h1>
+    @foreach (var user in _users)
+    {
+        <h3>@user.UserName</h3>
+        foreach(var workout in _AllWorkouts)
+        {
+            if (workout.UserId == user.Id)
+            {
+                <div><b>@workout.Date.ToString("d")</b> : @user.UserName trained a workout of @workout.Rounds.Count Exercises: </div>
+                foreach(var round in workout.Rounds)
+                {
+                    <div><b>@round.RoundNumber</b> : @round.ExerciseName for @round.Sets.Count sets</div>
+                }
+            }
+        }
+    }
+</div>
+
+@code {
+    string userId;
+    string userName;
+    List<IdentityUser> _users = new();
+    List<WorkoutModel> _AllWorkouts = new();
+    protected override async Task OnInitializedAsync()
+    {
+
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            _users = await repo.GetAllUsersAsync();
+            _AllWorkouts = await repo.GetAllWorkoutsAsync();
+        }
+    }
+}

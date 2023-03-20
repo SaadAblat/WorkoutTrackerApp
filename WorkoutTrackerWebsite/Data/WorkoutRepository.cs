@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace WorkoutTrackerWebsite.Data
 {
@@ -134,6 +135,11 @@ namespace WorkoutTrackerWebsite.Data
                 UpdatedWorkouts.Add(Updatedworkout);
             }
             return UpdatedWorkouts;
+        }
+        public async Task<List<IdentityUser>> GetAllUsersAsync()
+        {
+            var users = await _ctx.Users.ToListAsync();
+            return users;
         }
 
     }

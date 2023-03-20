@@ -180,11 +180,12 @@
     {
         var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
         var user = authstate.User;
+        
         userName = user.Identity.Name;
         userId = user.Claims.FirstOrDefault().Value;
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
-            _workouts = await repo.GetAllWorkoutsAsync();
+            _workouts = await repo.GetWorkoutsByUserIdAsync(userId);
             _exercises = await repo.GetAllExercisesAsync();
         }
     }
