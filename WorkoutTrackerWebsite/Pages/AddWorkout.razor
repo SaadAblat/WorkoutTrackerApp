@@ -4,6 +4,8 @@
 <PageTitle>AddWorkout</PageTitle>
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
 
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
+
 
 <div class="text-center">
     <h1 class="modal-title m-5">Add Workout</h1>
@@ -11,7 +13,7 @@
 </div>
 
 <div class="container ">
-    <EditForm Model="Workout" OnValidSubmit="Save">
+    <EditForm Model="Workout">
         <div style="max-width:900px" class="container-lg ">
             <div class="container"  >
                 <div class="m-auto " style="min-width:300px; max-width:600px;">
@@ -170,10 +172,16 @@
     int setN = 0;
     Models.ExerciseModel Exercise = new();
     List<Models.ExerciseModel> _exercises = new();
+    string userName="";
+    string userId="";
 
 
     protected override async Task OnInitializedAsync()
     {
+        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        userName = user.Identity.Name;
+        userId = user.Claims.FirstOrDefault().Value;
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             _workouts = await repo.GetAllWorkoutsAsync();
@@ -244,16 +252,13 @@
 
     private async Task AddWorkoutAsync()
     {
+        Workout.UserId = userId;
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             await repo.AddWorkout(Workout);
             _workouts.Add(Workout);
-
+            Workout = new Models.WorkoutModel();
         }
     }
 
-    private void Save()
-    {
-
-    }
 }

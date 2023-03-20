@@ -1,0 +1,32 @@
+﻿@page "/Myworkouts"
+@using WorkoutTrackerWebsite.Data;
+@using Microsoft.EntityFrameworkCore;
+@using WorkoutTrackerWebsite.Models;
+@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
+<PageTitle>My Workouts</PageTitle>
+
+<div class="container">
+    <h1>@userName Workouts !</h1>
+    @foreach (var wrk in _userWorkouts)
+    {
+        <h3>@wrk.Date</h3>
+    }
+</div>
+
+@code {
+    string userId;
+    string userName;
+    List<WorkoutModel> _userWorkouts = new();
+    protected override async Task OnInitializedAsync()
+    {
+        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        userName = user.Identity.Name;
+        userId = user.Claims.FirstOrDefault().Value;
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+                _userWorkouts = await repo.GetWorkoutsByUserIdAsync(userId);
+        }
+    }
+}

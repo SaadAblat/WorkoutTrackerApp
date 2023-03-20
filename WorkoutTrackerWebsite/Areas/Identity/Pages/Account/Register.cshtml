@@ -2,31 +2,36 @@
 @model WorkoutTrackerWebsite.Areas.Identity.Pages.Account.RegisterModel
 @{
 }
+<div class="col-xs-1 " align="center">
 
-<div class="col-md-4">
-    <section>
-        <form id="account" method="post">
-            <h2>Register a new user</h2>
-            <ht />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div>
-                <input asp-for="Input.Email" class="form-control" aria-required="true" />
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div>
-                <input asp-for="Input.Name" class="form-control" />
-                <label asp-for="Input.Name" class="form-label"></label>
-                <span asp-validation-for="Input.Name" class="text-danger"></span>
-            </div>
-            <div class="form-floating" style="margin:10px">
-                <input asp-for="Input.Password" class="form-control" aria-required="true" />
-                <label asp-for="Input.Password" class="form-label"></label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div>
-                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-            </div>
-        </form>
-    </section>
+    <div class="col-md-4 text-start" style="max-width:500px">
+        <section >
+            <form id="account" method="post">
+                <h2>Register a new user</h2>
+                <ht />
+                <div asp-validation-summary="ModelOnly" class="text-danger" aria-required="true"></div>
+                <div>
+                    <label asp-for="Input.Email" class="form-label"></label>
+
+                    <input asp-for="Input.Email" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="Input.Name" class="form-label"></label>
+
+                    <input asp-for="Input.Name" class="form-control" />
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+                <div >
+                    <label asp-for="Input.Password" class="form-label"></label>
+                    <input asp-for="Input.Password" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mt-4">Register</button>
+                </div>
+            </form>
+        </section>
+
+    </div>
 </div> 

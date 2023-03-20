@@ -29,7 +29,7 @@ namespace WorkoutTrackerWebsite.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync
-                    (Input.Email, Input.Password, false, lockoutOnFailure:false);
+                    (Input.Name, Input.Password, false, lockoutOnFailure:false);
                 if (result.Succeeded)
                 {
                     return LocalRedirect(ReturnUrl);

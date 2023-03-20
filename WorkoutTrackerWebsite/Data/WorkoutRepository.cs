@@ -1,5 +1,7 @@
 ﻿using WorkoutTrackerWebsite.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace WorkoutTrackerWebsite.Data
 {
@@ -10,6 +12,7 @@ namespace WorkoutTrackerWebsite.Data
         {
             _ctx = ctx;
         }
+
 
         public void Dispose()
         {
@@ -116,6 +119,18 @@ namespace WorkoutTrackerWebsite.Data
             foreach(WorkoutModel workout in workouts)
             {
                var Updatedworkout = await GetWorkoutByIdAsync(workout.Id);
+                UpdatedWorkouts.Add(Updatedworkout);
+            }
+            return UpdatedWorkouts;
+        }
+        public async Task<List<WorkoutModel>> GetWorkoutsByUserIdAsync(string id)
+        {
+            // load workout from the dataBase
+            var userWorkouts = await _ctx.Workouts.Where(x =>x.UserId == id).ToListAsync();
+            var UpdatedWorkouts = new List<WorkoutModel>();
+            foreach (WorkoutModel workout in userWorkouts)
+            {
+                var Updatedworkout = await GetWorkoutByIdAsync(workout.Id);
                 UpdatedWorkouts.Add(Updatedworkout);
             }
             return UpdatedWorkouts;
