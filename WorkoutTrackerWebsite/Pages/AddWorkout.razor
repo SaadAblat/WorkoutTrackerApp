@@ -94,7 +94,7 @@
         </div>
 
         <div class="m-5 text-center">
-            <button type="submit" style="min-width:800px" class="btn btn-success btn-lg" @onclick="AddWorkoutAsync"> SAVE WORKOUT</button>
+            <button type="submit" style="min-width:800px" class="btn btn-success btn-lg" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
         </div>
         
     </EditForm>
@@ -172,20 +172,20 @@
     int setN = 0;
     Models.ExerciseModel Exercise = new();
     List<Models.ExerciseModel> _exercises = new();
-    string userName="";
-    string userId="";
+    string _userName="";
+    string _userId="";
 
 
     protected override async Task OnInitializedAsync()
     {
         var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
         var user = authstate.User;
-        
-        userName = user.Identity.Name;
-        userId = user.Claims.FirstOrDefault().Value;
+
+        _userName = user.Identity.Name;
+        _userId = user.Claims.FirstOrDefault().Value;
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
-            _workouts = await repo.GetWorkoutsByUserIdAsync(userId);
+            _workouts = await repo.GetWorkoutsByUserIdAsync(_userId);
             _exercises = await repo.GetAllExercisesAsync();
         }
     }
@@ -197,6 +197,7 @@
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             await repo.DeleteWorkoutAsync(id);
+            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} deleted a workout of date {Workout.Date}!", Workout));
 
         }
 
@@ -251,15 +252,26 @@
 
     }
 
-    private async Task AddWorkoutAsync()
+    private async Task AddWorkoutAsync(string userId)
     {
-        Workout.UserId = userId;
+       
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
-            await repo.AddWorkout(Workout);
+            await repo.AddWorkout(Workout, userId);
+            await repo.UpdateUserAchievementAsync(userId, _userName);
+            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} trained {Workout.Rounds.Count} exercises!", Workout));
             _workouts.Add(Workout);
             Workout = new Models.WorkoutModel();
         }
+    }
+
+
+    private Models.LogMessageModel GenerateLogMessage(string body, Models.WorkoutModel workout)
+    {
+        Models.LogMessageModel logMessage = new();
+        logMessage.MessageDate = Workout.Date;
+        logMessage.MessageBody = body;
+        return logMessage;
     }
 
 }

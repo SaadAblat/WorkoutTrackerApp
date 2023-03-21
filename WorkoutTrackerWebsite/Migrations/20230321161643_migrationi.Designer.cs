@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutTrackerWebsite.Data;
 
@@ -11,9 +12,11 @@ using WorkoutTrackerWebsite.Data;
 namespace WorkoutTrackerWebsite.Migrations
 {
     [DbContext(typeof(WorkoutsTrackerDbContext))]
-    partial class WorkoutsTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230321161643_migrationi")]
+    partial class migrationi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,56 +239,39 @@ namespace WorkoutTrackerWebsite.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9d8ee56c-67ff-44a9-83f0-cca5fa9cd228"),
+                            Id = new Guid("dca81899-5621-4dc7-8440-b0680cc65af0"),
                             Name = "Bench-Press"
                         },
                         new
                         {
-                            Id = new Guid("0570505f-581e-4d31-9eca-365b81e0b676"),
+                            Id = new Guid("53a32f88-9134-4ed2-a071-ed0be1529c7c"),
                             Name = "Squat"
                         },
                         new
                         {
-                            Id = new Guid("2c24c020-a9ed-478d-a9a7-6c81f78966e8"),
+                            Id = new Guid("70cd10d4-0aa4-428e-b91b-5260ec460faa"),
                             Name = "Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("7d6ad293-80f5-4694-9eba-48272b0f6237"),
+                            Id = new Guid("4a87fdac-3d62-4f74-9031-3105af861735"),
                             Name = "Pull-Ups"
                         },
                         new
                         {
-                            Id = new Guid("42657e8e-08b9-4b5c-a48d-0707a98e7e14"),
+                            Id = new Guid("ed9a1345-dc03-4065-8e56-4e82f57c581a"),
                             Name = "Push-Ups"
                         },
                         new
                         {
-                            Id = new Guid("3536e178-e60a-4f85-92d1-123f2e17020a"),
+                            Id = new Guid("7c8c4df0-195d-42f1-ab6f-923da98bc85c"),
                             Name = "Overhead-Press"
                         },
                         new
                         {
-                            Id = new Guid("21e82843-faec-4e63-bd26-7d29f173406b"),
+                            Id = new Guid("d386e49b-f0d7-44f2-82f7-3e13c3eaba19"),
                             Name = "Biceps-Curl"
                         });
-                });
-
-            modelBuilder.Entity("WorkoutTrackerWebsite.Models.LogMessageModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("MessageBody")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("MessageDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LogMessages");
                 });
 
             modelBuilder.Entity("WorkoutTrackerWebsite.Models.RoundModel", b =>

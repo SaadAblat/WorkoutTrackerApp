@@ -3,12 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Routing;
+
 
 namespace WorkoutTrackerWebsite.Data
 {
     public class WorkoutRepository:IDisposable
     {
         private readonly WorkoutsTrackerDbContext _ctx;
+
+        private readonly UserManager<IdentityUser> _userManager;
+       
         public WorkoutRepository(WorkoutsTrackerDbContext ctx)
         {
             _ctx = ctx;
@@ -25,8 +31,9 @@ namespace WorkoutTrackerWebsite.Data
             return await _ctx.Exercises.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task AddWorkout(WorkoutModel workout)
+        public async Task AddWorkout(WorkoutModel workout, string userId)
         {
+            workout.UserId = userId;
             await _ctx.Workouts.AddAsync(workout);
 
             if (workout.Rounds != null)
@@ -48,8 +55,6 @@ namespace WorkoutTrackerWebsite.Data
             await _ctx.SaveChangesAsync();
 
         }
-
-
 
         
         public async Task<List<ExerciseModel>> GetAllExercisesAsync()
@@ -142,7 +147,83 @@ namespace WorkoutTrackerWebsite.Data
             return users;
         }
 
+        public async Task<IdentityUser> GetUserById(string id)
+        {
+
+            var user = await _ctx.Users.FindAsync(id);
+            return user;
+        }
+
+
+
+
+        public async Task<UserAchievementsModel> GetUserAchievementByUserId(string userId)
+        {
+            var userAchievemt = await _ctx.UsersAchievements.FirstOrDefaultAsync(r => r.UserId == userId);
+            return userAchievemt;
+        }
+        public async Task UpdateUserAchievementAsync(string userId, string userName)
+        {
+            var userAchievement = await GetUserAchievementByUserId(userId);
+            if (userAchievement == null)
+            {
+                //add if new
+                userAchievement = new UserAchievementsModel();
+                userAchievement.UserId = userId;
+                userAchievement.UserName = userName;
+                userAchievement.TotalWeightLifted = 0;
+                userAchievement.TotalWorkoutSessions = 0;
+
+                await _ctx.UsersAchievements.AddAsync(userAchievement);
+
+            }
+            //update username
+            userAchievement.UserName = userName;
+            userAchievement.TotalWeightLifted = 0;
+
+            // Calculate total weight lifted in all user workout
+            var UserWorkouts = await GetWorkoutsByUserIdAsync(userId);
+            foreach (var userWorkout in UserWorkouts)
+            {
+                if (userWorkout.Rounds != null)
+                {
+                    foreach (var round in userWorkout.Rounds)
+                    {
+                        if (round.Sets != null)
+                        {
+                            foreach (var set in round.Sets)
+                            {
+                                userAchievement.TotalWeightLifted += (set.Weight * set.Reps);
+                            }
+                        }
+                    }
+                }
+            }
+            // Calculate total workouts
+            userAchievement.TotalWorkoutSessions = UserWorkouts.Count;
+            await _ctx.SaveChangesAsync();
+        }
+
+
+        public async Task<List<UserAchievementsModel>> GetAllUserAchievementsModel()
+        {
+            List<UserAchievementsModel> usersAchievements = await _ctx.UsersAchievements.ToListAsync();
+            return usersAchievements;
+        }
+
+        public async Task AddLogMessageAsync(LogMessageModel msg)
+        {
+            await _ctx.LogMessages.AddAsync(msg);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task<List<LogMessageModel>> GetAllLogMessageModels()
+        {
+            return await _ctx.LogMessages.ToListAsync();
+        }
+
     }
+
 
     
     

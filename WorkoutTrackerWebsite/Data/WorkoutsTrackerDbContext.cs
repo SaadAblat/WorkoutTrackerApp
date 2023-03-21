@@ -42,9 +42,12 @@ namespace WorkoutTrackerWebsite.Data
         }
 
         public DbSet<WorkoutModel> Workouts { get; set; }
+        public DbSet<UserAchievementsModel> UsersAchievements { get; set; }
         public DbSet<RoundModel> Rounds { get; set; }
         public DbSet<ExerciseModel> Exercises { get; set; }
         public DbSet<SetModel> Sets { get; set; }
+        public DbSet<LogMessageModel> LogMessages { get; set; }
+
        
         
     }
