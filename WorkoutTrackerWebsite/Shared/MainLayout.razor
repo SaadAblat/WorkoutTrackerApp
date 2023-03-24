@@ -3,31 +3,71 @@
 <PageTitle>WorkoutTrackerWebsite</PageTitle>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <main>
+    <main >
         <AuthorizeView>
-            <Authorized>
-                <div class="top-row px-4">
-                    <a href="Identity/Account/Logout" >Logout</a>
-                </div>
-            </Authorized>
             <NotAuthorized>
-                <div class="top-row px-4">
-                    <a href="Identity/Account/Register" target="_blank">Register</a>
-                    <a href="Identity/Account/Login" target="_blank">Log in</a>
+                <div class="top-row TopNavBar" >
+                    <a class="text-white text-decoration-none  fs-4 hoverable" href="Identity/Account/Register" target="_blank">Register</a>
+                    <a class="text-white text-decoration-none  fs-4 hoverable" href="Identity/Account/Login" target="_blank">Log in</a>
+                    <a style="margin-left:20px;left:50%;color:gold;" class="navbar-brand " href="">WorkoutTrackerWebsite</a>
                 </div>
-               
             </NotAuthorized>
         </AuthorizeView>
         
         
         
+        @Body
 
-        <article class="content px-4">
-            @Body
-        </article>
+        <footer>
+            <p>Saad Ablat 2023</p>
+        </footer>
     </main>
+    
 </div>
+
+
+<style>
+
+    .hoverable:hover {
+        color: yellow !important;
+        transform: scale(1.1);
+        transition: transform 0.4s;
+    }
+    .hoverable{
+        transition: transform 0.4s;
+        margin-right:40px;
+    }
+
+    .TopNavBar{
+        position:relative;
+        background: radial-gradient(circle, yellow 0%, rgba(0,0,0,1) 40%)!important;
+        min-height:3rem;
+        width:100%;
+        border-bottom: solid;
+        border-top: solid;
+        border-color: gold !important;
+        border-bottom-width:3px !important;
+        position: fixed !important;
+        display:flex;
+        flex-wrap:wrap;
+        /*style ="min-height:70px;border-color:yellow"*/
+    }
+
+    footer {
+        height: 35px;
+        width: 100%;
+        font-size: 20px;
+        background-color: yellow;
+        position:fixed;
+        bottom:0;
+        color:black;
+        padding:5px;
+    }
+    footer p{
+        margin:auto;
+        font-size: 20px;
+    }
+
+
+</style>

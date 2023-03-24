@@ -8,66 +8,13 @@
 <PageTitle>My Workouts</PageTitle>
 
 <div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th @onclick="SortTableByTotalWorkoutSessions" scope="col">Number of Workouts</th>
-                <th @onclick="SortTableByTotalWeightLifted" scope="col">Total weight lifted</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var userAch in _usersAchievementsList)
-            {
-                <tr>
-                    <th scope="row">@IncrementNumber()</th>
-                    <td>@userAch.UserName</td>
-                    <td>@userAch.TotalWorkoutSessions</td>
-                    <td>@userAch.TotalWeightLifted KG</td>
-                </tr>
-                
-            }
-        </tbody>
-    </table>
+    
     
 </div>
 
 
 @code {
 
-    List<UserAchievementsModel> _usersAchievementsList = new();
-    bool _sortAscending;
-    int UserClassement = 0;
-    protected override async Task OnInitializedAsync()
-    {
-        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
-        {
-            _usersAchievementsList = await repo.GetAllUserAchievementsModel();
-            _usersAchievementsList.OrderByDescending(x => x.TotalWeightLifted).ToList();
-            foreach (var user in _usersAchievementsList)
-            {
-                await repo.UpdateUserAchievementAsync(user.UserId, user.UserName);
-            }
-
-        }
-        
-    }
-
-    private void SortTableByTotalWorkoutSessions()
-    {
-        _usersAchievementsList = _sortAscending ? _usersAchievementsList.OrderBy(x => x.TotalWorkoutSessions).ToList() : _usersAchievementsList.OrderByDescending(x => x.TotalWorkoutSessions).ToList();
-        _sortAscending = !_sortAscending;
-    }
-    private void SortTableByTotalWeightLifted()
-    {
-        _usersAchievementsList = _sortAscending ? _usersAchievementsList.OrderBy(x => x.TotalWeightLifted).ToList() : _usersAchievementsList.OrderByDescending(x => x.TotalWeightLifted).ToList();
-        _sortAscending = !_sortAscending;
-    }
-    private int IncrementNumber()
-    {
-        UserClassement++;
-        return UserClassement;
-    }
+    
 }
 }

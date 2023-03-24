@@ -6,62 +6,23 @@
         </button>
     </div>
 </div>
-
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="AddWorkout">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Add Workout
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="MyWorkouts">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> MyWorkouts
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Feed">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Feed
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Classement">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Classement
-                    </NavLink>
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        <span class="oi oi-home" aria-hidden="true"></span> Home
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="counter">
-                        <span class="oi oi-plus" aria-hidden="true"></span> Counter
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="fetchdata">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Feed">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Feed
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Classement">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Classement
-                    </NavLink>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
-        
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="UserHome" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="MyWorkouts">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> My workouts
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="AddWorkout">
+                <span class="oi oi-plus" aria-hidden="true"></span> Manage Workouts
+            </NavLink>
+        </div>
     </nav>
 </div>
 
@@ -75,3 +36,6 @@
         collapseNavMenu = !collapseNavMenu;
     }
 }
+
+
+

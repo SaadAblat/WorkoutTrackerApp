@@ -1,31 +1,33 @@
 ﻿@page
 @model WorkoutTrackerWebsite.Areas.Identity.Pages.Account.LoginModel
+
+
 @{
 }
 <div class="col-xs-1 " align="center">
 
-    <div class="col-md-4 text-start" style="max-width:500px">
-        <section>
+    <div class="col-md-4 text-start text-white" style="max-width:500px">
+        <section class="formCentered">
             <form id="account" method="post">
-                <h2>Use a local account to log in</h2>
+                <h2 class="text-center mb-5">Log in to your account</h2>
                 <ht />
                 <div asp-validation-summary="ModelOnly" class="text-danger" aria-required="true"></div>
                 <div>
                     <label asp-for="Input.Email" class="form-label"></label>
-                    <input asp-for="Input.Email" class="form-control" />
+                    <input asp-for="Input.Email" class="form-control mb-3" />
                     
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div>
                     <label asp-for="Input.Name" class="form-label"></label>
 
-                    <input asp-for="Input.Name" class="form-control" />
-                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                    <input asp-for="Input.Name" class="form-control mb-3" />
+                    <span asp-validation-for="Input.Name" class="text-danger "></span>
                 </div>
                 <div  >
                     <label asp-for="Input.Password" class="form-label"></label>
                     <input asp-for="Input.Password" class="form-control" aria-required="true" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <span asp-validation-for="Input.Password" class="text-danger mb-3"></span>
                 </div>
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mt-4">Log in</button>
@@ -34,3 +36,14 @@
         </section>
     </div>
 </div>
+
+<style>
+    .formCentered {
+        margin-top: 200px;
+        border: solid;
+        border-color:gold;
+        border-width: 3px;
+        padding: 70px 50px;
+        border-radius: 1%;
+    }
+</style>

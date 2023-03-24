@@ -1,9 +1,172 @@
-﻿@page "/"
-
+﻿@inject NavigationManager navigationManager
+@page "/"
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+<AuthorizeView>
+    <NotAuthorized>
+        <div id="HomeContainer">
+            <img class="background" src="Images/WorkoutPictureHome.jpg">
+            <section id="WelcomSection" class="text-center">
+                <h1 id="Title">Welcome</h1>
+                <h1 id="Subtitle">To workout tracker Website</h1>
+            </section>
+            <section id="QASection" class="translate-middle-x">
+                <div>
+                    <h1 id="Question">Here you can</h1>
+                </div>
+                <div>
+                    <span id="Answer">@CurrentText</span>
+                </div>
+                <button @onclick="RedirectToLogin" class="btn btn-success register">Start Now!</button>
+            </section>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+
+
+    </Authorized>
+</AuthorizeView>
+    
+
+
+
+
+<style>
+    img.background {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: -1;
+        width:100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+        filter: blur(5px);
+    }
+    
+    #HomeContainer{
+        width:100%;
+        padding:10px;
+        margin:0;
+    }
+    #WelcomSection{
+        margin:auto;
+        margin-top: 200px;
+        max-width:1500px;
+        display:flex;
+        flex-direction:column;
+        padding:200px;
+        color:rgb(255,255,255);
+        
+        background-color: rgba(0,0,0,0.5);
+        border-color:gold !important;
+        border:solid;
+        border-width:3px;
+        border-radius:2%;
+        
+    }
+    #Title{
+        font-size:150px;
+        text-shadow: 8px 8px 8px #000000;
+        margin:0px;
+        width: auto;
+     
+        
+    }
+    #Subtitle{
+        margin-left: 300px;
+        text-shadow: 8px 8px 8px #000000;
+        font-size:25px;
+    }
+    #QASection{
+        color:white;
+        display: flex;
+        flex-direction: column;
+        width: auto;
+        position: relative;
+        left: 50%;
+        text-align:center;
+        margin-bottom:300px;
+        margin-top:100px;
+    }
+    #Question{
+        font-size: 50px;
+        text-shadow: 8px 8px 8px #000000;
+       
+        
+    }
+    #Answer{
+        font-size: 80px;
+        color:yellow;
+        text-shadow: 8px 8px 8px #000000;
+        margin-bottom: 150px;
+    }
+
+    .register{
+        margin-top:100px;
+        width:25%;
+        align-self:center;
+        height:100px;
+        font-size:45px;
+        background-color: gold;
+        color: black;
+        transition: transform 0.2s;
+    }
+    .register:hover{
+            background-color: yellow;
+            color:black;
+            transform: scale(1.02);
+            transition: transform 0.2s;
+        }
+    
+
+
+</style>
+
+@code{
+    void RedirectToLogin()
+    {
+        navigationManager.NavigateTo("/Identity/Account/Register", forceLoad: true);
+    } 
+    List<string> AnswerTexts = new()
+    {
+        "Add Workouts",
+        "Track you progres",
+        "Save the exercises"
+    };
+    string CurrentText = "";
+    private Timer? TextTimer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/UserHome", forceLoad: true);
+        }
+        
+        NextText();
+        TextTimer = new Timer(async (object? stateInfo) =>
+        {
+            NextText();
+            await InvokeAsync(StateHasChanged);  // NOTE: MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+        }, 
+        new System.Threading.AutoResetEvent(false), 2000, 2000); // fire every 2000 milliseconds
+    }
+
+    private void NextText()
+    {
+        // Get the index of the current text
+        int currentIndex = AnswerTexts.IndexOf(CurrentText);
+
+        // Set the next text as the current text, wrapping around to the beginning if necessary
+        CurrentText = AnswerTexts[(currentIndex + 1) % AnswerTexts.Count];
+    }
+
+}
