@@ -1,46 +1,44 @@
-﻿@page "/AddWorkout"
+﻿@page "/ManageWorkouts"
 @using WorkoutTrackerWebsite.Data;
 @using Microsoft.EntityFrameworkCore;
 <PageTitle>AddWorkout</PageTitle>
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
 
 @inject AuthenticationStateProvider GetAuthenticationStateAsync
+@layout UserLayout
+<img class="background" src="Images/Background.png">
 
 
-<div class="text-center">
-    <h1 class="modal-title m-5">Add Workout</h1>
 
-</div>
-
-<div class="container ">
-    <EditForm Model="Workout">
+<div class="container text-white ">
+    
         <div style="max-width:900px" class="container-lg ">
-            <div class="container"  >
-                <div class="m-auto " style="min-width:300px; max-width:600px;">
-                    <h5 class="card-title fs-3 ">Workout Date</h5>
-                    <label for="WorkoutDate" class="form-label m-3 fs-5">Add Workout's Date</label>
-                    <InputDate id="WorkoutDate" @bind-Value="Workout.Date" />
-                    <h5 class="card-title fs-3 mb-3 mt-3">Workout Rounds</h5>
+            <div class="container border border-light"  >
+                <div  class="m-auto " style="min-width:300px; max-width:600px;">
+                    <h5 class="card-title m-5   fs-2 text-center ">Add a new workout</h5>
+                    <label for="WorkoutDate" class="form-label  fs-5">Set Workout's Date</label>
+                    <input type="date" class="form-control" id="WorkoutDate" @bind-value="Workout.Date" />
+                    <h5 class="">Workout Rounds</h5>
                 </div>
                 
                     @if (Workout.Rounds != null)
                     {
                         @foreach (Models.RoundModel round in Workout.Rounds)
                         {
-                        <div style="min-width:300px; max-width:600px;" class="m-auto mb-3 p-3 rounded border border-dark border-2">
+                        <div style="min-width:300px; max-width:800px;" class="m-auto mb-3 p-3 rounded border border-light border-2">
                                 
-                                <div class="card-title fs-4 bg-light"> Round @round.RoundNumber : @round.ExerciseName</div>
+                                <div class="card-title fs-5 bg-dark"> Exercise @round.RoundNumber : @round.ExerciseName</div>
 
 
-                                <label class="m-1 fs-5">Choose Exercice</label>
+                                <label class="m-1 fs-6">Choose Exercice</label>
                             <div class="m-2">
-                                <InputSelect style="min-width:100px;min-height:30px;" class="form-select" id="RoundExercice" @bind-Value="@round.ExerciseName">
+                            <select style="min-width:100px;min-height:30px;" class="form-select" id="RoundExercice" @bind="round.ExerciseName">
                                     <option value="">Select an exercise...</option>
                                     @foreach (Models.ExerciseModel exercice in _exercises)
                                     {
                                         <option value="@exercice.Name">@exercice.Name</option>
                                     }
-                                </InputSelect>
+                            </select>
                             </div>
                                     
                                 
@@ -52,7 +50,7 @@
                                 </div>*@
 
                                 <div class="container-xl">
-                                    <table class="table table-hover border ">
+                                    <table class="table table-dark table-hover border ">
                                         <thead>
                                             <tr>
                                                 <th scope="col">Set</th>
@@ -68,8 +66,8 @@
                                                 {
                                                     <tr>
                                                         <th scope="row">@set.SetNumber</th>
-                                                        <td><InputNumber style="max-width:50px;" id="SetWeight" @bind-Value="set.Weight" /> Kg</td>
-                                                        <td><InputNumber style="max-width:50px;" id="SetReps" @bind-Value="set.Reps" /> Rep</td>
+                                                        <td><input type="number" min="0" style="max-width:50px;" id="SetWeight" @bind-value="set.Weight" /> Kg</td>
+                                                        <td><input type="number" min="0" style="max-width:50px;" id="SetReps" @bind-value="set.Reps" /> Rep</td>
                                                         <td><button class="btn btn-danger btn-sm" @onclick="@(() => DeleteSet(round, set))">Delete Set</button></td>
                                                     </tr>
                                                 }
@@ -97,14 +95,14 @@
             <button type="submit" style="min-width:800px" class="btn btn-success btn-lg" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
         </div>
         
-    </EditForm>
+    
 </div>
 
-<div>
+<div class="text-white">
     @foreach(var wrk in _workouts)
     {
 
-        <div>@wrk.Date</div>
+        <div>@wrk.Date.ToString("d")</div>
         if (wrk.Rounds != null)
         {
             foreach (var round in wrk.Rounds)
@@ -166,6 +164,7 @@
     
 
 @code {
+
     Models.WorkoutModel Workout = new();
     List<Models.WorkoutModel> _workouts = new();
     int roundN = 0;
@@ -174,8 +173,6 @@
     List<Models.ExerciseModel> _exercises = new();
     string _userName="";
     string _userId="";
-
-
     protected override async Task OnInitializedAsync()
     {
         var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();

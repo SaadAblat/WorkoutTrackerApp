@@ -221,6 +221,10 @@ namespace WorkoutTrackerWebsite.Data
         {
             return await _ctx.LogMessages.ToListAsync();
         }
+        public async Task<List<ExerciseCategoryModel>> GetAllExerciseCategories()
+        {
+            return await _ctx.ExerciseCategoryModels.ToListAsync();
+        }
 
     }
 

@@ -1,0 +1,51 @@
+﻿
+.background {
+    z-index: -1;
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    left: 0px;
+    top: 0px;
+    overflow: hidden;
+    filter: brightness(0.8);
+    background-repeat: no-repeat;
+}
+.CustomContainer{
+    color:white;
+}
+
+.log {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    background-color: black;
+    width:80%;
+    padding: 20px 100px;
+    color: greenyellow;
+    min-height:150px;
+    max-height: 300px;
+    overflow: hidden;
+    
+}
+    .log .logHeader {
+        position: relative;
+        top: 0;
+        background-color: white;
+        height: 20px;
+        margin: -20px -100px;
+        margin-bottom:20px;
+        color:black;
+        text-align:center;
+    }
+    .log .logElement {
+    }
+
+.ClassementBoard{
+    min-width:500px;
+    margin-bottom:200px;
+}
+.ClassementBoard table{
+    width:100%;
+
+}

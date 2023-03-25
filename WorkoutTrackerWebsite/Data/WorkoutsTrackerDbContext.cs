@@ -31,14 +31,18 @@ namespace WorkoutTrackerWebsite.Data
             
             // Add some initial exercises
             modelBuilder.Entity<ExerciseModel>().HasData(
-                new ExerciseModel { Id = Guid.NewGuid(), Name = "Bench-Press" },
-                new ExerciseModel { Id = Guid.NewGuid(), Name = "Squat" },
-                new ExerciseModel { Id = Guid.NewGuid(), Name = "Deadlift" },
-                new ExerciseModel { Id = Guid.NewGuid(), Name = "Pull-Ups" },
-                new ExerciseModel { Id = Guid.NewGuid(), Name = "Push-Ups" },
-                new ExerciseModel { Id = Guid.NewGuid(), Name = "Overhead-Press" },
-                new ExerciseModel { Id = Guid.NewGuid(), Name = "Biceps-Curl" });
+                new ExerciseModel { Id = Guid.NewGuid(), Name = "Bench-Press", Category="Push"  },
+                new ExerciseModel { Id = Guid.NewGuid(), Name = "Squat", Category="Legs" },
+                new ExerciseModel { Id = Guid.NewGuid(), Name = "Deadlift", Category= "Pull" },
+                new ExerciseModel { Id = Guid.NewGuid(), Name = "Pull-Ups", Category = "Pull" },
+                new ExerciseModel { Id = Guid.NewGuid(), Name = "Push-Ups", Category = "Push" },
+                new ExerciseModel { Id = Guid.NewGuid(), Name = "Overhead-Press", Category = "Push" },
+                new ExerciseModel { Id = Guid.NewGuid(), Name = "Biceps-Curl", Category="Legs" });
 
+            modelBuilder.Entity<ExerciseCategoryModel>().HasData(
+                new ExerciseCategoryModel { Id = Guid.NewGuid(), Name = "Push" },
+                new ExerciseCategoryModel { Id = Guid.NewGuid(), Name = "Pull" },
+                new ExerciseCategoryModel { Id = Guid.NewGuid(), Name = "Legs" });
         }
 
         public DbSet<WorkoutModel> Workouts { get; set; }
@@ -47,6 +51,8 @@ namespace WorkoutTrackerWebsite.Data
         public DbSet<ExerciseModel> Exercises { get; set; }
         public DbSet<SetModel> Sets { get; set; }
         public DbSet<LogMessageModel> LogMessages { get; set; }
+        public DbSet<ExerciseCategoryModel> ExerciseCategoryModels { get; set; }
+
 
        
         
