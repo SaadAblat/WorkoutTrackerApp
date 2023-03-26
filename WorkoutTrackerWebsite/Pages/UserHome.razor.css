@@ -9,3 +9,18 @@
     filter: brightness(0.8);
     background-repeat: no-repeat;
 }
+/**{
+    box-sizing:border-box;
+    outline:3px solid limegreen !important;
+}*/
+
+.exercise {
+    transition: transform 0.4s;
+    cursor:pointer;
+}
+    .exercise:hover {
+        transform: scale(1.2);
+        transform: translate(5px, -2px);
+        transition: transform 0.4s;
+        color: greenyellow;
+    }

@@ -11,91 +11,93 @@
 
 
 <div class="container text-white ">
-    
-        <div style="max-width:900px" class="container-lg ">
-            <div class="container border border-light"  >
-                <div  class="m-auto " style="min-width:300px; max-width:600px;">
-                    <h5 class="card-title m-5   fs-2 text-center ">Add a new workout</h5>
-                    <label for="WorkoutDate" class="form-label  fs-5">Set Workout's Date</label>
-                    <input type="date" class="form-control" id="WorkoutDate" @bind-value="Workout.Date" />
-                    <h5 class="">Workout Rounds</h5>
-                </div>
-                
-                    @if (Workout.Rounds != null)
-                    {
-                        @foreach (Models.RoundModel round in Workout.Rounds)
-                        {
-                        <div style="min-width:300px; max-width:800px;" class="m-auto mb-3 p-3 rounded border border-light border-2">
-                                
-                                <div class="card-title fs-5 bg-dark"> Exercise @round.RoundNumber : @round.ExerciseName</div>
 
-
-                                <label class="m-1 fs-6">Choose Exercice</label>
-                            <div class="m-2">
-                            <select style="min-width:100px;min-height:30px;" class="form-select" id="RoundExercice" @bind="round.ExerciseName">
-                                    <option value="">Select an exercise...</option>
-                                    @foreach (Models.ExerciseModel exercice in _exercises)
-                                    {
-                                        <option value="@exercice.Name">@exercice.Name</option>
-                                    }
-                            </select>
-                            </div>
-                                    
-                                
-                                @*<div class="m-2">or</div>
-                                <div class="m-2">
-                                    <label for="AddExercise">Add a new Exercise</label>
-                                    <InputText id="AddExercise" @bind-Value="Exercise.Name" />
-                                    <button class="btn btn-success btn-sm" @onclick="AddExercise">Add Exercise</button>
-                                </div>*@
-
-                                <div class="container-xl">
-                                    <table class="table table-dark table-hover border ">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Set</th>
-                                                <th scope="col">Weight</th>
-                                                <th scope="col">Reps</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (round.Sets != null)
-                                            {
-                                                foreach (Models.SetModel set in round.Sets)
-                                                {
-                                                    <tr>
-                                                        <th scope="row">@set.SetNumber</th>
-                                                        <td><input type="number" min="0" style="max-width:50px;" id="SetWeight" @bind-value="set.Weight" /> Kg</td>
-                                                        <td><input type="number" min="0" style="max-width:50px;" id="SetReps" @bind-value="set.Reps" /> Rep</td>
-                                                        <td><button class="btn btn-danger btn-sm" @onclick="@(() => DeleteSet(round, set))">Delete Set</button></td>
-                                                    </tr>
-                                                }
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="text-center">
-                                    <button class="btn btn-success " @onclick="@(() => AddSet(round))">Add a new Set</button>
-                                </div>
-                                <div class ="text-center mt-3">
-                                    <button class="btn btn-danger btn-lg" @onclick="@(() => DeleteRound(round))">Delete Round</button>
-                                </div>
-                            </div>
-                        }
-                    }
-                <div class="m-2 text-center">
-                    <button class="btn btn-success btn-lg" @onclick="AddRound">Add a new round</button>
-                </div>
+    <div style="max-width:900px" class="container-lg ">
+        <div class="container border border-light ">
+            <div class="m-auto " style="min-width:300px; max-width:600px;">
+                <h5 class="card-title m-5   fs-2 text-center ">Add a new workout</h5>
             </div>
-            
+            <div class="ms-4 " style="min-width:300px; max-width:600px;">
+                <label for="WorkoutDate" class="form-label  fs-5">Set Workout's Date</label>
+                <input type="date" class="form-control" id="WorkoutDate" @bind-value="Workout.Date" />
+                <h5 class="">Workout Rounds</h5>
+            </div>
+
+            @if (Workout.Rounds != null)
+            {
+                @foreach (Models.RoundModel round in Workout.Rounds)
+                {
+                    <div style="min-width:300px; max-width:800px;  " class=" bg-dark m-auto mb-3 p-3 rounded border border-light border-2">
+
+                        <div class="card-title fs-5 bg-dark"> Exercise @round.RoundNumber : @round.ExerciseName</div>
+
+
+                        <label class="m-1 fs-6">Choose Exercice</label>
+                        <div class="m-2">
+                            <select style="min-width:100px;min-height:30px;" class="form-select" id="RoundExercice" @bind="round.ExerciseName">
+                                <option value="">Select an exercise...</option>
+                                @foreach (Models.ExerciseModel exercice in _exercises)
+                                {
+                                    <option value="@exercice.Name">@exercice.Name</option>
+                                }
+                            </select>
+                        </div>
+
+
+                        @*<div class="m-2">or</div>
+                <div class="m-2">
+                <label for="AddExercise">Add a new Exercise</label>
+                <InputText id="AddExercise" @bind-Value="Exercise.Name" />
+                <button class="btn btn-success btn-sm" @onclick="AddExercise">Add Exercise</button>
+                </div>*@
+
+                        <div class="container-xl">
+                            <table class="table table-dark table-hover border ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Set</th>
+                                        <th scope="col">Weight</th>
+                                        <th scope="col">Reps</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (round.Sets != null)
+                                    {
+                                        foreach (Models.SetModel set in round.Sets)
+                                        {
+                                            <tr>
+                                                <th scope="row">@set.SetNumber</th>
+                                                <td><input type="number" min="0" style="max-width:50px;" id="SetWeight" @bind-value="set.Weight" /> Kg</td>
+                                                <td><input type="number" min="0" style="max-width:50px;" id="SetReps" @bind-value="set.Reps" /> Rep</td>
+                                                <td><button class="btn btn-danger btn-sm" @onclick="@(() => DeleteSet(round, set))">Delete Set</button></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-success " @onclick="@(() => AddSet(round))">Add a new Set</button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-danger btn-lg" @onclick="@(() => DeleteRound(round))">Delete Round</button>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="m-2 text-center">
+                <button class="btn btn-success btn-lg" @onclick="AddRound">Add a new round</button>
+            </div>
         </div>
 
-        <div class="m-5 text-center">
-            <button type="submit" style="min-width:800px" class="btn btn-success btn-lg" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
-        </div>
-        
-    
+    </div>
+
+    <div class="m-5 text-center">
+        <button type="submit" style="min-width:800px" class="btn btn-success btn-lg" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
+    </div>
+
+
 </div>
 
 <div class="text-white">

@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
+
+
 // Data Access
 var cs = builder.Configuration.GetConnectionString("WorkoutTrackerConnection");
 

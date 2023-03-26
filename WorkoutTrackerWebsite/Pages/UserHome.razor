@@ -3,26 +3,34 @@
 @using WorkoutTrackerWebsite.Data;
 @using Microsoft.EntityFrameworkCore;
 @using WorkoutTrackerWebsite.Models;
-@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
+@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory
 @inject AuthenticationStateProvider GetAuthenticationStateAsync
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime;
 <PageTitle>My Workouts</PageTitle>
 @layout UserLayout
 <img class="background" src="Images/Background.png">
 <div class="container  text-white p-0">
     <h1>@userName Workouts !</h1>
 
+        <p>Click on the exercise name to google search it</p>
+        <p>Click on analysis to view exercise graphs</p>
+
         <p>Total workouts session @_userAchievements.TotalWorkoutSessions Workout</p>
         <p>Total weight lifted @_userAchievements.TotalWeightLifted Kg</p>
 
+        
+
 
     @*should make it a search bar*@
-    <div style="max-width:1000px; ">
+    <div style="max-width:1000px; " class="m-auto">
         <div class="container d-inline-flex justify-content-end">
             <div class="m-3">
                 <p class="m-1 text-start">Search an exercise</p>
+
                 <select @onclick="ShowByExercise" class="form-select" id="RoundExercice" @bind="_filteredExerciseName">
                     <option value="">All</option>
-                    @foreach (Models.ExerciseModel exercice in _exercises)
+                    @foreach (Models.ExerciseModel exercice in _exercises.OrderBy(x=>x.Name))
                     {
                         <option value="@exercice.Name">@exercice.Name</option>
                     }
@@ -32,7 +40,7 @@
                 <p class="m-1">View by category</p>
                 <select @onclick="ShowByCategory" class="form-select" id="RoundExercice" @bind="_filteredExerciseName">
                     <option value="">All</option>
-                    @foreach (Models.ExerciseCategoryModel category in _categories)
+                    @foreach (Models.ExerciseCategoryModel category in _categories.OrderBy(x => x.Name))
                     {
                         <option value="@category.Name">@category.Name</option>
                     }
@@ -40,15 +48,16 @@
             </div>
             <div class="m-3">
                 <p class="m-1 text-start">Display Rows</p>
-                <input type="number" min="0" max="50" @bind-value="rowsDisplayed" />
+                <input type="number" min="0" max="@_exercisesInfo.Count" @bind-value="rowsDisplayed" />
             </div>
 
         </div>
 
 
 
-        <div class="container m-auto p-0">
-            <table class="table table-dark table-hover m-0">
+
+        <div class="container m-auto mb-5 p-0">
+            <table class="table table-dark table-hover m-0 table-striped">
                 <thead>
                     <tr>
                         <th style="cursor:pointer" @onclick="SortTableByName" scope="col"> ExerciseName</th>
@@ -63,7 +72,7 @@
                         if (ex.name != null)
                         {
                             <tr>
-                                <th scope="row">@ex.name</th>
+                                <th class="exercise" @onclick="(async ()=> await GoogleSearchExName(ex.name, ex.categoy))" scope="row">@ex.name</th>
                                 <th scope="row">@ex.categoy</th>
                                 <td>@ex.numberOfSessions</td>
                                 <td>@ex.maxWeight Kg</td>
@@ -84,6 +93,18 @@
 </div>
 
 @code {
+
+    //google Search
+    async Task GoogleSearchExName(string exerciseName, string exerciseCategory)
+    {
+        string encodedQuery = System.Web.HttpUtility.UrlEncode("Exercise "+exerciseName +" " + exerciseCategory);
+        string searchUrl = $"https://www.google.com/search?q={encodedQuery}&tbm=isch";
+
+        await JSRuntime.InvokeAsync<object>("open", searchUrl, "_blank");
+
+    }
+
+
 
     string userId;
     string userName;
@@ -166,9 +187,13 @@
     class ExerciseInfo
     {
         public string? name;
-        public int numberOfSessions = 0;
-        public decimal maxWeight = 0;
         public string categoy = "";
+        public decimal maxWeight = 0;
+        public int numberOfSessions = 0;
+        public int numberOfSets = 0;
+        public int numberOfReps = 0;
+        public decimal totalWeightLifted = 0;
+        
     }
     List<ExerciseInfo> _exercisesInfo = new();
     ExerciseInfo CreateExerciseInfo(string exerciseName)
