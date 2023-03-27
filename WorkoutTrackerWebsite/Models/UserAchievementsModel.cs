@@ -8,7 +8,7 @@
         public int Level { get; set; }
         public decimal TotalWeightLifted { get; set; }
         public int TotalWorkoutSessions { get; set; }
-        public List<string>? MainExercises { get; set; }
+        public string? MainExercises { get; set; }
         
 
     }

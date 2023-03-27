@@ -1,5 +1,6 @@
 ﻿@page "/UserHome"
 @using Microsoft.AspNetCore.Identity;
+@using System.Globalization;
 @using WorkoutTrackerWebsite.Data;
 @using Microsoft.EntityFrameworkCore;
 @using WorkoutTrackerWebsite.Models;
@@ -9,110 +10,187 @@
 @inject IJSRuntime JSRuntime;
 <PageTitle>My Workouts</PageTitle>
 @layout UserLayout
+
+
 <img class="background" src="Images/Background.png">
-<div class="container  text-white p-0">
-    <h1>@userName Workouts !</h1>
-
-        <p>Click on the exercise name to google search it</p>
-        <p>Click on analysis to view exercise graphs</p>
-
-        <p>Total workouts session @_userAchievements.TotalWorkoutSessions Workout</p>
-        <p>Total weight lifted @_userAchievements.TotalWeightLifted Kg</p>
-
-        
 
 
-    @*should make it a search bar*@
-    <div style="max-width:1000px; " class="m-auto">
-        <div class="container d-inline-flex justify-content-end">
-            <div class="m-3">
-                <p class="m-1 text-start">Search an exercise</p>
-
-                <select @onclick="ShowByExercise" class="form-select" id="RoundExercice" @bind="_filteredExerciseName">
-                    <option value="">All</option>
-                    @foreach (Models.ExerciseModel exercice in _exercises.OrderBy(x=>x.Name))
-                    {
-                        <option value="@exercice.Name">@exercice.Name</option>
-                    }
-                </select>
+<div class="BigContainer w-100 rounded-3">
+    <div class="BraggingCard card m-auto p-0 rounded-3 ">
+        <div class="card-header bg-dark text-white">
+            <h1 class="card-title fs-1 text-center ">@userName's card </h1>
+            <div class="d-sm-inline-flex justify-content-around w-100 text-center">
+                <div class="fs-5" id="level"><b>Level</b> : <span class="fs-2">@_userAchievements.Level</span></div>
+                <div class="fs-5"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
+                <div class="fs-5"><b>T. Workouts</b> : <span class="fs-2">@_userAchievements.TotalWorkoutSessions</span> </div>
             </div>
-            <div class="m-3 text-start">
-                <p class="m-1">View by category</p>
-                <select @onclick="ShowByCategory" class="form-select" id="RoundExercice" @bind="_filteredExerciseName">
-                    <option value="">All</option>
-                    @foreach (Models.ExerciseCategoryModel category in _categories.OrderBy(x => x.Name))
-                    {
-                        <option value="@category.Name">@category.Name</option>
-                    }
-                </select>
-            </div>
-            <div class="m-3">
-                <p class="m-1 text-start">Display Rows</p>
-                <input type="number" min="0" max="@_exercisesInfo.Count" @bind-value="rowsDisplayed" />
-            </div>
-
         </div>
 
+        
+        
+            <div class="Exercises">
+
+                @foreach (var ex in ConvertListOfStringsToListOfExercisesInfos())
+                {
+                    <div class="ExercisesFavoriteSlot">
+                        <div class="favoriteExercise"><b>@ex.name :</b> </div>
+
+                    <div class="favoriteExerciseWeight">@ex.maxWeight.ToString("0") <span class="small">KG</span></div>
+                            
+                    </div>
+                }
+            @if (!showAddMainExerciseActive)
+            {
+                if (ConvertListOfStringsToListOfExercisesInfos().Count <= 3 && ConvertListOfStringsToListOfExercisesInfos().Count > 0)
+                {
+                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus mt-5 fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                }
+                else if (ConvertListOfStringsToListOfExercisesInfos().Count == 0)
+                {
+                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus  fs-5 text-success add  text-center  " aria-hidden="true"></div>
+
+                }
+
+            }
+            </div>
+            
+       
+
+    </div>
+</div>
+@if (showAddMainExerciseActive)
+{
+
+    <div class="AddExerciseBox bg-dark rounded-2 p-2 border border-3 border-light position-relative translate-middle-x m-0" >
+        <div class="d-inline-flex justify-content-between w-100">
+            <span class="m-1 text-start text-white">Search an exercise</span>
+            <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-3 m-0 " aria-hidden="true"></span>
+        </div>
+        <div>
+            <select class="form-select   " id="RoundExercice" @bind="_selectedMainExerciseName">
+                <option value="">All</option>
+                @foreach (Models.ExerciseModel exercice in _exercises.OrderBy(x => x.Name))
+                {
+                    <option value="@exercice.Name">@exercice.Name</option>
+                }
+            </select>
+            <div class="">
+                <button class="btn btn-success" @onclick="SaveExerciseInToMainExercisesString">Add Exercise To Main Exercises</button>
+            </div>
+        </div>
+
+    </div>
+}
+<div class="mt-2" style="min-width:30%; max-width:450px;">
+    
+    <div class="card bg-light rounded-3">
+        <div class="card-header">
+            <h1 class="card-title text-center">My Workouts</h1>
+        </div>
+        @foreach (var wrk in _userWorkouts.OrderByDescending(x => x.Date).ToList().Take(rowsDisplayed))
+        {
+            <div class=" rounded-3 bg-dark text-light">
+                <div class="text-center fs-3  ">@wrk.Date.ToString("D")</div>
+            </div>
+            <div class="ps-4 pe-4">
 
 
-
-        <div class="container m-auto mb-5 p-0">
-            <table class="table table-dark table-hover m-0 table-striped">
-                <thead>
-                    <tr>
-                        <th style="cursor:pointer" @onclick="SortTableByName" scope="col"> ExerciseName</th>
-                        <th style="cursor:pointer" class="pe-auto" @onclick="SortTableByCategoryName" scope="col"> ExerciseCategoy</th>
-                        <th style="cursor:pointer" @onclick="SortTableByTimesTrained" scope="col">Number of sessions </th>
-                        <th style="cursor:pointer" @onclick="SortTableByMaxWeight" scope="col">Max Weight</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var ex in _exercisesInfo.Take(rowsDisplayed))
+                @foreach (var round in wrk.Rounds)
+                {
+                    decimal thisRoundMaxWeight = round.Sets.MaxBy(x => x.Weight).Weight;
+                    int thisRoundMaxWeightReps = round.Sets.MaxBy(x => x.Weight).Reps;
+                    decimal previousMaxWeight = 0;
+                    int previousMaxWeightReps= 0;
+                    bool maxSetFound = false;
+                    bool firstTime = false;
+                    if (AllRoundsInfo().Any(x => x.roundId == round.Id))
                     {
-                        if (ex.name != null)
+                        //find the matching RoundInfo
+                        RoundInfo matchingRoundInfo = AllRoundsInfo().First(x => x.roundId == round.Id);
+                        //Get the last workout with the same exercise
+                        Guid previousWorkoutId = matchingRoundInfo.LastWorkoutIdWithTheSameExerciseName;
+                        WorkoutModel previousWorkout = _userWorkouts.First(x => x.Id == previousWorkoutId);
+
+                        //get the round from the last workout with the same exercise
+                        Guid PreviousRoundId = matchingRoundInfo.LastRoundIdWithTheSameExerciseName;
+                        RoundModel previousRound = previousWorkout.Rounds.First(x => x.Id == PreviousRoundId);
+
+                        //Find the set with the max weight
+                        SetModel previousSetWithMaxWeight = previousRound.Sets.MaxBy(x => x.Weight);
+
+                        // Get the weight
+                        previousMaxWeight = previousSetWithMaxWeight.Weight;
+
+                        // Get the reps
+                        previousMaxWeightReps = previousSetWithMaxWeight.Reps;
+
+
+                        if (previousWorkoutId == wrk.Id)
                         {
-                            <tr>
-                                <th class="exercise" @onclick="(async ()=> await GoogleSearchExName(ex.name, ex.categoy))" scope="row">@ex.name</th>
-                                <th scope="row">@ex.categoy</th>
-                                <td>@ex.numberOfSessions</td>
-                                <td>@ex.maxWeight Kg</td>
-                            </tr>
+                            firstTime = true;
                         }
                     }
-                </tbody>
-            </table>
-        </div>
+                   
+                    decimal WeightDifference = thisRoundMaxWeight - previousMaxWeight;
+                    int RepsDifference = thisRoundMaxWeightReps - previousMaxWeightReps;
+
+
+                    <div class="fs-3 fw-bold table w-100 ">
+                        @round.ExerciseName 
+                        @if (firstTime)
+                        {
+                            <span class="text-success text-start w-100 fs-3 "> - First Time!</span>
+                        }
+                    </div>
+                       
+
+                    @foreach (var set in round.Sets)
+                    {
+                        <div class="m-auto w-100" >
+
+                            <div class="d-sm-inline-flex gap-5 m-auto justify-content-between  w-100 hoverable ">
+                                <div class="fs-5"><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
+                                
+                                @if (set.Weight == thisRoundMaxWeight && !maxSetFound)
+                                {
+                                    maxSetFound = true;
+                                    @if( WeightDifference == 0)
+                                    {
+                                        if (RepsDifference != 0)
+                                        {
+                                            <div class="@SetDifferenceClass(RepsDifference) fs-5 ">
+                                                @if(RepsDifference>0)
+                                                {
+                                                    <span>+</span>
+                                                }
+                                                @RepsDifference reps</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="@SetDifferenceClass(WeightDifference) fs-5 ">
+                                            @if (WeightDifference > 0)
+                                            {
+                                                <span>+</span>
+                                            }
+
+                                            @WeightDifference.ToString("0.0") KG 
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                    <hr />
+                }
+            </div>
+            PreviousWorkout = wrk;
+        }
     </div>
-   
-    
-
-
-               
-        
-
 </div>
 
+
 @code {
-
-    //google Search
-    async Task GoogleSearchExName(string exerciseName, string exerciseCategory)
-    {
-        string encodedQuery = System.Web.HttpUtility.UrlEncode("Exercise "+exerciseName +" " + exerciseCategory);
-        string searchUrl = $"https://www.google.com/search?q={encodedQuery}&tbm=isch";
-
-        await JSRuntime.InvokeAsync<object>("open", searchUrl, "_blank");
-
-    }
-
-
-
-    string userId;
-    string userName;
-    UserAchievementsModel _userAchievements = new();
-    List<WorkoutModel> _userWorkouts = new();
-    List<ExerciseModel> _exercises= new();
-    List<ExerciseCategoryModel> _categories = new();
-
     //Getting Data
     protected override async Task OnInitializedAsync()
     {
@@ -128,14 +206,175 @@
             _categories = await repo.GetAllExerciseCategories();
         }
         CreateAllExercisesInfo();
+
     }
+
+
+    //extract a list from string:MainExercises
+    List<string> GetMainExercisesListFromString()
+    {
+
+        if ( _userAchievements.MainExercises == null)
+        {
+            return new List<string>();
+        }
+        return  _userAchievements.MainExercises.Split(";").ToList();
+    }
+
+    // Ui
+    // add fav exercise menu
+    bool showAddMainExerciseActive = false;
+    void ShowAddMainExercise()
+    {
+        showAddMainExerciseActive = true;
+    }
+    void HideAddMainExercise()
+    {
+        showAddMainExerciseActive = false;
+    }
+
+    //Workout board
+    int rowsDisplayed = 10;
+    WorkoutModel PreviousWorkout = new();
+
+
+    string SetDifferenceClass(decimal difference)
+    {
+        if (difference > 0)
+        {
+            return "text-success";
+        }
+        else if (difference == 0)
+        {
+            return "text-success";
+        }
+        return "text-danger";
+    }
+
+    //
+    List<RoundInfo> AllRoundsInfo()
+    {
+        List<RoundInfo> RoundsInfo = new();
+        foreach (var workout in _userWorkouts.OrderBy(x => x.Date))
+        {
+            foreach (var round in workout.Rounds)
+            {
+                RoundInfo roundInfo = new()
+                    {
+                        roundId = round.Id,
+                        workoutId = workout.Id,
+                        ExerciseName = round.ExerciseName,
+                        
+                    };
+                if (RoundsInfo.Any(x=>x.ExerciseName == round.ExerciseName))
+                {
+                    roundInfo.LastRoundIdWithTheSameExerciseName = RoundsInfo.Last(x => x.ExerciseName == round.ExerciseName).roundId;
+                    roundInfo.LastWorkoutIdWithTheSameExerciseName = RoundsInfo.Last(x => x.ExerciseName == round.ExerciseName).workoutId;
+                }
+                else
+                {
+                    roundInfo.LastRoundIdWithTheSameExerciseName = roundInfo.roundId;
+                    roundInfo.LastWorkoutIdWithTheSameExerciseName = roundInfo.workoutId;
+
+                }
+                RoundsInfo.Add(roundInfo);
+            }
+            
+        }
+        return RoundsInfo;
+    }
+    class RoundInfo
+    {
+        
+        public Guid roundId { get; set; }
+        public Guid workoutId { get; set; }
+
+        public string? ExerciseName { get; set; }
+
+        public Guid LastRoundIdWithTheSameExerciseName { get; set; }
+        public Guid LastWorkoutIdWithTheSameExerciseName { get; set; }
+       
+        
+       
+    }
+
+
+
+    //  Add The exercise name to MainExerciseString
+    string _selectedMainExerciseName = "";
+    void SaveExerciseInToMainExercisesString()
+    {
+        if (_selectedMainExerciseName == "")
+        {
+            HideAddMainExercise();
+        }
+        else
+        {
+            if (_userAchievements.MainExercises != null)
+            {
+                string oldString = _userAchievements.MainExercises;
+                string newString = oldString + ";" +_selectedMainExerciseName;
+                _userAchievements.MainExercises = newString;
+                HideAddMainExercise();
+            }
+            else
+            {
+                _userAchievements.MainExercises = _selectedMainExerciseName;
+                HideAddMainExercise();
+            }
+
+        }
+    }
+
+    //convert the List of strings to list of ExerciseInfo
+    List<ExerciseInfo> ConvertListOfStringsToListOfExercisesInfos()
+    {
+        List<ExerciseInfo> _mainExercisesInfo = new();
+        //loop into each string and then find its matching exercise
+        foreach (var exerciseName in GetMainExercisesListFromString())
+        {
+            foreach(var exercise in _exercises)
+            {
+                if (exerciseName == exercise.Name)
+                {
+                    // now create an exercise Info from the exercise name and add it to the list
+                    _mainExercisesInfo.Add(CreateExerciseInfo(exerciseName));
+                }
+            }
+        }
+        return _mainExercisesInfo;
+    }
+
+
+
+
+    //google Search
+    async Task GoogleSearchExName(string exerciseName, string exerciseCategory)
+    {
+        string encodedQuery = System.Web.HttpUtility.UrlEncode("Exercise " + exerciseName + " " + exerciseCategory);
+        string searchUrl = $"https://www.google.com/search?q={encodedQuery}&tbm=isch";
+
+        await JSRuntime.InvokeAsync<object>("open", searchUrl, "_blank");
+
+    }
+
+
+
+    string userId;
+    string userName;
+    UserAchievementsModel _userAchievements = new();
+    List<WorkoutModel> _userWorkouts = new();
+    List<ExerciseModel> _exercises = new();
+    List<ExerciseCategoryModel> _categories = new();
+
+   
 
 
     // Calculating Data
     int GetExerciseTimesTrained(string exerciseName)
     {
         int exerciseTimesPlayed = 0;
-        foreach(var wrk in _userWorkouts)
+        foreach (var wrk in _userWorkouts)
         {
             foreach (var round in wrk.Rounds)
             {
@@ -149,14 +388,14 @@
     }
     decimal GetExerciseMaxWeightLifted(string exerciseName)
     {
-        decimal maxWeight=0;
+        decimal maxWeight = 0;
         foreach (var wrk in _userWorkouts)
         {
             foreach (var round in wrk.Rounds)
             {
                 if (round.ExerciseName == exerciseName)
                 {
-                    foreach(var set in round.Sets)
+                    foreach (var set in round.Sets)
                     {
                         if (set.Weight > maxWeight)
                         {
@@ -193,7 +432,7 @@
         public int numberOfSets = 0;
         public int numberOfReps = 0;
         public decimal totalWeightLifted = 0;
-        
+
     }
     List<ExerciseInfo> _exercisesInfo = new();
     ExerciseInfo CreateExerciseInfo(string exerciseName)
@@ -208,9 +447,9 @@
     void CreateAllExercisesInfo()
     {
         _exercisesInfo = new();
-        foreach(var ex in _exercises)
+        foreach (var ex in _exercises)
         {
-            if (ex.Name != null ) _exercisesInfo.Add(CreateExerciseInfo(ex.Name));
+            if (ex.Name != null) _exercisesInfo.Add(CreateExerciseInfo(ex.Name));
         }
 
     }
@@ -219,7 +458,7 @@
     //filtering Data
     void ShowByExercise()
     {
-        if(_filteredExerciseName == "")
+        if (_filteredExerciseName == "")
         {
             CreateAllExercisesInfo();
         }
@@ -239,10 +478,10 @@
             GetExercisesInfoByCategoryName(_filteredExerciseName);
         }
     }
-    
+
 
     string _filteredExerciseName = "";
-   
+
     bool _showByExercise = false;
     bool _showByCategory = false;
     bool _showAll = false;
@@ -250,7 +489,7 @@
     void CreateExercisesInfoByExerciseName(string exerciseName)
     {
         _exercisesInfo = new();
-        foreach(var ex in _exercises)
+        foreach (var ex in _exercises)
         {
             if (ex.Name == exerciseName)
             {
@@ -300,7 +539,6 @@
 
     }
 
-    //Table Display
-    int rowsDisplayed = 10;
+
 
 }

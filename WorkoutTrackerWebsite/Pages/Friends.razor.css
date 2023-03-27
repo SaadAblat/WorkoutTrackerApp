@@ -24,7 +24,7 @@
     padding: 20px 100px;
     color: greenyellow;
     min-height:150px;
-    max-height: 300px;
+    max-height: auto;
     overflow: hidden;
     
 }

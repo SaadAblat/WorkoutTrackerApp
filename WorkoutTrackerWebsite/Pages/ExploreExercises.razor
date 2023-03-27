@@ -1,6 +1,307 @@
 ﻿@page "/ExploreExercises"
-<h3>ExploreExercises</h3>
+@using Microsoft.AspNetCore.Identity;
+@using WorkoutTrackerWebsite.Data;
+@using Microsoft.EntityFrameworkCore;
+@using WorkoutTrackerWebsite.Models;
+@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime;
+<PageTitle>My Workouts</PageTitle>
+@layout UserLayout
+<img class="background" src="Images/Background.png">
+<div class="container  text-white p-0">
+    <h1>@userName Workouts !</h1>
+
+    <p>Click on the exercise name to google search it</p>
+    <p>Click on analysis to view exercise graphs</p>
+
+    <p>Total workouts session @_userAchievements.TotalWorkoutSessions Workout</p>
+    <p>Total weight lifted @_userAchievements.TotalWeightLifted Kg</p>
+
+
+
+
+    @*should make it a search bar*@
+    <div style="max-width:1000px; " class="m-auto">
+        <div class="container d-inline-flex justify-content-end">
+            <div class="m-3">
+                <p class="m-1 text-start">Search an exercise</p>
+
+                <select @onclick="ShowByExercise" class="form-select" id="RoundExercice" @bind="_filteredExerciseName">
+                    <option value="">All</option>
+                    @foreach (Models.ExerciseModel exercice in _exercises.OrderBy(x => x.Name))
+                    {
+                        <option value="@exercice.Name">@exercice.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="m-3 text-start">
+                <p class="m-1">View by category</p>
+                <select @onclick="ShowByCategory" class="form-select" id="RoundExercice" @bind="_filteredExerciseName">
+                    <option value="">All</option>
+                    @foreach (Models.ExerciseCategoryModel category in _categories.OrderBy(x => x.Name))
+                    {
+                        <option value="@category.Name">@category.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="m-3">
+                <p class="m-1 text-start">Display Rows</p>
+                <input type="number" min="0" max="@_exercisesInfo.Count" @bind-value="rowsDisplayed" />
+            </div>
+
+        </div>
+
+
+
+
+        <div class="container m-auto mb-5 p-0">
+            <table class="table table-dark table-hover m-0 table-striped">
+                <thead>
+                    <tr>
+                        <th style="cursor:pointer" @onclick="SortTableByName" scope="col"> ExerciseName</th>
+                        <th style="cursor:pointer" class="pe-auto" @onclick="SortTableByCategoryName" scope="col"> ExerciseCategoy</th>
+                        <th style="cursor:pointer" @onclick="SortTableByTimesTrained" scope="col">Number of sessions </th>
+                        <th style="cursor:pointer" @onclick="SortTableByMaxWeight" scope="col">Max Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ex in _exercisesInfo.Take(rowsDisplayed))
+                    {
+                        if (ex.name != null)
+                        {
+                            <tr>
+                                <th class="exercise" @onclick="(async ()=> await GoogleSearchExName(ex.name, ex.categoy))" scope="row">@ex.name</th>
+                                <th scope="row">@ex.categoy</th>
+                                <td>@ex.numberOfSessions</td>
+                                <td>@ex.maxWeight Kg</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
 
 @code {
 
+    //google Search
+    async Task GoogleSearchExName(string exerciseName, string exerciseCategory)
+    {
+        string encodedQuery = System.Web.HttpUtility.UrlEncode("Exercise " + exerciseName + " " + exerciseCategory);
+        string searchUrl = $"https://www.google.com/search?q={encodedQuery}&tbm=isch";
+
+        await JSRuntime.InvokeAsync<object>("open", searchUrl, "_blank");
+
+    }
+
+
+
+    string userId;
+    string userName;
+    UserAchievementsModel _userAchievements = new();
+    List<WorkoutModel> _userWorkouts = new();
+    List<ExerciseModel> _exercises = new();
+    List<ExerciseCategoryModel> _categories = new();
+
+    //Getting Data
+    protected override async Task OnInitializedAsync()
+    {
+        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        userName = user.Identity.Name;
+        userId = user.Claims.FirstOrDefault().Value;
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            _userWorkouts = await repo.GetWorkoutsByUserIdAsync(userId);
+            _userAchievements = await repo.GetUserAchievementByUserId(userId);
+            _exercises = await repo.GetAllExercisesAsync();
+            _categories = await repo.GetAllExerciseCategories();
+        }
+        CreateAllExercisesInfo();
+    }
+
+
+    // Calculating Data
+    int GetExerciseTimesTrained(string exerciseName)
+    {
+        int exerciseTimesPlayed = 0;
+        foreach (var wrk in _userWorkouts)
+        {
+            foreach (var round in wrk.Rounds)
+            {
+                if (round.ExerciseName == exerciseName)
+                {
+                    exerciseTimesPlayed++;
+                }
+            }
+        }
+        return exerciseTimesPlayed;
+    }
+    decimal GetExerciseMaxWeightLifted(string exerciseName)
+    {
+        decimal maxWeight = 0;
+        foreach (var wrk in _userWorkouts)
+        {
+            foreach (var round in wrk.Rounds)
+            {
+                if (round.ExerciseName == exerciseName)
+                {
+                    foreach (var set in round.Sets)
+                    {
+                        if (set.Weight > maxWeight)
+                        {
+                            maxWeight = set.Weight;
+                        }
+                    }
+                }
+            }
+        }
+        return maxWeight;
+    }
+    string GetExerciseCategory(string exerciseName)
+    {
+        string CategoryName = "";
+        foreach (var ex in _exercises)
+        {
+            if (ex.Name == exerciseName)
+            {
+                CategoryName = ex.Category;
+            }
+        }
+        return CategoryName;
+    }
+
+
+
+    // Presenting Data
+    class ExerciseInfo
+    {
+        public string? name;
+        public string categoy = "";
+        public decimal maxWeight = 0;
+        public int numberOfSessions = 0;
+        public int numberOfSets = 0;
+        public int numberOfReps = 0;
+        public decimal totalWeightLifted = 0;
+
+    }
+    List<ExerciseInfo> _exercisesInfo = new();
+    ExerciseInfo CreateExerciseInfo(string exerciseName)
+    {
+        ExerciseInfo exerciseInfo = new();
+        exerciseInfo.name = exerciseName;
+        exerciseInfo.numberOfSessions = GetExerciseTimesTrained(exerciseName);
+        exerciseInfo.maxWeight = GetExerciseMaxWeightLifted(exerciseName);
+        exerciseInfo.categoy = GetExerciseCategory(exerciseName);
+        return exerciseInfo;
+    }
+    void CreateAllExercisesInfo()
+    {
+        _exercisesInfo = new();
+        foreach (var ex in _exercises)
+        {
+            if (ex.Name != null) _exercisesInfo.Add(CreateExerciseInfo(ex.Name));
+        }
+
+    }
+
+
+    //filtering Data
+    void ShowByExercise()
+    {
+        if (_filteredExerciseName == "")
+        {
+            CreateAllExercisesInfo();
+        }
+        else
+        {
+            CreateExercisesInfoByExerciseName(_filteredExerciseName);
+        }
+    }
+    void ShowByCategory()
+    {
+        if (_filteredExerciseName == "")
+        {
+            CreateAllExercisesInfo();
+        }
+        else
+        {
+            GetExercisesInfoByCategoryName(_filteredExerciseName);
+        }
+    }
+
+
+    string _filteredExerciseName = "";
+
+    bool _showByExercise = false;
+    bool _showByCategory = false;
+    bool _showAll = false;
+    //by exercise
+    void CreateExercisesInfoByExerciseName(string exerciseName)
+    {
+        _exercisesInfo = new();
+        foreach (var ex in _exercises)
+        {
+            if (ex.Name == exerciseName)
+            {
+                _exercisesInfo.Add(CreateExerciseInfo(ex.Name));
+            }
+        }
+    }
+
+    //by category
+    void GetExercisesInfoByCategoryName(string categoryName)
+    {
+        _exercisesInfo = new();
+        foreach (var ex in _exercises)
+        {
+            if (ex.Category == categoryName)
+            {
+                _exercisesInfo.Add(CreateExerciseInfo(ex.Name));
+            }
+        }
+    }
+
+
+    //Sorting
+    bool _sortAscending;
+    private void SortTableByName()
+    {
+        _exercisesInfo = _sortAscending ? _exercisesInfo.OrderBy(x => x.name).ToList() : _exercisesInfo.OrderByDescending(x => x.name).ToList();
+        _sortAscending = !_sortAscending;
+
+    }
+    private void SortTableByCategoryName()
+    {
+        _exercisesInfo = _sortAscending ? _exercisesInfo.OrderBy(x => x.categoy).ToList() : _exercisesInfo.OrderByDescending(x => x.categoy).ToList();
+        _sortAscending = !_sortAscending;
+
+    }
+    private void SortTableByTimesTrained()
+    {
+        _exercisesInfo = _sortAscending ? _exercisesInfo.OrderBy(x => x.maxWeight).ToList() : _exercisesInfo.OrderByDescending(x => x.numberOfSessions).ToList();
+        _sortAscending = !_sortAscending;
+
+    }
+    private void SortTableByMaxWeight()
+    {
+        _exercisesInfo = _sortAscending ? _exercisesInfo.OrderBy(x => x.maxWeight).ToList() : _exercisesInfo.OrderByDescending(x => x.maxWeight).ToList();
+        _sortAscending = !_sortAscending;
+
+    }
+
+    //Table Display
+    int rowsDisplayed = 10;
+
 }
+
