@@ -30,73 +30,169 @@
         
             <div class="Exercises">
 
-                @foreach (var ex in ConvertListOfStringsToListOfExercisesInfos())
+            @if (ConvertListOfStringsToListOfExercisesInfos().Count != 0)
+            {
+                @foreach (var exercise in ConvertListOfStringsToListOfExercisesInfos())
                 {
-                    <div class="ExercisesFavoriteSlot">
-                        <div class="favoriteExercise"><b>@ex.name :</b> </div>
-
-                    <div class="favoriteExerciseWeight">@ex.maxWeight.ToString("0") <span class="small">KG</span></div>
-                            
+                    <div class="ExercisesFavoriteSlot" style="width:@widthCalculated()">
+                        <div class="flex-row"><span @onclick="(async ()=> await DeleteExerciseFromMainExercisesString(exercise.name))" class="oi oi-x delete top-0 start-0 m-0"></span> <span class="favoriteExercise"><b>@exercise.name</b> </span></div>
+                        <div class="favoriteExerciseWeight">@exercise.maxWeight.ToString("0") <span class="small">KG</span></div>
                     </div>
                 }
-            @if (!showAddMainExerciseActive)
-            {
-                if (ConvertListOfStringsToListOfExercisesInfos().Count <= 3 && ConvertListOfStringsToListOfExercisesInfos().Count > 0)
+                // if not full
+                @if (ConvertListOfStringsToListOfExercisesInfos().Count < 4)
                 {
-                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus mt-5 fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                    <div class="emptySlot" style="width:@widthCalculated()">
+                        <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                    </div>
                 }
-                else if (ConvertListOfStringsToListOfExercisesInfos().Count == 0)
-                {
-                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus  fs-5 text-success add  text-center  " aria-hidden="true"></div>
-
-                }
-
             }
+            // Empty
+            else
+            {
+                <div class="emptySlot w-100 ">
+                    <div style="color:gray; margin-bottom:auto;">Pin Here your favorites Exercises (max 4).</div>
+                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                </div>
+            }
+
+        @*    @switch (ConvertListOfStringsToListOfExercisesInfos().Count)
+            {
+                
+
+                case 0:
+                    if (!showAddMainExerciseActive)
+                    {
+                        <div class="emptySlot w-100 ">
+                            <div style="color:gray; margin-bottom:auto;">Pin Here your favorites Exercises (max 4).</div>
+
+                        <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="emptySlot w-100 ">
+                        </div>
+                    }
+                    break;
+                case 1:
+                    <div class="ExercisesFavoriteSlot" style="width:@widthCalculated()">
+
+                        <div class="flex-row"><span class="oi oi-x delete top-0 start-0 m-0"></span> <span class="favoriteExercise"><b>@ConvertListOfStringsToListOfExercisesInfos()[0].name</b> </span></div>
+
+                        <div class="favoriteExerciseWeight">@ConvertListOfStringsToListOfExercisesInfos()[0].maxWeight.ToString("0") <span class="small">KG</span></div>
+
+                    </div>
+                    if (!showAddMainExerciseActive)
+                    {
+                        <div class="emptySlot" style="width:@widthCalculated()">
+                            <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                        </div>
+
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < ConvertListOfStringsToListOfExercisesInfos().Count; i++)
+                    {
+                        <div class="ExercisesFavoriteSlot" style="width:@widthCalculated()">
+                            <div class="flex-row"><span class="oi oi-x delete top-0 start-0 m-0"></span> <span class="favoriteExercise"><b>@ConvertListOfStringsToListOfExercisesInfos()[i].name</b> </span></div>
+
+                            <div class="favoriteExerciseWeight">@ConvertListOfStringsToListOfExercisesInfos()[i].maxWeight.ToString("0") <span class="small">KG</span></div>
+
+                        </div>
+                    }
+                    if (!showAddMainExerciseActive)
+                    {
+                        <div class="emptySlot" style="width:@widthCalculated()">
+                            <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                        </div>
+
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < ConvertListOfStringsToListOfExercisesInfos().Count; i++)
+                    {
+                        <div class="ExercisesFavoriteSlot" style="width:@widthCalculated()">
+                            <div class="flex-row"><span class="oi oi-x delete top-0 start-0 m-0"></span> <span class="favoriteExercise"><b>@ConvertListOfStringsToListOfExercisesInfos()[i].name</b> </span></div>
+
+                            <div class="favoriteExerciseWeight">@ConvertListOfStringsToListOfExercisesInfos()[i].maxWeight.ToString("0") <span class="small">KG</span></div>
+
+                        </div>
+                    }
+                    if (!showAddMainExerciseActive)
+                    {
+                        <div class=" emptySlot" style="width:@widthCalculated()">
+                            <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus  fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                        </div>
+
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; i < ConvertListOfStringsToListOfExercisesInfos().Count; i++)
+                    {
+                        <div class="ExercisesFavoriteSlot" style="width:@widthCalculated()">
+                            <div class="flex-row"><span class="oi oi-x delete top-0 start-0 m-0"></span> <span class="favoriteExercise"><b>@ConvertListOfStringsToListOfExercisesInfos()[i].name</b> </span></div>
+
+                            <div class="favoriteExerciseWeight">@ConvertListOfStringsToListOfExercisesInfos()[i].maxWeight.ToString("0") <span class="small">KG</span></div>
+
+                        </div>
+                    }
+                    break;
+            }*@
             </div>
             
        
 
     </div>
 </div>
-@if (showAddMainExerciseActive)
-{
 
-    <div class="AddExerciseBox bg-dark rounded-2 p-2 border border-3 border-light position-relative translate-middle-x m-0" >
-        <div class="d-inline-flex justify-content-between w-100">
-            <span class="m-1 text-start text-white">Search an exercise</span>
-            <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-3 m-0 " aria-hidden="true"></span>
-        </div>
-        <div>
-            <select class="form-select   " id="RoundExercice" @bind="_selectedMainExerciseName">
-                <option value="">All</option>
-                @foreach (Models.ExerciseModel exercice in _exercises.OrderBy(x => x.Name))
-                {
-                    <option value="@exercice.Name">@exercice.Name</option>
-                }
-            </select>
-            <div class="">
-                <button class="btn btn-success" @onclick="SaveExerciseInToMainExercisesString">Add Exercise To Main Exercises</button>
+<Animation @key="@KeyCounter" AnimationNameSelect="@AnimationsNames.zoomIn">
+    @if (showAddMainExerciseActive)
+    {
+
+        <div class="AddExerciseBox bg-dark rounded-2 p-2 border border-3 border-light  translate-middle-x m-0">
+            <div class="d-inline-flex justify-content-between w-100">
+                <span class="m-1 text-start text-white">Search an exercise</span>
+                <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-3 m-0 " aria-hidden="true"></span>
             </div>
-        </div>
+            <div>
+                <select class="form-select   " id="RoundExercice" @bind="_selectedMainExerciseName">
+                    <option value="">All</option>
+                    @foreach (Models.ExerciseModel exercice in _exercises.OrderBy(x => x.Name))
+                    {
+                        <option value="@exercice.Name">@exercice.Name</option>
+                    }
+                </select>
+                <div class="">
+                    <button class="btn btn-success" @onclick="(async ()=> await SaveExerciseInToMainExercisesString())">Add Exercise To Main Exercises</button>
+                </div>
+            </div>
 
-    </div>
-}
-<div class="mt-2" style="min-width:30%; max-width:450px;">
+        </div>
+    }
+</Animation>
+
+
+
+<Animation @key="-55" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
+
+    <div class="container m-auto mt-5  " style="max-width:1000px;">
     
-    <div class="card bg-light rounded-3">
+    <div class="card bg-light rounded-3 ">
         <div class="card-header">
             <h1 class="card-title text-center">My Workouts</h1>
         </div>
         @foreach (var wrk in _userWorkouts.OrderByDescending(x => x.Date).ToList().Take(rowsDisplayed))
         {
             <div class=" rounded-3 bg-dark text-light">
-                <div class="text-center fs-3  ">@wrk.Date.ToString("D")</div>
+                <div class="text-center fs-1  ">@wrk.Date.ToString("D")</div>
             </div>
-            <div class="ps-4 pe-4">
+            <div class="ps-5  pe-5">
 
 
                 @foreach (var round in wrk.Rounds)
                 {
+                    // Finding the last time reps and weights doing the same exercise 
                     decimal thisRoundMaxWeight = round.Sets.MaxBy(x => x.Weight).Weight;
                     int thisRoundMaxWeightReps = round.Sets.MaxBy(x => x.Weight).Reps;
                     decimal previousMaxWeight = 0;
@@ -134,22 +230,39 @@
                     decimal WeightDifference = thisRoundMaxWeight - previousMaxWeight;
                     int RepsDifference = thisRoundMaxWeightReps - previousMaxWeightReps;
 
+                        <div class="w-100 d-inline-flex justify-content-between">
+                            <div class="fs-1 fw-bold table ">
+                                @round.ExerciseName
 
-                    <div class="fs-3 fw-bold table w-100 ">
-                        @round.ExerciseName 
-                        @if (firstTime)
-                        {
-                            <span class="text-success text-start w-100 fs-3 "> - First Time!</span>
-                        }
+
+                            </div>
+                            @if (firstTime)
+                            {
+                                <span class="text-success text-end  w-100 fs-5 "> First Time!</span>
+                            }
+                            else
+                            {
+                                decimal maxWeight = CreateExerciseInfo(round.ExerciseName).maxWeight;
+                                @if (thisRoundMaxWeight < maxWeight)
+                                {
+                                    <span class="text-dark text-end w-100 fs-5 "> Max: @maxWeight Kg</span>
+                                }
+                                else
+                                {
+                                    <span class="text-success text-end w-100 fs-5 "> New Max </span>
+                                }
+                            }
+
                     </div>
-                       
+
+                        
 
                     @foreach (var set in round.Sets)
                     {
-                        <div class="m-auto w-100" >
+                        <div class="m-auto  w-100" >
 
-                            <div class="d-sm-inline-flex gap-5 m-auto justify-content-between  w-100 hoverable ">
-                                <div class="fs-5"><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
+                            <div class="d-sm-inline-flex gap-5 m-auto justify-content-between  w-100 hoverable">
+                                <div class="fs-3 ExerciseRecord"><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
                                 
                                 @if (set.Weight == thisRoundMaxWeight && !maxSetFound)
                                 {
@@ -158,7 +271,7 @@
                                     {
                                         if (RepsDifference != 0)
                                         {
-                                            <div class="@SetDifferenceClass(RepsDifference) fs-5 ">
+                                                <div class="@SetDifferenceClass(RepsDifference) ExerciseDifference fs-3 ">
                                                 @if(RepsDifference>0)
                                                 {
                                                     <span>+</span>
@@ -168,7 +281,7 @@
                                     }
                                     else
                                     {
-                                        <div class="@SetDifferenceClass(WeightDifference) fs-5 ">
+                                            <div class="@SetDifferenceClass(WeightDifference) ExerciseDifference fs-3 ">
                                             @if (WeightDifference > 0)
                                             {
                                                 <span>+</span>
@@ -189,6 +302,7 @@
     </div>
 </div>
 
+</Animation>
 
 @code {
     //Getting Data
@@ -209,6 +323,44 @@
 
     }
 
+    //  Add The exercise name to MainExerciseString
+    string _selectedMainExerciseName = "";
+    async Task SaveExerciseInToMainExercisesString()
+    {
+        if (GetMainExercisesListFromString().Any(x => x == _selectedMainExerciseName))
+        {
+            return;
+        }
+        //else
+        //{
+        if (_selectedMainExerciseName == "")
+        {
+            HideAddMainExercise();
+        }
+        else
+        {
+            if (_userAchievements.MainExercises != null)
+            {
+                string oldString = _userAchievements.MainExercises;
+                string newString = oldString + ";" + _selectedMainExerciseName;
+                _userAchievements.MainExercises = newString;
+                HideAddMainExercise();
+            }
+            else
+            {
+                _userAchievements.MainExercises = _selectedMainExerciseName;
+                HideAddMainExercise();
+            }
+            using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+            {
+                await repo.UpdateMainExercisesStringByUserIdAsync(userId, _userAchievements.MainExercises);
+
+            }
+        }
+        //}
+
+
+    }
 
     //extract a list from string:MainExercises
     List<string> GetMainExercisesListFromString()
@@ -221,12 +373,56 @@
         return  _userAchievements.MainExercises.Split(";").ToList();
     }
 
+    //convert the List of strings to list of ExerciseInfo
+    List<ExerciseInfo> ConvertListOfStringsToListOfExercisesInfos()
+    {
+        List<ExerciseInfo> _mainExercisesInfo = new();
+        //loop into each string and then find its matching exercise
+        foreach (var exerciseName in GetMainExercisesListFromString())
+        {
+            foreach (var exercise in _exercises)
+            {
+                if (exerciseName == exercise.Name)
+                {
+                    // now create an exercise Info from the exercise name and add it to the list
+                    _mainExercisesInfo.Add(CreateExerciseInfo(exerciseName));
+                }
+            }
+        }
+        return _mainExercisesInfo;
+    }
+
+    //Delete Exercise from MainString
+    async Task DeleteExerciseFromMainExercisesString(string exerciseName)
+    {
+        //_userAchievements.MainExercises = "";
+        List<string> UpdatedStringsList = GetMainExercisesListFromString();
+        string mainString = "";
+        foreach (string exercise in GetMainExercisesListFromString())
+        {
+            if (exercise != exerciseName)
+            {
+                mainString += exercise + ";";
+            }
+        }
+        string result = mainString.Remove(mainString.Length - 1);
+        _userAchievements.MainExercises = result;
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            await repo.UpdateMainExercisesStringByUserIdAsync(userId, _userAchievements.MainExercises);
+
+        }
+    }
+
     // Ui
     // add fav exercise menu
     bool showAddMainExerciseActive = false;
+    int KeyCounter = 0;
     void ShowAddMainExercise()
     {
         showAddMainExerciseActive = true;
+        KeyCounter++;
+
     }
     void HideAddMainExercise()
     {
@@ -264,7 +460,7 @@
                         roundId = round.Id,
                         workoutId = workout.Id,
                         ExerciseName = round.ExerciseName,
-                        
+
                     };
                 if (RoundsInfo.Any(x=>x.ExerciseName == round.ExerciseName))
                 {
@@ -279,13 +475,13 @@
                 }
                 RoundsInfo.Add(roundInfo);
             }
-            
+
         }
         return RoundsInfo;
     }
     class RoundInfo
     {
-        
+
         public Guid roundId { get; set; }
         public Guid workoutId { get; set; }
 
@@ -293,57 +489,26 @@
 
         public Guid LastRoundIdWithTheSameExerciseName { get; set; }
         public Guid LastWorkoutIdWithTheSameExerciseName { get; set; }
-       
-        
-       
+
+
+
     }
 
 
 
-    //  Add The exercise name to MainExerciseString
-    string _selectedMainExerciseName = "";
-    void SaveExerciseInToMainExercisesString()
+    //Braging Card
+    string widthCalculated()
     {
-        if (_selectedMainExerciseName == "")
-        {
-            HideAddMainExercise();
-        }
-        else
-        {
-            if (_userAchievements.MainExercises != null)
-            {
-                string oldString = _userAchievements.MainExercises;
-                string newString = oldString + ";" +_selectedMainExerciseName;
-                _userAchievements.MainExercises = newString;
-                HideAddMainExercise();
-            }
-            else
-            {
-                _userAchievements.MainExercises = _selectedMainExerciseName;
-                HideAddMainExercise();
-            }
-
-        }
+        int width = 100 / (ConvertListOfStringsToListOfExercisesInfos().Count+1);
+        string widthInstring = width.ToString();
+        string percentage = widthInstring + "%;";
+        return percentage;
     }
 
-    //convert the List of strings to list of ExerciseInfo
-    List<ExerciseInfo> ConvertListOfStringsToListOfExercisesInfos()
-    {
-        List<ExerciseInfo> _mainExercisesInfo = new();
-        //loop into each string and then find its matching exercise
-        foreach (var exerciseName in GetMainExercisesListFromString())
-        {
-            foreach(var exercise in _exercises)
-            {
-                if (exerciseName == exercise.Name)
-                {
-                    // now create an exercise Info from the exercise name and add it to the list
-                    _mainExercisesInfo.Add(CreateExerciseInfo(exerciseName));
-                }
-            }
-        }
-        return _mainExercisesInfo;
-    }
+
+
+
+
 
 
 

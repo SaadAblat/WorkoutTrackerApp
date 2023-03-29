@@ -7,7 +7,7 @@
     <main >
         <AuthorizeView>
             <NotAuthorized>
-                <div class="top-row TopNavBar" >
+                <div class="top-row TopNavBar bg-dark" >
                     <a class="text-white text-decoration-none  fs-4 hoverable" href="Identity/Account/Register" target="_blank">Register</a>
                     <a class="text-white text-decoration-none  fs-4 hoverable" href="Identity/Account/Login" target="_blank">Log in</a>
                     <a style="margin-left:20px;left:50%;color:gold;" class="navbar-brand " href="">WorkoutTrackerWebsite</a>
@@ -19,7 +19,7 @@
         
         @Body
 
-        <footer>
+        <footer class="bg-light modal-footer ">
             <p>Saad Ablat 2023</p>
         </footer>
     </main>
@@ -41,13 +41,12 @@
 
     .TopNavBar{
         position:relative;
-        background: radial-gradient(circle, yellow 0%, rgba(0,0,0,1) 40%)!important;
+        /*background: radial-gradient(circle, yellow 0%, rgba(0,0,0,1) 40%)!important;*/
         min-height:3rem;
         width:100%;
         border-bottom: solid;
         border-top: solid;
-        border-color: gold !important;
-        border-bottom-width:3px !important;
+        border-color: black;
         position: fixed !important;
         display:flex;
         flex-wrap:wrap;
@@ -55,19 +54,14 @@
     }
 
     footer {
-        height: 35px;
         width: 100%;
         font-size: 20px;
-        background-color: yellow;
         position:fixed;
         bottom:0;
         color:black;
         padding:5px;
     }
-    footer p{
-        margin:auto;
-        font-size: 20px;
-    }
+
 
 
 </style>

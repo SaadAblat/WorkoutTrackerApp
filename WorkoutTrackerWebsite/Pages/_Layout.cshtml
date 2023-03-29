@@ -13,9 +13,10 @@
     <link href="WorkoutTrackerWebsite.styles.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 
-    @*radzen*@
-    <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
-    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+
+    @*aoc css library*@
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 </head>
 <body>
     @RenderBody()
@@ -30,7 +31,8 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/js/Animation.js"></script>
     <script src="_framework/blazor.server.js"></script>
 </body>
 

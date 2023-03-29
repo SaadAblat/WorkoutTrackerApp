@@ -8,9 +8,10 @@ namespace WorkoutTrackerWebsite.Models
         public Guid Id { get; set; }
         public int RoundNumber { get; set; }
 
-
+        [Required]
         public string? ExerciseName { get; set; }
 
+        [Required]
         public virtual IList<SetModel>? Sets { get; set; }
 
         public Guid WorkoutId { get; set; }

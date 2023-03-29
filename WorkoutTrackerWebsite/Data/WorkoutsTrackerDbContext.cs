@@ -213,7 +213,6 @@ namespace WorkoutTrackerWebsite.Data
                 new ExerciseModel { Id = Guid.NewGuid(), Name = "Machine Glute Kickbacks", Category = "Glutes" },
                 new ExerciseModel { Id = Guid.NewGuid(), Name = "One-Legged Glute Bridge", Category = "Glutes" },
                 new ExerciseModel { Id = Guid.NewGuid(), Name = "One-Legged Hip Thrust", Category = "Glutes" },
-                new ExerciseModel { Id = Guid.NewGuid(), Name = "Romanian Deadlift", Category = "Glutes" },
                 new ExerciseModel { Id = Guid.NewGuid(), Name = "Single Leg Romanian Deadlift", Category = "Glutes" },
                 new ExerciseModel { Id = Guid.NewGuid(), Name = "Standing Glute Kickback in Machine", Category = "Glutes" },
                 new ExerciseModel { Id = Guid.NewGuid(), Name = "Step Up", Category = "Glutes" },

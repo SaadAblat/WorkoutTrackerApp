@@ -9,174 +9,163 @@
 <img class="background" src="Images/Background.png">
 
 
-
-<div class="container text-white ">
-
-    <div style="max-width:900px" class="container-lg ">
-        <div class="container border border-light ">
-            <div class="m-auto " style="min-width:300px; max-width:600px;">
-                <h5 class="card-title m-5   fs-2 text-center ">Add a new workout</h5>
+<div class="container bg-white text-dark m-auto p-0 rounded-3 AddWorkoutContainer ">
+    <div  >
+        <div class="m-auto text-center">
+            <div class="bg-dark rounded mb-4">
+                <h1 class="text-light text-center fs-1 p-3" >Add a new workout</h1>
             </div>
-            <div class="ms-4 " style="min-width:300px; max-width:600px;">
-                <label for="WorkoutDate" class="form-label  fs-5">Set Workout's Date</label>
-                <input type="date" class="form-control" id="WorkoutDate" @bind-value="Workout.Date" />
-                <h5 class="">Workout Rounds</h5>
-            </div>
-
-            @if (Workout.Rounds != null)
-            {
-                @foreach (Models.RoundModel round in Workout.Rounds)
-                {
-                    <div style="min-width:300px; max-width:800px;  " class=" bg-dark m-auto mb-3 p-3 rounded border border-light border-2">
-
-                        <div class="card-title fs-5 bg-dark"> Exercise @round.RoundNumber : @round.ExerciseName</div>
-
-
-                        <label class="m-1 fs-6">Choose Exercice</label>
-                        <div class="m-2">
-                            <select style="min-width:100px;min-height:30px;" class="form-select" id="RoundExercice" @bind="round.ExerciseName">
-                                <option value="">Select an exercise...</option>
-                                @foreach (Models.ExerciseModel exercice in _exercises)
-                                {
-                                    <option value="@exercice.Name">@exercice.Name</option>
-                                }
-                            </select>
-                        </div>
-
-
-                        @*<div class="m-2">or</div>
-                <div class="m-2">
-                <label for="AddExercise">Add a new Exercise</label>
-                <InputText id="AddExercise" @bind-Value="Exercise.Name" />
-                <button class="btn btn-success btn-sm" @onclick="AddExercise">Add Exercise</button>
-                </div>*@
-
-                        <div class="container-xl">
-                            <table class="table table-dark table-hover border ">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Set</th>
-                                        <th scope="col">Weight</th>
-                                        <th scope="col">Reps</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (round.Sets != null)
-                                    {
-                                        foreach (Models.SetModel set in round.Sets)
-                                        {
-                                            <tr>
-                                                <th scope="row">@set.SetNumber</th>
-                                                <td><input type="number" min="0" style="max-width:50px;" id="SetWeight" @bind-value="set.Weight" /> Kg</td>
-                                                <td><input type="number" min="0" style="max-width:50px;" id="SetReps" @bind-value="set.Reps" /> Rep</td>
-                                                <td><button class="btn btn-danger btn-sm" @onclick="@(() => DeleteSet(round, set))">Delete Set</button></td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="text-center">
-                            <button class="btn btn-success " @onclick="@(() => AddSet(round))">Add a new Set</button>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-danger btn-lg" @onclick="@(() => DeleteRound(round))">Delete Round</button>
-                        </div>
-                    </div>
-                }
-            }
-            <div class="m-2 text-center">
-                <button class="btn btn-success btn-lg" @onclick="AddRound">Add a new round</button>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="m-5 text-center">
-        <button type="submit" style="min-width:800px" class="btn btn-success btn-lg" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
-    </div>
-
-
-</div>
-
-<div class="text-white">
-    @foreach(var wrk in _workouts)
-    {
-
-        <div>@wrk.Date.ToString("d")</div>
-        if (wrk.Rounds != null)
-        {
-            foreach (var round in wrk.Rounds)
-            {
-                <div>@round.ExerciseName</div>
-
+            <div class=" p-2 w-100 ">
+                <label style="max-height:42px;" class=" bg-dark text-light rounded fs-3 text-center w-75 fw-bold mb-3">Set workout's date</label>
+                <input style="max-width:400px;" type="date" class="form-control form-control-sm border-3 m-auto text-center fs-4  " id="WorkoutDate" @bind-value="Workout.Date" />
                 
-                if (round.Sets != null)
+                
+                <hr />
+                
+                <h1 style="max-height:42px;" class="p-1 bg-dark rounded text-light fs-3 text-center m-auto w-75 fw-bold mb-3">Workout Rounds</h1>
+                @if (Workout.Rounds != null)
                 {
-                    foreach(var set in round.Sets)
+                    @foreach (Models.RoundModel round in Workout.Rounds)
                     {
+                        <div class="m-auto border-3 border border-dark rounded-3 mb-3 p-3" style="max-width:600px;">
+                            <span @onclick="@(() => DeleteRound(round))" class="closeX oi oi-x w-100 text-end "></span>
 
-                        <div>Set @set.SetNumber @set.Weight Kg X @set.Reps rep</div>
+                            <div>
+                                <label for="RoundExercice" class="text-start fs-3"> @round.RoundNumber - @round.ExerciseName</label>
+                                <span>
+                                    <select class="dropdown bg-dark text-light rounded ms-2" style="max-width:20px;min-height:20px; transform:translateY(-3px)" id="RoundExercice" @bind="round.ExerciseName">
+                                        <option class="dropdown-header"></option>
+                                        @foreach (Models.ExerciseModel exercice in _exercises.OrderBy(x => x.Name))
+                                        {
+                                            <option value="@exercice.Name">@exercice.Name</option>
+                                        }
+                                    </select>
+                                </span>
+                            </div>
+                                
+                            <div>
+                                <Animation  AnimationNameSelect="@AnimationsNames.fadeDown">
+
+                                <table class="table table-secondary rounded  ">
+                                    <thead>
+                                        <tr>
+                                            <th class="fs-5" style="min-width:50px;" scope="col">Set</th>
+                                            <th class="fs-5" style="min-width:50px;" scope="col">Weight</th>
+                                            <th class="fs-5" style="min-width:50px;" scope="col">Reps</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        
+                                        @if (round.Sets != null)
+                                        {
+                                            foreach (Models.SetModel set in round.Sets)
+                                            {
+                                                
+
+                                                <tr>
+                                                    <th class="fs-5" scope="row"><span @onclick="@(() => DeleteSet(round, set))" class="oi oi-x me-3 deleteOi"></span>@set.SetNumber</th>
+                                                    <td class="fs-5"><input  type="number" min="0" id="SetWeight" class="text-center m-auto rounded " style="max-width:80px;" @bind-value="set.Weight" /> Kg</td>
+                                                    <td class="fs-5"><input type="number" min="1" id="SetReps" class="text-center m-auto rounded" style="max-width:80px;" @bind-value="set.Reps" /> Rep</td>
+                                                    
+
+                                                </tr>
+                                            }
+                                        }
+                                        <tr>
+                                            <th @onclick="@(() => AddSet(round))" colspan="4" class="w-100 addSet">
+                                                <span class="oi oi-plus  me-3 text-center "></span>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </Animation>
+                            </div>
+                        </div>
                     }
-                    
                 }
-            }
-        }
-        <button class="btn btn-danger btn-lg" @onclick="@(() =>DeleteWorkout(wrk.Id))">Delete Workout</button>
-        
-    }
+                <div>
+                    <button class="btn btn-success m-3 fs-3" @onclick="AddRound">Add a new round</button>
+                </div>
+                <div>
+                    <Animation @key="@_validationKey" AnimationNameSelect="@AnimationsNames.zoomIn">
+                        <p class="validation-message shake">@_validationErrorMessage</p>
+                    </Animation>
+                    <button type="submit" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
+                </div>
+            </div>
+
+            
+        </div>
+
+    </div>
+
+    
 </div>
 
-<h3 class="mt-5">Workout in : @Workout.Date</h3>
-    @if (Workout.Rounds != null)
-    {
-        <div style="max-width:400px;" class="container">
-            @foreach (var round in Workout.Rounds)
-            {
-            <h4>@round.ExerciseName</h4>
-                if (round.Sets != null)
-                {
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Set</th>
-                                <th scope="col">Weight</th>
-                                <th scope="col">Reps</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                                @foreach (var set in round.Sets)
-                                {
-                                <tr>
-                                    <th scope="row">@set.SetNumber</th>
-                                    <td>@set.Weight Kg</td>
-                                    <td>@set.Reps rep</td>
-                                </tr>
-                                }
-                            
 
-                        </tbody>
-                    </table>
+<div class="mt-5 container bg-white text-dark m-auto w-100 p-0 rounded-3 mb-4 " style="max-width:800px; border:solid white">
+    <h1 class="bg-dark text-light text-center fs-1 p-3">Manage Workouts</h1>
+    <div class="p-4">
+        <table class="table table-danger table-bordered">
+            <thead>
+                <tr>
+                    <th class="fs-4">Date</th>
+                    <th class="fs-4">Exercises</th>
+                    <th class="fs-4">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var wrk in _workouts.OrderBy(x => x.Date))
+                {
+                    <tr>
+                        <td class="fw-bold">@wrk.Date.ToShortDateString()</td>
+                        <td>
+                            @foreach (var round in wrk.Rounds)
+                            {
+                                if (round.RoundNumber == wrk.Rounds.Count)
+                                {
+                                    <span> @round.ExerciseName.</span>
+
+                                }
+                                else
+                                {
+                                    <span> @round.ExerciseName,  </span>
+
+                                }
+                            }
+                        </td>
+                        <td class="p-1" style="cursor:pointer;" @onclick="@(() =>DeleteWorkout(wrk.Id))"><button class="btn btn-danger text-center w-100  ">Delete Workout</button></td>
+                    </tr>
                 }
-            }
-        </div>
-    }
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+
+
+
+
+
     
 
 @code {
 
     Models.WorkoutModel Workout = new();
     List<Models.WorkoutModel> _workouts = new();
-    int roundN = 0;
     int setN = 0;
+
     Models.ExerciseModel Exercise = new();
     List<Models.ExerciseModel> _exercises = new();
     string _userName="";
     string _userId="";
     protected override async Task OnInitializedAsync()
     {
+        Workout.Date = DateTime.Now;
+        AddRound();
         var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
         var user = authstate.User;
 
@@ -187,6 +176,7 @@
             _workouts = await repo.GetWorkoutsByUserIdAsync(_userId);
             _exercises = await repo.GetAllExercisesAsync();
         }
+
     }
 
     async Task DeleteWorkout(Guid id)
@@ -207,11 +197,12 @@
         Models.RoundModel round = new();
         if (Workout.Rounds == null)
         {
-            roundN = 1;
             Workout.Rounds = new List<Models.RoundModel>();
         }
         round.RoundNumber = Workout.Rounds.Count + 1;
         Workout.Rounds.Add(round);
+        AddSet(round);
+
     }
 
     private void DeleteRound(Models.RoundModel round)
@@ -220,6 +211,18 @@
         {
             Workout.Rounds.Remove(round);
         }
+        // Reset rounds Numbers
+        if (Workout.Rounds != null)
+        {
+            // Reset rounds Numbers
+            int i = 1;
+            foreach (var r in Workout.Rounds)
+            {
+                r.RoundNumber = i;
+                i++;
+            }
+        }
+
     }
 
     private void AddSet(Models.RoundModel round)
@@ -235,6 +238,7 @@
             set.SetNumber = round.Sets.Count+1;
 
         }
+        set.Reps = 1;
         round.Sets.Add(set);
     }
 
@@ -248,12 +252,37 @@
                 round.Sets[i].SetNumber = i + 1;
             }
         }
-
     }
 
+
+    string _validationErrorMessage = "";
+    int _validationKey = -100;
+    void DisplayErrorMessage(string message)
+    {
+        _validationKey += 2;
+        _validationErrorMessage = message;
+    }
     private async Task AddWorkoutAsync(string userId)
     {
-       
+        if (Workout.Rounds == null)
+        {
+            DisplayErrorMessage("Workout has no round!");
+            return;
+        }
+        foreach(var round in Workout.Rounds)
+        {
+            if (string.IsNullOrEmpty(round.ExerciseName))
+            {
+                DisplayErrorMessage($"Round {round.RoundNumber} has no Exercise selected!");
+                return;
+            }
+            if (round.Sets == null || round.Sets.Count == 0)
+            {
+                DisplayErrorMessage($"Round {round.RoundNumber} has no sets!");
+                return;
+            }
+        }
+        DisplayErrorMessage("");
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             await repo.AddWorkout(Workout, userId);
@@ -261,6 +290,8 @@
             await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} trained {Workout.Rounds.Count} exercises!", Workout));
             _workouts.Add(Workout);
             Workout = new Models.WorkoutModel();
+            Workout.Date = DateTime.Now;
+            AddRound();
         }
     }
 

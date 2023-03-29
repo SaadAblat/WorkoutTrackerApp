@@ -173,6 +173,8 @@ namespace WorkoutTrackerWebsite.Data
                 userAchievement.UserName = userName;
                 userAchievement.TotalWeightLifted = 0;
                 userAchievement.TotalWorkoutSessions = 0;
+                userAchievement.Level = 0;
+                userAchievement.MainExercises = "";
 
                 await _ctx.UsersAchievements.AddAsync(userAchievement);
 
@@ -180,7 +182,7 @@ namespace WorkoutTrackerWebsite.Data
             //update username
             userAchievement.UserName = userName;
             userAchievement.TotalWeightLifted = 0;
-
+            
             // Calculate total weight lifted in all user workout
             var UserWorkouts = await GetWorkoutsByUserIdAsync(userId);
             foreach (var userWorkout in UserWorkouts)
@@ -225,10 +227,16 @@ namespace WorkoutTrackerWebsite.Data
         {
             return await _ctx.ExerciseCategoryModels.ToListAsync();
         }
-
+        public async Task UpdateMainExercisesStringByUserIdAsync(string userId, string mainExerciseString)
+        {
+            var userAchievement = await GetUserAchievementByUserId(userId);
+            userAchievement.MainExercises = "";
+            userAchievement.MainExercises = mainExerciseString;
+            await _ctx.SaveChangesAsync();
+        }
     }
 
 
-    
-    
+  
+
 }

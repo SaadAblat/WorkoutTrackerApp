@@ -9,16 +9,15 @@ main {
 }
 
 .sidebar {
-    background-image: linear-gradient(0, gold 0%, rgba(0,0,0,0.1) 40%);
+    background-image: linear-gradient(0, gold 0%, rgb(0, 0, 0) 40%);
     border-right:solid;
     border-width:3px;
     border-color:gold;
 }
 
 .top-row {
-    background: radial-gradient(circle, gold 0%, rgba(0,0,0,1) 40%) ;
     border-bottom: 3px solid #d6d5d5;
-    border-color:gold;
+    border-color:white;
 
     justify-content: flex-end;
     height: 3.5rem;
@@ -44,9 +43,14 @@ main {
         text-overflow: ellipsis;
     }
 
-@media (max-width: 640.98px) {
+@media (max-width: 800px) {
     .top-row:not(.auth) {
         display: none;
+    }
+
+    .sidebar {
+        background-image: linear-gradient(0, black 0%, rgb(0, 0, 0) 40%);
+        border-right: none;
     }
 
     .top-row.auth {
@@ -58,7 +62,7 @@ main {
     }
 }
 
-@media (min-width: 641px) {
+@media (min-width: 800px) {
     .page {
         flex-direction: row;
     }

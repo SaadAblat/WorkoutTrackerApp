@@ -8,7 +8,7 @@ namespace WorkoutTrackerWebsite.Models
         public string? UserId { get; set; }
         public DateTime Date { get; set; }
 
-        
+        [Required]
         public virtual ICollection<RoundModel>? Rounds { get; set; }
 
     }
