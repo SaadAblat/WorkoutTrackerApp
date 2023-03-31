@@ -1,4 +1,4 @@
-﻿namespace WorkoutTrackerWebsite.Models
+﻿namespace WorkoutTrackerWebsite.Models.LogicModels
 {
     public class ExerciseInfos
     {

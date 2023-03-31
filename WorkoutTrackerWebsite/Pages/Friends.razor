@@ -8,6 +8,10 @@
 <PageTitle>Friends</PageTitle>
 @layout UserLayout
 
+@inject NavigationManager UriHelper
+
+
+
 
 <img class="background" src="Images/Background.png">
 <div class=" bg-dark m-auto w-75 p-4 rounded">
@@ -25,7 +29,7 @@
             {
                 <tr>
                     <th scope="row">@IncrementNumber()</th>
-                    <td>@userAch.UserName</td>
+                    <td style="cursor:pointer" @onclick="(()=>NavigateToFirendProfile(userAch.UserId, userAch.UserName))">@userAch.UserName</td>
                     <td>@userAch.TotalWorkoutSessions</td>
                     <td>@userAch.TotalWeightLifted KG</td>
                 </tr>
@@ -112,5 +116,11 @@
         UserClassement++;
         return UserClassement;
     }
+
+    private void NavigateToFirendProfile(string userId, string userName)
+    {
+        UriHelper.NavigateTo($"FriendProfile/{userId}/{userName}");
+    }
+
 }
 

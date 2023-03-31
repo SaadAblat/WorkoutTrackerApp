@@ -1,7 +1,9 @@
 ﻿@page "/ManageWorkouts"
 @using WorkoutTrackerWebsite.Data;
 @using Microsoft.EntityFrameworkCore;
+@using WorkoutTrackerWebsite.Logic;
 @using WorkoutTrackerWebsite.Models;
+@using WorkoutTrackerWebsite.Models.LogicModels;
 <PageTitle>AddWorkout</PageTitle>
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
 
@@ -162,15 +164,17 @@
 
 @code {
 
-        Models.WorkoutModel Workout = new();
-        List<Models.WorkoutModel> _workouts = new();
+        WorkoutModel Workout = new();
+        List<WorkoutModel> _workouts = new();
         int setN = 0;
 
 
 
-        Models.ExerciseModel Exercise = new();
-        List<Models.ExerciseModel> _exercises = new();
+        ExerciseModel Exercise = new();
+        List<ExerciseModel> _exercises = new();
 
+
+        List<ExerciseInfos> _exercisesInfo = new();
 
         string _userName="";
         string _userId="";
@@ -194,7 +198,7 @@
             _workouts = await repo.GetWorkoutsByUserIdAsync(_userId);
             _exercises = await repo.GetAllExercisesAsync();
         }
-        CreateAllExercisesInfo();
+        _exercisesInfo = ExerciseInfoLogic.CreateAllExercisesInfo(_exercises, _workouts);
 
     }
 
@@ -327,8 +331,9 @@
             {
                 decimal thisRoundMaxWeight = round.Sets.MaxBy(x => x.Weight).Weight;
                 int thisRoundMaxWeightReps = round.Sets.Where(x => x.Weight == thisRoundMaxWeight).MaxBy(x => x.Reps).Reps;
-                decimal maxWeightForRoundExercise = GetExerciseMaxWeightLifted(round.ExerciseName);
-                int maxWeightRepsForRoundExercise = GetExerciseMaxWeightReps(round.ExerciseName, maxWeightForRoundExercise);
+
+                decimal maxWeightForRoundExercise = ExerciseInfoLogic.GetExerciseMaxWeightLifted(round.ExerciseName, _workouts);
+                int maxWeightRepsForRoundExercise = ExerciseInfoLogic.GetExerciseMaxWeightReps(round.ExerciseName, maxWeightForRoundExercise, _workouts);
 
 
                 if (thisRoundMaxWeight > maxWeightForRoundExercise)
@@ -368,103 +373,5 @@
     }
 
     
-
-
-
-    // Exercise Info
-    // Calculating Data
-    public int GetExerciseTimesTrained(string exerciseName)
-    {
-        int exerciseTimesPlayed = 0;
-        foreach (var wrk in _workouts)
-        {
-            foreach (var round in wrk.Rounds)
-            {
-                if (round.ExerciseName == exerciseName)
-                {
-                    exerciseTimesPlayed++;
-                }
-            }
-        }
-        return exerciseTimesPlayed;
-    }
-    public decimal GetExerciseMaxWeightLifted(string exerciseName)
-    {
-        decimal maxWeight = 0;
-        foreach (var wrk in _workouts)
-        {
-            foreach (var round in wrk.Rounds)
-            {
-                if (round.ExerciseName == exerciseName)
-                {
-                    foreach (var set in round.Sets)
-                    {
-                        if (set.Weight > maxWeight)
-                        {
-                            maxWeight = set.Weight;
-                        }
-                    }
-                }
-            }
-        }
-        return maxWeight;
-    }
-    public int GetExerciseMaxWeightReps(string exerciseName, decimal maxWeight)
-    {
-        int maxWeightReps = 0;
-
-        foreach (var wrk in _workouts)
-        {
-            foreach (var round in wrk.Rounds)
-            {
-                if (round.ExerciseName == exerciseName)
-                {
-                    foreach (var set in round.Sets)
-                    {
-                        if (set.Weight == maxWeight)
-                        {
-                            if (set.Reps > maxWeightReps)
-                                maxWeightReps = set.Reps;
-                        }
-                    }
-                }
-            }
-        }
-        return maxWeightReps;
-    }
-
-    public string GetExerciseCategory(string exerciseName)
-    {
-        string CategoryName = "";
-        foreach (var ex in _exercises)
-        {
-            if (ex.Name == exerciseName)
-            {
-                CategoryName = ex.Category;
-            }
-        }
-        return CategoryName;
-    }
-    List<ExerciseInfos> _exercisesInfo = new();
-    public ExerciseInfos CreateExerciseInfo(string exerciseName)
-    {
-        ExerciseInfos exerciseInfo = new();
-        exerciseInfo.Name = exerciseName;
-        exerciseInfo.NumberOfSessions = GetExerciseTimesTrained(exerciseName);
-        exerciseInfo.MaxWeight = GetExerciseMaxWeightLifted(exerciseName);
-        exerciseInfo.MaxWeightReps = GetExerciseMaxWeightReps(exerciseName, exerciseInfo.MaxWeight);
-        exerciseInfo.Category = GetExerciseCategory(exerciseName);
-        return exerciseInfo;
-    }
-    public void CreateAllExercisesInfo()
-    {
-        _exercisesInfo = new();
-        foreach (var ex in _exercises)
-        {
-            if (ex.Name != null) _exercisesInfo.Add(CreateExerciseInfo(ex.Name));
-        }
-
-
-    }
 
 }

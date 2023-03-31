@@ -1,0 +1,11 @@
+﻿@layout UserLayout
+@*Need somehow to hide those values*@
+@page "/FriendProfile/{userId}/{userName}"
+<FriendBragingCard UserId="@userId" userName="@userName"></FriendBragingCard>
+
+@code {
+    [Parameter]
+    public string userId { get; set; }
+    [Parameter]
+    public string userName { get; set; }
+}

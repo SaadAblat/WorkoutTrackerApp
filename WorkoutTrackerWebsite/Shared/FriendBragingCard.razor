@@ -1,0 +1,77 @@
+﻿@using Microsoft.EntityFrameworkCore;
+@using WorkoutTrackerWebsite.Data;
+@using WorkoutTrackerWebsite.Logic;
+@using WorkoutTrackerWebsite.Models;
+@using WorkoutTrackerWebsite.Models.LogicModels;
+@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory
+
+
+
+    <div class="BraggingCard card p-0 rounded-3">
+        <div class="card-header bg-dark text-white">
+            <h1 class="card-title fs-1 text-center ">@userName's card  </h1>
+            <div class="d-sm-inline-flex justify-content-around w-100 text-center">
+                <div class="fs-5 mx-2" id="level"><b>Level</b> : <span class="fs-2">@_userAchievements.Level</span></div>
+            <div class="fs-5 mx-2"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
+            <div class="fs-5 mx-2"><b>T. Workouts</b> : <span class="fs-2">@_userAchievements.TotalWorkoutSessions</span> </div>
+            </div>
+        </div>
+
+        
+        
+            <div class="Exercises">
+
+            @if (_userMainExercisesInfo.Count != 0)
+            {
+                @foreach (var exercise in _userMainExercisesInfo)
+                {
+                    <div class="ExercisesFavoriteSlot" >
+                        <div class="fs-5">@exercise.MaxWeight.ToString("0") <span class="small">KG</span></div>
+                        <div class=""><b>@exercise.Name</b></div>
+                        
+                    </div>
+                }
+            }
+            // Empty
+            else
+            {
+                <div class="emptySlot w-100 ">
+                    <div style="color:gray; margin-bottom:auto;">Your friend didn't add any favorite Exercises. (max 4).</div>
+                </div>
+            }
+            </div>
+            
+       
+
+    </div>
+
+
+
+@code {
+    [Parameter]
+    public string UserId { get; set; }
+    [Parameter]
+    public string userName { get; set; }
+    UserAchievementsModel _userAchievements = new();
+    List<WorkoutModel> _userWorkouts = new();
+    List<ExerciseModel> _exercises = new();
+    List<ExerciseCategoryModel> _categories = new();
+    List<ExerciseInfos> _userMainExercisesInfo = new();
+    List<string> _mainExercises = new();
+
+    //Getting Data
+    protected override async Task OnInitializedAsync()
+    {
+
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            _userWorkouts = await repo.GetWorkoutsByUserIdAsync(UserId);
+            _userAchievements = await repo.GetUserAchievementByUserId(UserId);
+            _exercises = await repo.GetAllExercisesAsync();
+        }
+
+        _userMainExercisesInfo = MainExercisesLogic.ConvertListOfStringsToListOfExercisesInfos(_userAchievements, _exercises, _userWorkouts);
+    }
+
+
+}
