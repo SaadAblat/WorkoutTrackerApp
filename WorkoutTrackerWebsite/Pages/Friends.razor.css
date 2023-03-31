@@ -10,22 +10,18 @@
     filter: brightness(0.8);
     background-repeat: no-repeat;
 }
-.CustomContainer{
-    color:white;
-}
+
 
 .log {
     position: relative;
-    bottom: 0;
-    left: 0;
     margin: 0;
     background-color: black;
-    width:80%;
+    width:100%;
     padding: 20px 100px;
-    color: greenyellow;
     min-height:150px;
-    max-height: auto;
-    overflow: hidden;
+    max-height: 500px;
+    overflow-y:scroll;
+    border-radius:1%;
     
 }
     .log .logHeader {
@@ -38,14 +34,12 @@
         color:black;
         text-align:center;
     }
+    .log .logDate {
+
+    }
     .log .logElement {
+
     }
 
-.ClassementBoard{
-    min-width:500px;
-    margin-bottom:200px;
-}
-.ClassementBoard table{
-    width:100%;
 
-}
+

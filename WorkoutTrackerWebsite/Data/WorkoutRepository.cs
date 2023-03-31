@@ -65,12 +65,13 @@ namespace WorkoutTrackerWebsite.Data
 
         public async Task DeleteWorkoutAsync(Guid id)
         {
+
             var wrk = await _ctx.Workouts.FindAsync(id);
             if (wrk != null)
             {
                 if (wrk.Rounds != null)
                 {
-                    foreach(var round in wrk.Rounds)
+                    foreach (var round in wrk.Rounds)
                     {
                         if (round.Sets != null)
                         {
@@ -84,7 +85,9 @@ namespace WorkoutTrackerWebsite.Data
                 }
                 _ctx.Workouts.Remove(wrk);
                 await _ctx.SaveChangesAsync();
+
             }
+
         }
         //  get all Rounds with the workoutId in the database
         public async Task<List<RoundModel>> GetRoundsByWorkoutIdAsync(WorkoutModel workout)

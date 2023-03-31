@@ -1,6 +1,7 @@
 ﻿@page "/ManageWorkouts"
 @using WorkoutTrackerWebsite.Data;
 @using Microsoft.EntityFrameworkCore;
+@using WorkoutTrackerWebsite.Models;
 <PageTitle>AddWorkout</PageTitle>
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
 
@@ -88,11 +89,17 @@
                 <div>
                     <button class="btn btn-success m-3 fs-3" @onclick="AddRound">Add a new round</button>
                 </div>
+
+                <h1 style="max-height:42px;" class="p-1 bg-dark rounded text-light fs-3 text-center m-auto w-75 fw-bold mb-3">Workout Note</h1>
+                <div class="m-auto border-3 border border-dark rounded-3 mb-3 p-3" style="max-width:600px;">
+                    <textarea placeholder="Add a Note" class=" form-control " @bind="Workout.Note" />
+                </div>
                 <div>
-                    <Animation @key="@_validationKey" AnimationNameSelect="@AnimationsNames.zoomIn">
+
                         <p class="validation-message shake">@_validationErrorMessage</p>
-                    </Animation>
-                    <button type="submit" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
+
+                    <p class="text-success m-1 fs-4">@_workoutAdded</p>
+                    <button class="btn btn-success m-3 fs-2" type="submit" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
                 </div>
             </div>
 
@@ -103,6 +110,7 @@
 
     
 </div>
+
 
 
 <div class="mt-5 container bg-white text-dark m-auto w-100 p-0 rounded-3 mb-4 " style="max-width:800px; border:solid white">
@@ -154,16 +162,26 @@
 
 @code {
 
-    Models.WorkoutModel Workout = new();
-    List<Models.WorkoutModel> _workouts = new();
-    int setN = 0;
+        Models.WorkoutModel Workout = new();
+        List<Models.WorkoutModel> _workouts = new();
+        int setN = 0;
 
-    Models.ExerciseModel Exercise = new();
-    List<Models.ExerciseModel> _exercises = new();
-    string _userName="";
-    string _userId="";
+
+
+        Models.ExerciseModel Exercise = new();
+        List<Models.ExerciseModel> _exercises = new();
+
+
+        string _userName="";
+        string _userId="";
+
+
+
+
+
     protected override async Task OnInitializedAsync()
     {
+
         Workout.Date = DateTime.Now;
         AddRound();
         var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
@@ -176,19 +194,31 @@
             _workouts = await repo.GetWorkoutsByUserIdAsync(_userId);
             _exercises = await repo.GetAllExercisesAsync();
         }
+        CreateAllExercisesInfo();
 
     }
 
+
+
+
+
+
+
     async Task DeleteWorkout(Guid id)
     {
-
-        _workouts.Remove(_workouts.First(w => w.Id == id));
+        if (_workouts.Any(w => w.Id == id))
+        {
+            _workouts.Remove(_workouts.First(w => w.Id == id));
+        }
+        SuccessMessage("Deleting");
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             await repo.DeleteWorkoutAsync(id);
-            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} deleted a workout of date {Workout.Date}!", Workout));
+            SuccessMessage("Deleted successfuly");
 
+            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} deleted a workout!", Workout, "red"));
         }
+
 
     } 
 
@@ -256,11 +286,15 @@
 
 
     string _validationErrorMessage = "";
-    int _validationKey = -100;
     void DisplayErrorMessage(string message)
     {
-        _validationKey += 2;
+
         _validationErrorMessage = message;
+    }
+    string _workoutAdded = "";
+    void SuccessMessage(string message)
+    {
+        _workoutAdded = message;
     }
     private async Task AddWorkoutAsync(string userId)
     {
@@ -283,25 +317,154 @@
             }
         }
         DisplayErrorMessage("");
+        SuccessMessage("Adding");
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             await repo.AddWorkout(Workout, userId);
             await repo.UpdateUserAchievementAsync(userId, _userName);
-            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} trained {Workout.Rounds.Count} exercises!", Workout));
+            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} added a Workout!", Workout, "yellow"));
+            foreach (var round in Workout.Rounds)
+            {
+                decimal thisRoundMaxWeight = round.Sets.MaxBy(x => x.Weight).Weight;
+                int thisRoundMaxWeightReps = round.Sets.Where(x => x.Weight == thisRoundMaxWeight).MaxBy(x => x.Reps).Reps;
+                decimal maxWeightForRoundExercise = GetExerciseMaxWeightLifted(round.ExerciseName);
+                int maxWeightRepsForRoundExercise = GetExerciseMaxWeightReps(round.ExerciseName, maxWeightForRoundExercise);
+
+
+                if (thisRoundMaxWeight > maxWeightForRoundExercise)
+                {
+                    string msg = $"Congratulations {_userName}! You beat your previous record in the {round.ExerciseName} exercise! your new record is {thisRoundMaxWeight} Kg x {thisRoundMaxWeightReps}";
+                    await repo.AddLogMessageAsync(GenerateLogMessage(msg, Workout, "greenyellow"));
+                }
+                else if (thisRoundMaxWeight == maxWeightForRoundExercise)
+                {
+                    if (thisRoundMaxWeightReps > maxWeightRepsForRoundExercise)
+                    {
+                        string msg = $"Congratulations {_userName}! You beat your previous record in the {round.ExerciseName} exercise! You did {thisRoundMaxWeightReps} more reps than your best";
+                        await repo.AddLogMessageAsync(GenerateLogMessage(msg, Workout, "greenyellow"));
+                    }
+                }
+            }
             _workouts.Add(Workout);
-            Workout = new Models.WorkoutModel();
-            Workout.Date = DateTime.Now;
-            AddRound();
+            SuccessMessage("Workout Added Successfully");
+            ResetWorkoutModel();
         }
     }
 
+    void ResetWorkoutModel()
+    {
+        Workout = new Models.WorkoutModel();
+        Workout.Date = DateTime.Now;
+        AddRound();
+    }
 
-    private Models.LogMessageModel GenerateLogMessage(string body, Models.WorkoutModel workout)
+    private Models.LogMessageModel GenerateLogMessage(string body, Models.WorkoutModel workout, string color )
     {
         Models.LogMessageModel logMessage = new();
         logMessage.MessageDate = Workout.Date;
         logMessage.MessageBody = body;
+        logMessage.MessageColor = color;
         return logMessage;
+    }
+
+    
+
+
+
+    // Exercise Info
+    // Calculating Data
+    public int GetExerciseTimesTrained(string exerciseName)
+    {
+        int exerciseTimesPlayed = 0;
+        foreach (var wrk in _workouts)
+        {
+            foreach (var round in wrk.Rounds)
+            {
+                if (round.ExerciseName == exerciseName)
+                {
+                    exerciseTimesPlayed++;
+                }
+            }
+        }
+        return exerciseTimesPlayed;
+    }
+    public decimal GetExerciseMaxWeightLifted(string exerciseName)
+    {
+        decimal maxWeight = 0;
+        foreach (var wrk in _workouts)
+        {
+            foreach (var round in wrk.Rounds)
+            {
+                if (round.ExerciseName == exerciseName)
+                {
+                    foreach (var set in round.Sets)
+                    {
+                        if (set.Weight > maxWeight)
+                        {
+                            maxWeight = set.Weight;
+                        }
+                    }
+                }
+            }
+        }
+        return maxWeight;
+    }
+    public int GetExerciseMaxWeightReps(string exerciseName, decimal maxWeight)
+    {
+        int maxWeightReps = 0;
+
+        foreach (var wrk in _workouts)
+        {
+            foreach (var round in wrk.Rounds)
+            {
+                if (round.ExerciseName == exerciseName)
+                {
+                    foreach (var set in round.Sets)
+                    {
+                        if (set.Weight == maxWeight)
+                        {
+                            if (set.Reps > maxWeightReps)
+                                maxWeightReps = set.Reps;
+                        }
+                    }
+                }
+            }
+        }
+        return maxWeightReps;
+    }
+
+    public string GetExerciseCategory(string exerciseName)
+    {
+        string CategoryName = "";
+        foreach (var ex in _exercises)
+        {
+            if (ex.Name == exerciseName)
+            {
+                CategoryName = ex.Category;
+            }
+        }
+        return CategoryName;
+    }
+    List<ExerciseInfos> _exercisesInfo = new();
+    public ExerciseInfos CreateExerciseInfo(string exerciseName)
+    {
+        ExerciseInfos exerciseInfo = new();
+        exerciseInfo.Name = exerciseName;
+        exerciseInfo.NumberOfSessions = GetExerciseTimesTrained(exerciseName);
+        exerciseInfo.MaxWeight = GetExerciseMaxWeightLifted(exerciseName);
+        exerciseInfo.MaxWeightReps = GetExerciseMaxWeightReps(exerciseName, exerciseInfo.MaxWeight);
+        exerciseInfo.Category = GetExerciseCategory(exerciseName);
+        return exerciseInfo;
+    }
+    public void CreateAllExercisesInfo()
+    {
+        _exercisesInfo = new();
+        foreach (var ex in _exercises)
+        {
+            if (ex.Name != null) _exercisesInfo.Add(CreateExerciseInfo(ex.Name));
+        }
+
+
     }
 
 }

@@ -10,42 +10,61 @@
 
 
 <img class="background" src="Images/Background.png">
-<div class="CustomContainer">
-    <h1>this is a new page</h1>
-    <div class="UserWorkouts" ></div>
-    <div class="ClassementBoard">
-        <table class="table-dark">
-            <thead>
+<div class=" bg-dark m-auto w-75 p-4 rounded">
+    <table class="table table-dark m-auto table-hover table-striped mb-5 ">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th style="cursor:pointer;" @onclick="SortTableByTotalWorkoutSessions" scope="col">Number of Workouts</th>
+                <th style="cursor:pointer;" @onclick="SortTableByTotalWeightLifted" scope="col">Total weight lifted</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userAch in _usersAchievementsList)
+            {
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th @onclick="SortTableByTotalWorkoutSessions" scope="col">Number of Workouts</th>
-                    <th @onclick="SortTableByTotalWeightLifted" scope="col">Total weight lifted</th>
+                    <th scope="row">@IncrementNumber()</th>
+                    <td>@userAch.UserName</td>
+                    <td>@userAch.TotalWorkoutSessions</td>
+                    <td>@userAch.TotalWeightLifted KG</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var userAch in _usersAchievementsList)
-                {
-                    <tr>
-                        <th scope="row">@IncrementNumber()</th>
-                        <td>@userAch.UserName</td>
-                        <td>@userAch.TotalWorkoutSessions</td>
-                        <td>@userAch.TotalWeightLifted KG</td>
-                    </tr>
 
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+
+        
+
     <div class="log">
 
         <div class="logHeader">
-            <p>I'm here</p>
+            <p class="">Workouts Log</p>
         </div>
-        @foreach (LogMessageModel logMessage in _logMessages)
+
+        @foreach (LogMessageModel logMessage in _logMessages.TakeLast(50))
         {
-            <div class="logElement">@logMessage.MessageBody</div>
+            <div class="mb-2">
+                @if (logMessage.MessageDate.ToShortDateString() == DateTime.Today.AddDays(-1).ToShortDateString())
+                {
+                <div><span class="logDate " style="color:whitesmoke">Yesterday  @logMessage.MessageDate.ToShortTimeString() : </span> <span style="color:@logMessage.MessageColor;" class="  logElement">@logMessage.MessageBody</span>  </div>
+
+                }
+                else if (logMessage.MessageDate.ToShortDateString() == DateTime.Today.ToShortDateString())
+                {
+                <div><span class="logDate" style="color:whitesmoke">Today  @logMessage.MessageDate.ToShortTimeString() : </span> <span style="color:@logMessage.MessageColor;" class="  logElement">@logMessage.MessageBody</span>  </div>
+
+
+
+                }
+                else
+                {
+                <div><span class="logDate" style="color:whitesmoke">@logMessage.MessageDate : </span> <span style="color:@logMessage.MessageColor;" class="  logElement">@logMessage.MessageBody</span>  </div>
+
+                }
+            </div>    
         }
+
         
     </div>
     
@@ -55,6 +74,7 @@
 @code {
     List<LogMessageModel> _logMessages = new();
     int counter = 0;
+
 
 
     protected override async Task OnInitializedAsync()

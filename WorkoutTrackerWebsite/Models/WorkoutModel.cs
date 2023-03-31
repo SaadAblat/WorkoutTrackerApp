@@ -11,5 +11,7 @@ namespace WorkoutTrackerWebsite.Models
         [Required]
         public virtual ICollection<RoundModel>? Rounds { get; set; }
 
+        public string? Note { get; set; }
+
     }
 }

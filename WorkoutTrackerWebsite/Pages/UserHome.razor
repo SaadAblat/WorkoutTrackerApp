@@ -56,6 +56,7 @@
                 </div>
             }
 
+            
         @*    @switch (ConvertListOfStringsToListOfExercisesInfos().Count)
             {
                 
@@ -178,125 +179,222 @@
 
     <div class="container m-auto mt-5  " style="max-width:1000px;">
     
-    <div class="card bg-light rounded-3 ">
+    <div class="card bg-light rounded-3  ">
         <div class="card-header">
             <h1 class="card-title text-center">My Workouts</h1>
         </div>
         @foreach (var wrk in _userWorkouts.OrderByDescending(x => x.Date).ToList().Take(rowsDisplayed))
         {
+            
             <div class=" rounded-3 bg-dark text-light">
                 <div class="text-center fs-1  ">@wrk.Date.ToString("D")</div>
             </div>
-            <div class="ps-5  pe-5">
+             <div class="" >
+                    <div class="ps-5  pe-5">
 
 
-                @foreach (var round in wrk.Rounds)
-                {
-                    // Finding the last time reps and weights doing the same exercise 
-                    decimal thisRoundMaxWeight = round.Sets.MaxBy(x => x.Weight).Weight;
-                    int thisRoundMaxWeightReps = round.Sets.MaxBy(x => x.Weight).Reps;
-                    decimal previousMaxWeight = 0;
-                    int previousMaxWeightReps= 0;
-                    bool maxSetFound = false;
-                    bool firstTime = false;
-                    if (AllRoundsInfo().Any(x => x.roundId == round.Id))
-                    {
-                        //find the matching RoundInfo
-                        RoundInfo matchingRoundInfo = AllRoundsInfo().First(x => x.roundId == round.Id);
-                        //Get the last workout with the same exercise
-                        Guid previousWorkoutId = matchingRoundInfo.LastWorkoutIdWithTheSameExerciseName;
-                        WorkoutModel previousWorkout = _userWorkouts.First(x => x.Id == previousWorkoutId);
-
-                        //get the round from the last workout with the same exercise
-                        Guid PreviousRoundId = matchingRoundInfo.LastRoundIdWithTheSameExerciseName;
-                        RoundModel previousRound = previousWorkout.Rounds.First(x => x.Id == PreviousRoundId);
-
-                        //Find the set with the max weight
-                        SetModel previousSetWithMaxWeight = previousRound.Sets.MaxBy(x => x.Weight);
-
-                        // Get the weight
-                        previousMaxWeight = previousSetWithMaxWeight.Weight;
-
-                        // Get the reps
-                        previousMaxWeightReps = previousSetWithMaxWeight.Reps;
-
-
-                        if (previousWorkoutId == wrk.Id)
+                        @foreach (var round in wrk.Rounds)
                         {
-                            firstTime = true;
-                        }
-                    }
-                   
-                    decimal WeightDifference = thisRoundMaxWeight - previousMaxWeight;
-                    int RepsDifference = thisRoundMaxWeightReps - previousMaxWeightReps;
+                            // Finding the last time reps and weights doing the same exercise
+                            decimal thisRoundMaxWeight = round.Sets.MaxBy(x => x.Weight).Weight;
+                            
+                            // Handle the case where multiple sets have the maxWeight
+                            int thisRoundMaxWeightReps = round.Sets.Where(x => x.Weight == thisRoundMaxWeight).MaxBy(x => x.Reps).Reps;
 
-                        <div class="w-100 d-inline-flex justify-content-between">
-                            <div class="fs-1 fw-bold table ">
-                                @round.ExerciseName
-
-
-                            </div>
-                            @if (firstTime)
+                            decimal previousMaxWeight = 0;
+                            int previousMaxWeightReps = 0;
+                            bool maxSetFound = false;
+                            bool firstTime = false;
+                            if (AllRoundsInfo().Any(x => x.roundId == round.Id))
                             {
-                                <span class="text-success text-end  w-100 fs-5 "> First Time!</span>
-                            }
-                            else
-                            {
-                                decimal maxWeight = CreateExerciseInfo(round.ExerciseName).maxWeight;
-                                @if (thisRoundMaxWeight < maxWeight)
+                                //find the matching RoundInfo
+                                RoundInfo matchingRoundInfo = AllRoundsInfo().First(x => x.roundId == round.Id);
+                                //Get the last workout with the same exercise
+                                Guid previousWorkoutId = matchingRoundInfo.LastWorkoutIdWithTheSameExerciseName;
+                                WorkoutModel previousWorkout = _userWorkouts.First(x => x.Id == previousWorkoutId);
+
+                                //get the round from the last workout with the same exercise
+                                Guid PreviousRoundId = matchingRoundInfo.LastRoundIdWithTheSameExerciseName;
+                                RoundModel previousRound = previousWorkout.Rounds.First(x => x.Id == PreviousRoundId);
+
+                                //Find the set with the max weight
+                                SetModel previousSetWithMaxWeight = previousRound.Sets.MaxBy(x => x.Weight);
+
+                                // Get the weight
+                                previousMaxWeight = previousSetWithMaxWeight.Weight;
+
+                                //handle multiple maxWeights sets
+                                // Get the sets :
+                                IEnumerable<SetModel> previousSetsWithMaxWeight = previousRound.Sets.Where(x => x.Weight == previousMaxWeight);
+                                
+                                // Get the max reps :
+                                previousMaxWeightReps = previousSetsWithMaxWeight.MaxBy(x=>x.Reps).Reps;
+
+
+                                if (previousWorkoutId == wrk.Id)
                                 {
-                                    <span class="text-dark text-end w-100 fs-5 "> Max: @maxWeight Kg</span>
+                                    firstTime = true;
+                                }
+                            }
+
+                            decimal WeightDifference = thisRoundMaxWeight - previousMaxWeight;
+                            int RepsDifference = thisRoundMaxWeightReps - previousMaxWeightReps;
+
+                            <div class="w-100 d-inline-flex justify-content-between">
+                                <div class="fs-1 fw-bold table ">
+                                    @round.ExerciseName
+
+
+                                </div>
+                                @if (firstTime)
+                                {
+                                    <span class="text-success text-end  w-100 fs-5 mt-3 fst-italic "> First Time!</span>
                                 }
                                 else
                                 {
-                                    <span class="text-success text-end w-100 fs-5 "> New Max </span>
-                                }
-                            }
-
-                    </div>
-
-                        
-
-                    @foreach (var set in round.Sets)
-                    {
-                        <div class="m-auto  w-100" >
-
-                            <div class="d-sm-inline-flex gap-5 m-auto justify-content-between  w-100 hoverable">
-                                <div class="fs-3 ExerciseRecord"><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
-                                
-                                @if (set.Weight == thisRoundMaxWeight && !maxSetFound)
-                                {
-                                    maxSetFound = true;
-                                    @if( WeightDifference == 0)
+                                    decimal maxWeight = GetExerciseMaxWeightLifted(round.ExerciseName);
+                                    int maxWeightReps = GetExerciseMaxWeightReps(round.ExerciseName, maxWeight);
+                                    @if (thisRoundMaxWeight < maxWeight)
                                     {
-                                        if (RepsDifference != 0)
+                                        if (maxWeightReps == 1)
                                         {
-                                                <div class="@SetDifferenceClass(RepsDifference) ExerciseDifference fs-3 ">
-                                                @if(RepsDifference>0)
+                                            <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeight Kg x @maxWeightReps Rep</b></span>
+
+                                        }
+                                        else
+                                        {
+                                            <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeight Kg x @maxWeightReps Reps</b></span>
+
+                                        }
+                                    }
+                                    else if (thisRoundMaxWeight == maxWeight)
+                                    {
+                                        if (thisRoundMaxWeightReps > maxWeightReps)
+                                        {
+                                            <span class="text-success text-end w-100 fs-5 "> New Max </span>
+                                        }
+                                        else
+                                        {
+                                            if (maxWeight == 0)
+                                            {
+                                                <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeightReps Reps</b></span>
+                                            }
+                                            else
+                                            {
+                                                if (maxWeightReps == 1)
                                                 {
-                                                    <span>+</span>
+                                                    <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeight Kg x @maxWeightReps Rep</b></span>
+
                                                 }
-                                                @RepsDifference reps</div>
+                                                else
+                                                {
+                                                    <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeight Kg x @maxWeightReps Reps</b></span>
+
+                                                }
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                            <div class="@SetDifferenceClass(WeightDifference) ExerciseDifference fs-3 ">
-                                            @if (WeightDifference > 0)
-                                            {
-                                                <span>+</span>
-                                            }
+                                        <span class="text-success text-end w-100 fs-5 "> New Max </span>
 
-                                            @WeightDifference.ToString("0.0") KG 
-                                        </div>
                                     }
                                 }
+
                             </div>
+
+
+
+                            @foreach (var set in round.Sets)
+                            {
+                                <div class="m-auto  w-100">
+
+                                    <div class="d-sm-inline-flex gap-5 m-auto justify-content-between  w-100 hoverable">
+                                        @if (set.Weight == 0)
+                                        {
+                                            if (set.Reps == 1)
+                                            {
+                                                <div class="fs-3 ExerciseRecord"><b>@set.Reps</b> rep</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="fs-3 ExerciseRecord"><b>@set.Reps</b> reps</div>
+                                            }
+
+
+                                        }
+                                        else
+                                        {
+                                            <div class="fs-3 ExerciseRecord"><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
+
+                                        }
+
+                                        @if (set.Weight == thisRoundMaxWeight && !maxSetFound)
+                                        {
+                                            @if (WeightDifference == 0)
+                                            {
+                                                if (set .Reps == thisRoundMaxWeightReps)
+                                                {
+                                                    if (RepsDifference != 0)
+                                                    {
+                                                        maxSetFound = true;
+                                                        <div class="@SetDifferenceClass(RepsDifference) ExerciseDifference fs-3 ">
+                                                            @if (RepsDifference > 0)
+                                                            {
+                                                                <span>+</span>
+                                                            }
+
+                                                           <span>@RepsDifference  </span>
+
+                                                            @if (MathF.Abs(RepsDifference) == 1)
+                                                            {
+                                                                <span> rep</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span> reps</span>
+                                                            }
+                                                            <span><small><small> vs last workout</small></small> </span>
+                                                        </div>
+                                                    }
+                                                }
+                                                
+                                            }
+                                            else
+                                            {
+                                                maxSetFound = true;
+                                                <div class="@SetDifferenceClass(WeightDifference) ExerciseDifference fs-3 ">
+                                                    @if (WeightDifference > 0)
+                                                    {
+                                                        <span>+</span>
+                                                    }
+
+                                                    @WeightDifference.ToString("0.0") KG
+                                                    <span><small><small> vs last workout</small></small> </span>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            <hr />
+                            
+                        }
+                       
+                    </div>
+                    <div class=" m-auto end-0 flex-row justify-content-between text-center mt-4 bg-secondary text-light rounded" style="width:95%;">
+                        <div style="width:35%; height:3px;" class=" d-inline-block bg-white mb-1  rounded "></div>
+                        <div  class=" d-inline-block mx-1 fs-4 fw-bold">Note</div>
+                        <div style="width:35%; height:3px;" class="d-inline-block bg-white mb-1 rounded "></div>
+                        <div class="rounded px-5   fs-5 p-1 mx-5   ">
+                            <div class="text-start">@wrk.Note</div>
                         </div>
-                    }
+                    </div>
+
                     <hr />
-                }
-            </div>
+             </div>   
+
+               
             PreviousWorkout = wrk;
         }
     </div>
@@ -572,6 +670,30 @@
         }
         return maxWeight;
     }
+    int GetExerciseMaxWeightReps(string exerciseName, decimal maxWeight)
+    {
+        int maxWeightReps = 0;
+
+        foreach (var wrk in _userWorkouts)
+        {
+            foreach (var round in wrk.Rounds)
+            {
+                if (round.ExerciseName == exerciseName)
+                {
+                    foreach (var set in round.Sets)
+                    {
+                        if (set.Weight == maxWeight)
+                        {
+                            if (set.Reps > maxWeightReps)
+                                maxWeightReps = set.Reps;
+                        }
+                    }
+                }
+            }
+        }
+        return maxWeightReps;
+    }
+    
     string GetExerciseCategory(string exerciseName)
     {
         string CategoryName = "";
@@ -593,6 +715,7 @@
         public string? name;
         public string categoy = "";
         public decimal maxWeight = 0;
+        public int maxWeightReps = 0;
         public int numberOfSessions = 0;
         public int numberOfSets = 0;
         public int numberOfReps = 0;
@@ -606,6 +729,7 @@
         exerciseInfo.name = exerciseName;
         exerciseInfo.numberOfSessions = GetExerciseTimesTrained(exerciseName);
         exerciseInfo.maxWeight = GetExerciseMaxWeightLifted(exerciseName);
+        exerciseInfo.maxWeightReps = GetExerciseMaxWeightReps(exerciseName, exerciseInfo.maxWeight);
         exerciseInfo.categoy = GetExerciseCategory(exerciseName);
         return exerciseInfo;
     }
