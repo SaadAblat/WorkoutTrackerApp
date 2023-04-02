@@ -12,7 +12,7 @@
 <img class="background" src="Images/Background.png">
 
 
-<div class="container bg-white text-dark m-auto p-0 rounded-3 AddWorkoutContainer text-start ">
+<div  class="container bg-white text-dark m-auto p-0 rounded-3 AddWorkoutContainer text-start ">
     <div>
         <div class="m-auto ">
             <div class="bg-dark rounded mb-4">
@@ -54,9 +54,10 @@
                     {
                         @foreach (Models.RoundModel round in Workout.Rounds)
                         {
-                            <Animation AnimationNameSelect="@AnimationsNames.fadeDown">
-
+                            
+                            <Animation AnimationHappensOnce="true"  AnimationNameSelect="@AnimationsNames.fadeDown">
                             <div class="shadow  border-3  border-secondary rounded-3 m-1 p-3  ">
+                                
                                 <span @onclick="@(() => DeleteRound(round))" class="closeX oi oi-x text-end "></span>
                                 <span class=" text-start roundNumber ">#@round.RoundNumber</span>
                                 <div for="RoundExercice" class="text-start fs-5 fw-bold  " style="max-width:300px;">@round.ExerciseName </div>
@@ -105,9 +106,10 @@
                                             </tbody>
                                         </table>
                                     </div>
-
+                               
                             </div>
                             </Animation>
+                            
 
                         }
                     }
@@ -162,6 +164,7 @@
 
 @code {
 
+
     WorkoutModel Workout = new();
     List<WorkoutModel> _workouts = new();
     int setN = 0;
@@ -209,7 +212,13 @@
 
 
 
-
+    //async Task FixUserNameBug()
+    //{
+    //    using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+    //    {
+    //        await repo.UpdateUserAchievementByUserIdAsync(_userId, _userName);
+    //    }
+    //}
 
 
     async Task DeleteWorkout(Guid id)
@@ -347,9 +356,14 @@
             {
                 InitialLogMessage = $"{_userName} added a workout on date : {Workout.Date.ToShortDateString()}";
             }
-            workoutNote = $"{_userName}: {Workout.Note}";
+
             await repo.AddLogMessageAsync(GenerateLogMessage(InitialLogMessage, Workout, "yellow"));
-            await repo.AddLogMessageAsync(GenerateLogMessage(workoutNote, Workout, "white"));
+            if (string.IsNullOrEmpty(Workout.Note))
+            {
+                workoutNote = $"{_userName}: {Workout.Note}";
+                await repo.AddLogMessageAsync(GenerateLogMessage(workoutNote, Workout, "white"));
+            }
+            
 
             foreach (var round in Workout.Rounds)
             {

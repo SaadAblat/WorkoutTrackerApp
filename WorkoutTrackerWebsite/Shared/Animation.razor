@@ -1,13 +1,14 @@
 ﻿@using System.Globalization
 @using Microsoft.Extensions.Options
 
-<div data-aos="@_animationName" data-aos-delay="@_delay" data-aos-duration="@_duration">
+<span data-aos-once="true" data-aos="@_animationName" data-aos-delay="@_delay" data-aos-duration="@_duration">
     @ChildContent
-</div>
+</span>
 @code {
     string _animationName = "";
     string _delay = "";
     string _duration = "";
+    string _once = "false";
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
@@ -17,6 +18,9 @@
     public string AnimationDurationSet { get; set; }
     [Parameter]
     public string AnimationDelaySet { get; set; }
+    [Parameter]
+    public string AnimationHappensOnce { get; set; }
+
     protected override void OnParametersSet()
     {
         if (!string.IsNullOrEmpty(AnimationNameSelect))
@@ -31,5 +35,19 @@
         {
             _delay = AnimationDelaySet;
         }
+        if (!string.IsNullOrEmpty(AnimationHappensOnce))
+        {
+            _once = AnimationHappensOnce;
+        }
     }
+
+    // Example of other parameters
+    //data-aos="fade-up"
+    //data-aos-offset="200"
+    //data-aos-delay="50"
+    //data-aos-duration="1000"
+    //data-aos-easing="ease-in-out"
+    //data-aos-mirror="true"
+    //data-aos-once="false"
+    //data-aos-anchor-placement="top-center"
 }

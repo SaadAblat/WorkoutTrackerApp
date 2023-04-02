@@ -284,6 +284,9 @@ namespace WorkoutTrackerWebsite.Data
             userAchievement.MainExercises = mainExerciseString;
             await _ctx.SaveChangesAsync();
         }
+
+
+
     }
 
 
