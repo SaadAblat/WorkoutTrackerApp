@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Routing;
-
+using System.ComponentModel;
+using WorkoutTrackerWebsite.Migrations;
 
 namespace WorkoutTrackerWebsite.Data
 {
@@ -55,8 +56,54 @@ namespace WorkoutTrackerWebsite.Data
             await _ctx.SaveChangesAsync();
 
         }
+        public async Task AddWorkoutTemplateAsync(WorkoutTemplateModel template, WorkoutModel workout, string Name, string UserId)
+        {
+            List<WorkoutTemplateExercise> templateExercises = new();
+            foreach (var round in workout.Rounds)
+            {
+                WorkoutTemplateExercise exercise = new WorkoutTemplateExercise();
+                exercise.Name = round.ExerciseName;
+                templateExercises.Add(exercise);
+            }
+            template.Exercises = templateExercises;
+            template.UserId = UserId;
+            template.Name = Name;
+            await _ctx.WorkoutTemplates.AddAsync(template);
+            await _ctx.SaveChangesAsync();
 
-        
+        }
+
+        public async Task<WorkoutTemplateModel> GetWorkoutTemplateByIdAsync(Guid templateId)
+        {
+            WorkoutTemplateModel template = await _ctx.WorkoutTemplates.FindAsync(templateId);
+
+            List<WorkoutTemplateExercise> exercises = new List<WorkoutTemplateExercise>();
+            exercises = _ctx.WorkoutTemplateExercises.Where(x=>x.WorkoutTemplateModelId == templateId).ToList();
+
+            template.Exercises = exercises;
+
+            return template;
+        }
+
+        public async Task<List<WorkoutTemplateModel>> GetWorkoutTemplatesByUserIdAsync(string userId)
+        {
+            List<WorkoutTemplateModel> EmptyTemplates = await _ctx.WorkoutTemplates.Where(x=>x.UserId == userId).ToListAsync();
+            List<WorkoutTemplateModel> templates = new();
+            foreach (var template in EmptyTemplates)
+            {
+                WorkoutTemplateModel temp = await GetWorkoutTemplateByIdAsync(template.Id);
+                templates.Add(temp);
+            }
+            return templates;
+        }
+        public async Task DeleteWorkoutTemplateAsyncById(Guid workoutTemplateId)
+        {
+            WorkoutTemplateModel templateModel = await GetWorkoutTemplateByIdAsync(workoutTemplateId);
+            _ctx.WorkoutTemplates.Remove(templateModel);
+            await _ctx.SaveChangesAsync();
+
+        }
+
         public async Task<List<ExerciseModel>> GetAllExercisesAsync()
         {
             List<ExerciseModel> exercisesAll = await _ctx.Exercises.ToListAsync();

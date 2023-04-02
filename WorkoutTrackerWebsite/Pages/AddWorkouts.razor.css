@@ -15,16 +15,17 @@
 }*/
 
 .addSet {
+    
     cursor: pointer;
     transition: transform 0.2s;
 }
     .addSet .oi {
-        color: white;
+        color: green !important;
         transition: transform 0.2s;
     }
     .addSet:hover {
         background-color: greenyellow !important;
-        transform: scale(1.05);
+        transform: scale(1.01);
         transition: transform 0.2s;
     }
     .addSet:hover .oi{
@@ -57,13 +58,24 @@
     cursor: pointer;
     position: relative;
     top: 0%;
-    right: -0.5%;
-    color:orangered;
-    font-size:25px;
+    right: -43%;
+    color:gray;
+    font-size:20px;
     margin:-20px;
 
-
 }
+    .closeX:hover {
+        color: red;
+
+    }
+    .roundNumber {
+        position: relative;
+        top: 0%;
+        left: -43%;
+        color: orangered;
+        font-size: 25px;
+        margin: -20px;
+    }
 .shake {
     animation: shake 0.5s;
 }
@@ -113,7 +125,7 @@
     }
 }
 .AddWorkoutContainer {
-    max-width: 800px;
+    width: 85%;
     border: solid white
 }
 @media (max-width: 1000px) {

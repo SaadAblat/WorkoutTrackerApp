@@ -49,24 +49,11 @@
         @foreach (LogMessageModel logMessage in _logMessages.TakeLast(50))
         {
             <div class="mb-2">
-                @if (logMessage.MessageDate.ToShortDateString() == DateTime.Today.AddDays(-1).ToShortDateString())
-                {
-                <div><span class="logDate " style="color:whitesmoke">Yesterday  @logMessage.MessageDate.ToShortTimeString() : </span> <span style="color:@logMessage.MessageColor;" class="  logElement">@logMessage.MessageBody</span>  </div>
-
-                }
-                else if (logMessage.MessageDate.ToShortDateString() == DateTime.Today.ToShortDateString())
-                {
-                <div><span class="logDate" style="color:whitesmoke">Today  @logMessage.MessageDate.ToShortTimeString() : </span> <span style="color:@logMessage.MessageColor;" class="  logElement">@logMessage.MessageBody</span>  </div>
-
-
-
-                }
-                else
-                {
-                <div><span class="logDate" style="color:whitesmoke">@logMessage.MessageDate : </span> <span style="color:@logMessage.MessageColor;" class="  logElement">@logMessage.MessageBody</span>  </div>
-
-                }
-            </div>    
+                <div>
+                    <span class="logDate" style="color:whitesmoke">@logMessageDateFormat(logMessage)</span>
+                    <span style="color:@logMessage.MessageColor;" class="  logElement">@logMessage.MessageBody</span>
+                </div>
+            </div>
         }
 
         
@@ -76,6 +63,27 @@
 
 
 @code {
+
+    string logMessageDateFormat(LogMessageModel logMessage)
+    {
+        string output = "";
+        if (logMessage.MessageDate.ToShortDateString() == DateTime.Today.AddDays(-1).ToShortDateString())
+        {
+            output = "Yesterday " + @logMessage.MessageDate.ToShortTimeString() + ":";
+        }
+        else if (logMessage.MessageDate.ToShortDateString() == DateTime.Today.ToShortDateString())
+        {
+            output = "Today " + @logMessage.MessageDate.ToShortTimeString() + ":";
+        }
+        else
+        {
+            output = @logMessage.MessageDate.ToString();
+        }
+
+    return output;
+    }
+
+
     List<LogMessageModel> _logMessages = new();
     int counter = 0;
 

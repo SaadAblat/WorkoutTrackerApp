@@ -1,4 +1,4 @@
-﻿@page "/ManageWorkouts"
+﻿@page "/ManageTemplates"
 @using WorkoutTrackerWebsite.Data;
 @using Microsoft.EntityFrameworkCore;
 @using WorkoutTrackerWebsite.Logic;
@@ -22,26 +22,29 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var wrk in _workouts.OrderBy(x => x.Date))
+                @foreach (var template in _workoutsTemplates)
                 {
+                    int i = 1;
                     <tr>
-                        <td class="fw-bold">@wrk.Date.ToShortDateString()</td>
+                        <td class="fw-bold">@template.Name</td>
                         <td>
-                            @foreach (var round in wrk.Rounds)
+                            
+                            @foreach (var exercise in template.Exercises)
                             {
-                                if (round.RoundNumber == wrk.Rounds.Count)
+                                if (i == template.Exercises.Count)
                                 {
-                                    <span> @round.ExerciseName.</span>
+                                    <span>@exercise.Name, </span>
 
                                 }
                                 else
                                 {
-                                    <span> @round.ExerciseName,  </span>
+                                    <span>@exercise.Name.</span>
 
                                 }
+                                i++;
                             }
                         </td>
-                        <td class="p-1" style="cursor:pointer;" @onclick="@(() =>DeleteWorkout(wrk.Id))"><button class="btn btn-danger text-center w-100  ">Delete Workout</button></td>
+                        <td class="p-1" style="cursor:pointer;" @onclick="@(() =>DeleteTemplate(template.Id))"><button class="btn btn-danger text-center w-100  ">Delete Template</button></td>
                     </tr>
                 }
             </tbody>
@@ -51,15 +54,24 @@
 </div>
 
 @code {
-    List<WorkoutModel> _workouts = new();
 
-    WorkoutModel Workout = new();
+    async Task DeleteTemplate(Guid Id)
+    {
+        
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            await repo.DeleteWorkoutTemplateAsyncById(Id);
+        }
+        if (_workoutsTemplates.Any(w => w.Id == Id))
+        {
+            _workoutsTemplates.Remove(_workoutsTemplates.First(w => w.Id == Id));
+        }
+    }
 
-    ExerciseModel Exercise = new();
-    List<ExerciseModel> _exercises = new();
 
 
-    List<ExerciseInfos> _exercisesInfo = new();
+
+
 
     string _userName = "";
     string _userId = "";
@@ -84,30 +96,11 @@
         _userId = user.Claims.FirstOrDefault().Value;
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
-            _workouts = await repo.GetWorkoutsByUserIdAsync(_userId);
-            _exercises = await repo.GetAllExercisesAsync();
             _workoutsTemplates = await repo.GetWorkoutTemplatesByUserIdAsync(_userId);
         }
-        _exercisesInfo = ExerciseInfoLogic.CreateAllExercisesInfo(_exercises, _workouts);
 
     }
-    async Task DeleteWorkout(Guid id)
-    {
-        if (_workouts.Any(w => w.Id == id))
-        {
-            _workouts.Remove(_workouts.First(w => w.Id == id));
-        }
-        SuccessMessage("Deleting");
-        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
-        {
-            await repo.DeleteWorkoutAsync(id);
-            SuccessMessage("Deleted successfuly");
-
-            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} deleted a workout on date {Workout.Date.ToShortDateString()}", Workout, "red"));
-        }
-
-
-    }
+   
     string _validationErrorMessage = "";
     void DisplayErrorMessage(string message)
     {
@@ -120,13 +113,5 @@
         _workoutAdded = message;
     }
 
-    private Models.LogMessageModel GenerateLogMessage(string body, Models.WorkoutModel workout, string color)
-    {
-        Models.LogMessageModel logMessage = new();
-        logMessage.WorkoutDate = Workout.Date;
-        logMessage.MessageDate = DateTime.Now;
-        logMessage.MessageBody = body;
-        logMessage.MessageColor = color;
-        return logMessage;
-    }
+  
 }

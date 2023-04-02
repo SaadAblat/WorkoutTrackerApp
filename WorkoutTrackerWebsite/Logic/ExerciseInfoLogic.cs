@@ -102,5 +102,33 @@ namespace WorkoutTrackerWebsite.Logic
             return exercisesInfo;
 
         }
+
+        //by exercise
+        public static List<ExerciseInfos> CreateExercisesInfoByExerciseName(List<ExerciseModel> exercises, string exerciseName, List<WorkoutModel> workouts)
+        {
+            List<ExerciseInfos> exercisesInfo = new();
+            foreach (var ex in exercises)
+            {
+                if (ex.Name == exerciseName)
+                {
+                    exercisesInfo.Add(CreateExerciseInfo(ex.Name, workouts, exercises));
+                }
+            }
+            return exercisesInfo;
+        }
+
+        //by category
+        public static List<ExerciseInfos> GetExercisesInfoByCategoryName(string categoryName, List<ExerciseModel> exercises, List<WorkoutModel> workouts)
+        {
+            List<ExerciseInfos> exercisesInfo = new();
+            foreach (var ex in exercises)
+            {
+                if (ex.Category == categoryName)
+                {
+                    exercisesInfo.Add(CreateExerciseInfo(ex.Name, workouts, exercises));
+                }
+            }
+            return exercisesInfo;
+        }
     }
 }

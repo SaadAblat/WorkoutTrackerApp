@@ -293,9 +293,11 @@ namespace WorkoutTrackerWebsite.Data
         public DbSet<SetModel> Sets { get; set; }
         public DbSet<LogMessageModel> LogMessages { get; set; }
         public DbSet<ExerciseCategoryModel> ExerciseCategoryModels { get; set; }
+        public DbSet<WorkoutTemplateModel> WorkoutTemplates { get; set; }
+        public DbSet<WorkoutTemplateExercise> WorkoutTemplateExercises { get; set; }
 
 
-       
-        
+
+
     }
 }
