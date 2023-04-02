@@ -107,9 +107,7 @@
     margin-right:100px;
 }
 
-.ExerciseRecord{
-    margin-left:100px;
-}
+
 
 @media (max-width: 1000px) {
     .ExerciseDifference {

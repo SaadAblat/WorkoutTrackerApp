@@ -18,8 +18,8 @@
 
 
 
-<div class="BigContainer w-100 rounded-3">
-    <div class="BraggingCard card m-auto p-0 rounded-3 ">
+<div class=" m-auto rounded-3 " style="max-width:2000px;">
+    <div class=" card m-auto p-0 rounded-3 ">
         <div class="card-header bg-dark text-white">
             <h1 class="card-title fs-1 text-center ">@userName's card  </h1>
             <div class="d-sm-inline-flex justify-content-around w-100 text-center">
@@ -72,7 +72,7 @@
         <div class="AddExerciseBox bg-dark rounded-2 p-2 border border-3 border-light  translate-middle-x m-0">
             <div class="d-inline-flex justify-content-between w-100">
                 <span class="m-1 text-start text-white">Search an exercise</span>
-                <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-3 m-0 " aria-hidden="true"></span>
+                <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-5 m-0 " aria-hidden="true"></span>
             </div>
             <div>
                 <select class="form-select   " id="RoundExercice" @bind="_selectedMainExerciseName">
@@ -95,209 +95,206 @@
 
 <Animation @key="-55" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
 
-    <div class="container m-auto mt-5  " style="max-width:1000px;">
-    
-    <div class="card bg-light rounded-3  ">
-        <div class="card-header">
-            <h1 class="card-title text-center">My Workouts</h1>
+
+
+    <div style="max-width:2000px;" id=" Workouts" class="card bg-light rounded-3 my-1 w-100 m-auto ">
+        <div id="WorkoutsHeader" class="card-header">
+            <h1  class="card-title text-center ">My Workouts</h1>
         </div>
         @foreach (var wrk in _userWorkouts.OrderByDescending(x => x.Date).ToList().Take(rowsDisplayed))
         {
-            
-            <div class=" rounded-3 bg-dark text-light">
-                <div class="text-center fs-1  ">@wrk.Date.ToString("D")</div>
-            </div>
-             <div class="" >
-                    <div class="ps-5  pe-5">
-
-
-                        @foreach (var round in wrk.Rounds)
+            <div id="Workout">
+                    <div id="dateHolder" class=" rounded-3 bg-dark text-light">
+                        <div class="text-center fs-3  ">@wrk.Date.ToString("D")</div>
+                    </div>
+                    <div id="RoundsAndNotesContainer" class="flex-grow-1 d-flex flex-column justify-content-evenly  my-3">
+                        @if (!string.IsNullOrEmpty(@wrk.Note))
                         {
-                            // declare variables and populate them with the methods
-                            decimal previousMaxWeight = RoundInfoLogic.Get_Previous_Round_Best_Set_s_Weight(_userWorkouts, round);
-                            int previousMaxWeightReps = RoundInfoLogic.Get_Previous_Round_Best_Set_s_Reps(_userWorkouts, round, previousMaxWeight);
+                            <div class="mx-5 flex-grow-1 w-100  text-dark d-flex flex-row justify-content-start gap-3">
 
-                            // Get previous workout Id
-                            RoundInfos matchingRoundInfo = RoundInfoLogic.Get_Round_Matching_RoundInfo(_userWorkouts, round);
-                            Guid previousWorkoutId = RoundInfoLogic.Get_LastWorkout_Including_thisRound_Exercise(_userWorkouts, matchingRoundInfo).Id;
+                                <div class=" fs-4 fw-bold">Note: </div>
 
-                            // Check if it's the first time
-                            bool firstTime = false;
-                            if (previousWorkoutId == wrk.Id)
+                                <div class="fs-4 text-start"> @wrk.Note</div>
+
+                            </div>
+                            <hr />
+                        }
+                        <div id="RoundsContainer" class="d-flex flex-row justify-content-center flex-wrap gap-3">
+                            @foreach (var round in wrk.Rounds)
                             {
-                                firstTime = true;
-                            }
 
-                            bool maxSetFound = false;
+                                // declare variables and populate them with the methods
+                                decimal previousMaxWeight = RoundInfoLogic.Get_Previous_Round_Best_Set_s_Weight(_userWorkouts, round);
+                                int previousMaxWeightReps = RoundInfoLogic.Get_Previous_Round_Best_Set_s_Reps(_userWorkouts, round, previousMaxWeight);
 
-                            // calclulate the difference
-                            decimal WeightDifference = thisRoundMaxWeight(round) - previousMaxWeight;
-                            int RepsDifference = thisRoundMaxWeightReps(round) - previousMaxWeightReps;
+                                // Get previous workout Id
+                                RoundInfos matchingRoundInfo = RoundInfoLogic.Get_Round_Matching_RoundInfo(_userWorkouts, round);
+                                Guid previousWorkoutId = RoundInfoLogic.Get_LastWorkout_Including_thisRound_Exercise(_userWorkouts, matchingRoundInfo).Id;
 
-
-                            <div class="w-100 d-inline-flex justify-content-between">
-                                <div class="fs-1 fw-bold table ">
-                                    @round.ExerciseName
-
-
-                                </div>
-                                @if (firstTime)
+                                // Check if it's the first time
+                                bool firstTime = false;
+                                if (previousWorkoutId == wrk.Id)
                                 {
-                                    <span class="text-success text-end  w-100 fs-5 mt-3 fst-italic "> First Time!</span>
+                                    firstTime = true;
                                 }
-                                else
-                                {
-                                    decimal maxWeight = ExerciseInfoLogic.GetExerciseMaxWeightLifted(round.ExerciseName, _userWorkouts);
-                                    int maxWeightReps = ExerciseInfoLogic.GetExerciseMaxWeightReps(round.ExerciseName, maxWeight, _userWorkouts);
-                                    @if (thisRoundMaxWeight(round) < maxWeight)
-                                    {
-                                        if (maxWeightReps == 1)
-                                        {
-                                            <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeight Kg x @maxWeightReps Rep</b></span>
 
-                                        }
-                                        else
-                                        {
-                                            <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeight Kg x @maxWeightReps Reps</b></span>
+                                bool maxSetFound = false;
 
-                                        }
-                                    }
-                                    else if (thisRoundMaxWeight(round) == maxWeight)
-                                    {
-                                        if (thisRoundMaxWeightReps(round) > maxWeightReps)
-                                        {
-                                            <span class="text-success text-end w-100 fs-5 "> New Max </span>
-                                        }
-                                        else
-                                        {
-                                            if (maxWeight == 0)
+                                // calclulate the difference
+                                decimal WeightDifference = thisRoundMaxWeight(round) - previousMaxWeight;
+                                int RepsDifference = thisRoundMaxWeightReps(round) - previousMaxWeightReps;
+
+                                <div id="RoundContainer" class=" d-flex flex-column justify-content-between shadow border rounded" style="width:450px;">
+                                    <div id="RoundHeader" class=" p-1 w-100 d-flex flex-row justify-content-between border rounded bg-secondary text-light mb-2">
+                                        <div id="RoundExerciseName" class=" flex-grow-1 ms-1 " style="font-size:22px;">
+                                            #@round.RoundNumber @round.ExerciseName
+                                        </div>
+                                        <div id="RoundTopInfos" class=" ">
+                                            @if (firstTime)
                                             {
-                                                <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeightReps Reps</b></span>
+                                                <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> First Time!</span></div>
                                             }
                                             else
                                             {
-                                                if (maxWeightReps == 1)
+                                                decimal maxWeight = ExerciseInfoLogic.GetExerciseMaxWeightLifted(round.ExerciseName, _userWorkouts);
+                                                int maxWeightReps = ExerciseInfoLogic.GetExerciseMaxWeightReps(round.ExerciseName, maxWeight, _userWorkouts);
+                                                @if (thisRoundMaxWeight(round) < maxWeight)
                                                 {
-                                                    <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeight Kg x @maxWeightReps Rep</b></span>
+                                                    if (maxWeightReps == 1)
+                                                    {
+                                                        <span class="text-warning fs-6  "> Max: @maxWeight Kg x @maxWeightReps Rep</span>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-light fs-6 x ">Max: @maxWeight Kg x @maxWeightReps Reps</span>
+
+                                                    }
+                                                }
+                                                else if (thisRoundMaxWeight(round) == maxWeight)
+                                                {
+                                                    if (thisRoundMaxWeightReps(round) > maxWeightReps)
+                                                    {
+                                                        <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> New Max!</span></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (maxWeight == 0)
+                                                        {
+                                                            <span class="text-light   fs-6 mt-3  "> Max: @maxWeightReps Reps</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (maxWeightReps == 1)
+                                                            {
+                                                                <span class="text-light  fs-6 mt-3  "> Max: @maxWeight Kg x @maxWeightReps Rep</span>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="text-light fs-6 mt-3  "> Max: @maxWeight Kg x @maxWeightReps Reps</span>
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-success  fs-6 "> New Max </span>
+
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+
+
+
+
+                                    @foreach (var set in round.Sets)
+                                    {
+                                        <div id="sets" class=" w-100 h-100 d-flex flex-column justify-content-start flex-nowrap p-1">
+
+                                            <div id="set" class="d-flex flex-row justify-content-between w-100  hoverable  ">
+                                                @if (set.Weight == 0)
+                                                {
+                                                    if (set.Reps == 1)
+                                                    {
+                                                        <div class="fs-5 flex-grow-1"><b> - @set.Reps</b> rep</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="fs-5 "><b> - @set.Reps</b> reps</div>
+                                                    }
+
 
                                                 }
                                                 else
                                                 {
-                                                    <span class="text-dark text-end w-100 fs-5 mt-3 fst-italic "><b> Max: @maxWeight Kg x @maxWeightReps Reps</b></span>
+                                                    <div class="fs-5  "><b> - @set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
 
                                                 }
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <span class="text-success text-end w-100 fs-5 "> New Max </span>
 
-                                    }
-                                }
-
-                            </div>
-
-                            
-
-                            @foreach (var set in round.Sets)
-                            {
-                                <div class="m-auto  w-100">
-
-                                    <div class="d-sm-inline-flex gap-5 m-auto justify-content-between  w-100 hoverable">
-                                        @if (set.Weight == 0)
-                                        {
-                                            if (set.Reps == 1)
-                                            {
-                                                <div class="fs-3 ExerciseRecord"><b>@set.Reps</b> rep</div>
-                                            }
-                                            else
-                                            {
-                                                <div class="fs-3 ExerciseRecord"><b>@set.Reps</b> reps</div>
-                                            }
-
-
-                                        }
-                                        else
-                                        {
-                                            <div class="fs-3 ExerciseRecord"><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
-
-                                        }
-
-                                        @if (set.Weight == thisRoundMaxWeight(round) && !maxSetFound)
-                                        {
-                                            @if (WeightDifference == 0)
-                                            {
-                                                if (set.Reps == thisRoundMaxWeightReps(round))
+                                                @if (set.Weight == thisRoundMaxWeight(round) && !maxSetFound)
                                                 {
-                                                    if (RepsDifference != 0)
+                                                    @if (WeightDifference == 0)
+                                                    {
+                                                        if (set.Reps == thisRoundMaxWeightReps(round))
+                                                        {
+                                                            if (RepsDifference != 0)
+                                                            {
+                                                                maxSetFound = true;
+                                                                <div class="@SetDifferenceClass(RepsDifference) fs-5">
+                                                                    @if (RepsDifference > 0)
+                                                                    {
+                                                                        <span>+</span>
+                                                                    }
+
+                                                                    <span>@RepsDifference  </span>
+
+                                                                    @if (MathF.Abs(RepsDifference) == 1)
+                                                                    {
+                                                                        <span> rep</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span> reps</span>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        }
+
+                                                    }
+                                                    else
                                                     {
                                                         maxSetFound = true;
-                                                        <div class="@SetDifferenceClass(RepsDifference) ExerciseDifference fs-3 ">
-                                                            @if (RepsDifference > 0)
+                                                        <div class="@SetDifferenceClass(WeightDifference)  fs-5 ">
+                                                            @if (WeightDifference > 0)
                                                             {
                                                                 <span>+</span>
                                                             }
 
-                                                           <span>@RepsDifference  </span>
-
-                                                            @if (MathF.Abs(RepsDifference) == 1)
-                                                            {
-                                                                <span> rep</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span> reps</span>
-                                                            }
-                                                            <span><small><small> vs last workout</small></small> </span>
+                                                            @WeightDifference.ToString("0.0") KG
                                                         </div>
                                                     }
                                                 }
-                                                
-                                            }
-                                            else
-                                            {
-                                                maxSetFound = true;
-                                                <div class="@SetDifferenceClass(WeightDifference) ExerciseDifference fs-3 ">
-                                                    @if (WeightDifference > 0)
-                                                    {
-                                                        <span>+</span>
-                                                    }
-
-                                                    @WeightDifference.ToString("0.0") KG
-                                                    <span><small><small> vs last workout</small></small> </span>
-                                                </div>
-                                            }
-                                        }
-                                    </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    <hr />
                                 </div>
                             }
-                            <hr />
-                            
-                        }
-                       
-                    </div>
-                    @if (!string.IsNullOrEmpty(@wrk.Note))
-                    {
-                        <div class=" m-auto end-0 flex-row justify-content-between text-center mt-4 bg-secondary text-light rounded" style="width:95%;">
-                            <div style="width:35%; height:3px;" class=" d-inline-block bg-white mb-1  rounded "></div>
-                            <div class=" d-inline-block mx-1 fs-4 fw-bold">Note</div>
-                            <div style="width:35%; height:3px;" class="d-inline-block bg-white mb-1 rounded "></div>
-                            <div class="rounded px-5   fs-5 p-1 mx-5   ">
-                                <div class="text-start">@wrk.Note</div>
-                            </div>
                         </div>
-                        <hr />
-                    }
 
 
-                    
-             </div>   
 
+
+
+                    </div>
+                </div>
                
         }
     </div>
-</div>
+
 
 </Animation>
 
