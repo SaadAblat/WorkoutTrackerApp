@@ -1,0 +1,143 @@
+﻿@using WorkoutTrackerWebsite.Logic;
+@using WorkoutTrackerWebsite.Models;
+@using WorkoutTrackerWebsite.Models.LogicModels;
+@inject IJSRuntime JSRuntime;
+<div class="d-flex flex-column justify-content-start " style="min-height:800px">
+
+    <div id="tableControls" class="w-auto d-flex flex-row gap-lg-5 justify-content-evenly fs-5  mb-5">
+        <RadzenCard>
+
+                <div>Show only exercises already trained</div>
+                <input class="form-check-input  fs-3" type="checkbox" @bind-value="isTrainedOnlyFilterActive" />
+
+            
+        </RadzenCard>
+        <RadzenCard>
+
+                <div>Rows displayed</div>
+                <input style="width:100px" class="form-control fs-5" type="number" @bind-value="rowsDisplayed" />
+
+        </RadzenCard>
+        <RadzenCard>
+
+            <div class="fs-5">Filter exercise by muscle-group</div>
+            <div class="m-auto ">
+                <RadzenDropDown Style=" min-width:400px; max-width:600px;" TValue="string" @bind-Value="selectedCategory" Placeholder="Filter by category" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(AddAllToCategories().OrderBy(x=>x.Id))" TextProperty="Name" ValueProperty="Name" />
+            </div>
+
+
+        </RadzenCard>
+    </div>
+    
+    <table class="table table-dark table-hover m-0 table-striped">
+        <thead>
+            <tr>
+                <th style="cursor:pointer; width:400px;" @onclick="SortTableByName" scope="col"> ExerciseName</th>
+                <th style="cursor:pointer" class="pe-auto" @onclick="SortTableByCategoryName" scope="col"> ExerciseCategoy</th>
+                <th style="cursor:pointer" @onclick="SortTableByTimesTrained" scope="col">Number of sessions </th>
+                <th style="cursor:pointer" @onclick="SortTableByMaxWeight" scope="col">Max Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ex in GetExercisesOnTable(selectedCategory).Take(rowsDisplayed))
+            {
+                if (ex.Name != null)
+                {
+                    <tr>
+                        <th style="cursor:pointer" class="exercise" @onclick="(async ()=> await GoogleSearchExName(ex.Name, ex.Category))" scope="row">@ex.Name</th>
+                        <th scope="row">@ex.Category</th>
+                        <td>@ex.NumberOfSessions</td>
+                        <td>@ex.MaxWeight Kg</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@code {
+
+    [Parameter]
+    public List<ExerciseInfos> _exercisesInfo { get; set; }
+
+    [Parameter]
+    public List<ExerciseModel> _exercises { get; set; }
+
+    [Parameter]
+    public List<ExerciseCategoryModel> _categories { get; set; }
+
+    List<ExerciseInfos> GetExercisesOnTable(string categoryName)
+    {
+        if (isTrainedOnlyFilterActive)
+        {
+            return GetExercisesInfoByCategoryName(categoryName).Where(x => x.NumberOfSessions > 0).ToList();
+        }
+        return GetExercisesInfoByCategoryName(categoryName);
+    }
+
+    List<ExerciseInfos> GetExercisesInfoByCategoryName(string categoryName)
+    {
+        if (categoryName == "All")
+        {
+            return _exercisesInfo;
+        }
+        return _exercisesInfo.Where(x => x.Category == categoryName).ToList();
+    }
+    string selectedCategory = "";
+
+
+    List<ExerciseCategoryModel> AddAllToCategories()
+    {
+        if (_categories.Any(x => x.Name == "All"))
+        {
+            return _categories;
+
+        }
+        _categories.Add(new ExerciseCategoryModel{Name="All"});
+        return _categories;
+        
+
+                
+    }
+    //Sorting
+    bool _sortAscending;
+    private void SortTableByName()
+    {
+        _exercisesInfo = _sortAscending ? _exercisesInfo.OrderBy(x => x.Name).ToList() : _exercisesInfo.OrderByDescending(x => x.Name).ToList();
+        _sortAscending = !_sortAscending;
+
+    }
+    private void SortTableByCategoryName()
+    {
+        _exercisesInfo = _sortAscending ? _exercisesInfo.OrderBy(x => x.Category).ToList() : _exercisesInfo.OrderByDescending(x => x.Category).ToList();
+        _sortAscending = !_sortAscending;
+
+    }
+    private void SortTableByTimesTrained()
+    {
+        _exercisesInfo = _sortAscending ? _exercisesInfo.OrderBy(x => x.NumberOfSessions).ToList() : _exercisesInfo.OrderByDescending(x => x.NumberOfSessions).ToList();
+        _sortAscending = !_sortAscending;
+
+    }
+    private void SortTableByMaxWeight()
+    {
+        _exercisesInfo = _sortAscending ? _exercisesInfo.OrderBy(x => x.MaxWeight).ToList() : _exercisesInfo.OrderByDescending(x => x.MaxWeight).ToList();
+        _sortAscending = !_sortAscending;
+
+    }
+
+    //Table Display
+    int rowsDisplayed = 10;
+
+    //google Search
+    async Task GoogleSearchExName(string exerciseName, string exerciseCategory)
+    {
+        string encodedQuery = System.Web.HttpUtility.UrlEncode("Exercise " + exerciseName + " " + exerciseCategory);
+        string searchUrl = $"https://www.google.com/search?q={encodedQuery}&tbm=isch";
+
+        await JSRuntime.InvokeAsync<object>("open", searchUrl, "_blank");
+
+    }
+
+    //Trained only
+    bool isTrainedOnlyFilterActive = false;
+}

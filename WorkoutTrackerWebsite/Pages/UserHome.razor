@@ -18,34 +18,53 @@
 
 
 
-<div class=" m-auto rounded-3 " style="max-width:2000px;">
-    <div class=" card m-auto p-0 rounded-3 ">
+<div class=" position-relative m-auto  ">
+    <div class="  card m-auto p-0  ">
         <div class="card-header bg-dark text-white">
             <h1 class="card-title fs-1 text-center ">@userName's card  </h1>
-            <div class="d-sm-inline-flex justify-content-around w-100 text-center">
-                <div class="fs-5" id="level"><b>Level</b> : <span class="fs-2">@_userAchievements.Level</span></div>
+            <div class="d-flex flex-row flex-wrap justify-content-around gap-2 w-100 text-center">
+                <div class="fs-5" id="PeriodeTraining"><b>First workout</b> : <span class="fs-2">@GetperiodeTraining() </span> days</div>
                 <div class="fs-5"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
                 <div class="fs-5"><b>T. Workouts</b> : <span class="fs-2">@_userAchievements.TotalWorkoutSessions</span> </div>
             </div>
         </div>
 
-        
-        
-            <div class="Exercises">
+
+
+        <div class="d-flex flex-row gap-2 flex-wrap justify-content-evenly" style="min-height:120px;">
 
             @if (ConvertListOfStringsToListOfExercisesInfos().Count != 0)
             {
-                @foreach (var exercise in ConvertListOfStringsToListOfExercisesInfos())
+                @foreach (var exercise in _mainExercisesInfo)
                 {
-                    <div class="ExercisesFavoriteSlot" style="width:@widthCalculated()">
-                        <div class="flex-row"><span @onclick="(async ()=> await DeleteExerciseFromMainExercisesString(exercise.Name))" class="oi oi-x delete top-0 start-0 m-0"></span> <span class="favoriteExercise"><b>@exercise.Name</b> </span></div>
-                        <div class="favoriteExerciseWeight">@exercise.MaxWeight.ToString("0") <span class="small">KG</span></div>
+                    
+                    <div  class="d-flex flex-column  justify-content-evenly flex-lg-wrap">
+
+                        <div  style="width:300px;">
+                            <span @onclick="(()=>ShowExerciseDropDown(exercise))" style="cursor:pointer" class="fs-5 m-auto hoverable position-relative "> @exercise.Name
+                                @if (exercise.IsDropDownActive)
+                                {
+                                    <div style="  z-index:30;" class="position-absolute  bg-light ">
+                                        <a @onclick="( async() => await DeleteExerciseFromMainExercisesString(exercise.Name))" style="cursor:pointer" class="dropdown-item text-danger ">Delete</a>
+                                    </div>
+
+                                }
+                            </span>
+                            <div class="fs-2 m-auto">@exercise.MaxWeight.ToString("0") <span class="m-auto fs-5"> Kg </span></div>
+                            
+                                
+                            
+
+                        </div>
                     </div>
+                    
+
+                    
                 }
                 // if not full
                 @if (ConvertListOfStringsToListOfExercisesInfos().Count < 4)
                 {
-                    <div class="emptySlot" style="width:@widthCalculated()">
+                    <div class="d-flex flex-column  justify-content-center">
                         <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
                     </div>
                 }
@@ -53,9 +72,10 @@
             // Empty
             else
             {
-                <div class="emptySlot w-100 ">
-                    <div style="color:gray; margin-bottom:auto;">Pin Here your favorites Exercises (max 4).</div>
+                <div class="d-flex flex-column  justify-content-center flex-lg-wrap ">
+                    <div style="color:gray; ">Pin Here your favorites Exercises (max 4).</div>
                     <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+
                 </div>
             }
             </div>
@@ -65,11 +85,11 @@
     </div>
 </div>
 
-<Animation @key="@KeyCounter" AnimationNameSelect="@AnimationsNames.zoomIn">
+<Animation AnimationHappensOnce="false" @key="@KeyCounter" AnimationNameSelect="@AnimationsNames.zoomIn">
     @if (showAddMainExerciseActive)
     {
 
-        <div class="AddExerciseBox bg-dark rounded-2 p-2 border border-3 border-light  translate-middle-x m-0">
+        <div class="AddExerciseBox bg-dark rounded-2 p-2 shadow translate-middle-x m-0">
             <div class="d-inline-flex justify-content-between w-100">
                 <span class="m-1 text-start text-white">Search an exercise</span>
                 <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-5 m-0 " aria-hidden="true"></span>
@@ -91,212 +111,282 @@
     }
 </Animation>
 
+<div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-auto" style="min-height:700px; ">
+    <ul class="nav nav-tabs bg-dark fs-4 " >
+        <li >
+            <button @onclick="ShowPage1" class="nav-link @active1 ">Home</button>
+        </li>
+        <li >
+            <button @onclick="ShowPage2" class="nav-link @active2">My Workouts</button>
+        </li>
+        <li  >
+            <button @onclick="ShowPage3" class="nav-link @active3  ">Exercises</button>
+        </li>
+    </ul>
 
+    
 
-<Animation @key="-55" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
-
-
-
-    <div style="max-width:2000px;" id=" Workouts" class="card bg-light rounded-3 my-1 w-100 m-auto ">
-        <div id="WorkoutsHeader" class="card-header">
-            <h1  class="card-title text-center ">My Workouts</h1>
-        </div>
-        @foreach (var wrk in _userWorkouts.OrderByDescending(x => x.Date).ToList().Take(rowsDisplayed))
+    <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
+        @if (is1Active)
         {
-            <div id="Workout">
-                    <div id="dateHolder" class=" rounded-3 bg-dark text-light">
-                        <div class="text-center fs-3  ">@wrk.Date.ToString("D")</div>
-                    </div>
-                    <div id="RoundsAndNotesContainer" class="flex-grow-1 d-flex flex-column justify-content-evenly  my-3">
-                        @if (!string.IsNullOrEmpty(@wrk.Note))
+            <div id="WokroutsCharts" class=" w-100 d-flex flex-column flex-wrap gap-5 justify-content-around bg-white p-5" style="min-height:400px;">
+                <div class="flex-grow-1 shadow p-5 hoverableGetBig m-auto" style="">
+                    @if (GetperiodeTraining() == 0)
+                    {
+                        <div>Calculating you data...</div>
+                    }
+                    else
+                    {
+                        <div style="font-size:23px;" class=" text-start">
+                            <div style="font-size:27px"><b>@welcomeMessage</b></div>You've been working out with us for <b>@GetperiodeTraining().ToString()</b> days now and have trained a total of <b>@_userAchievements.TotalWorkoutSessions</b> times. <br /> On average, that's:
+                            <ul class="m-3">
+                                <li class="m-2"><b>@CalculateTrainingRate(7)</b> training sessions per week,</li>
+                                <li class="m-2"><b>@CalculateTrainingRate(30)</b>  training sessions per month,</li>
+                                <li class="m-2"><b>@CalculateTrainingRate(365)</b>  training sessions per year.</li>
+                            </ul>
+                            @motivationalMessage
+                        </div>
+                    }
+
+                </div>
+
+
+                @*<div id="WorkoutsChart1" style="min-width:400px;" class=" hoverableGetBig p-5 flex-grow-1 shadow">
+                    <div> This is how much you are training each muscle group </div>
+
+                    <RadzenChart Style="min-width:300px;">
+                        <RadzenPieSeries Data="@PopulateData()" Title="Category" CategoryProperty="Category" ValueProperty="numberOfExercises">
+                            <RadzenSeriesDataLabels OffsetX="500" Visible="@showDataLabels" />
+                        </RadzenPieSeries>
+                    </RadzenChart>
+                    <RadzenCard class="w-100 mb-4">
+
+                        <RadzenCheckBox @bind-Value="@showDataLabels" Name="dataLabels"></RadzenCheckBox>
+                        <RadzenLabel Text="Show Data Labels" For="dataLabels" Style="margin-left: 8px; vertical-align: middle;" />
+                    </RadzenCard>
+                </div>*@
+
+            </div>
+        }
+        else if (is2Active)
+        {
+            <div style="max-width:1800px;" id=" Workouts" class=" card bg-light rounded-3 my-1 w-100 m-auto shadow-lg d-flex flex-column justify-content-start ">
+                <div id="WorkoutsHeader" class="card-header">
+                    <h1 class="card-title text-center ">My Workouts</h1>
+                </div>
+                @foreach (var wrk in _userWorkouts.OrderByDescending(x => x.Date).ToList().Take(rowsDisplayed))
+                {
+                    <div id="Workout" class="position-relative shadow-lg rounded" style="width:95%; margin:10px auto">
+                        <div @onclick="(async() => await ToggleSidebar(wrk))" id="dateHolder" class=" bg-dark text-light" style="cursor:pointer;">
+                            <div class="text-center fs-3  ">@wrk.Date.ToString("D")</div>
+                        </div>
+                        @if (wrk.IsExpanded)
                         {
-                            <div class="mx-5 flex-grow-1 w-100  text-dark d-flex flex-row justify-content-start gap-3">
-
-                                <div class=" fs-4 fw-bold">Note: </div>
-
-                                <div class="fs-4 text-start"> @wrk.Note</div>
-
-                            </div>
-                            <hr />
-                        }
-                        <div id="RoundsContainer" class="d-flex flex-row justify-content-center flex-wrap gap-3">
-                            @foreach (var round in wrk.Rounds)
-                            {
-
-                                // declare variables and populate them with the methods
-                                decimal previousMaxWeight = RoundInfoLogic.Get_Previous_Round_Best_Set_s_Weight(_userWorkouts, round);
-                                int previousMaxWeightReps = RoundInfoLogic.Get_Previous_Round_Best_Set_s_Reps(_userWorkouts, round, previousMaxWeight);
-
-                                // Get previous workout Id
-                                RoundInfos matchingRoundInfo = RoundInfoLogic.Get_Round_Matching_RoundInfo(_userWorkouts, round);
-                                Guid previousWorkoutId = RoundInfoLogic.Get_LastWorkout_Including_thisRound_Exercise(_userWorkouts, matchingRoundInfo).Id;
-
-                                // Check if it's the first time
-                                bool firstTime = false;
-                                if (previousWorkoutId == wrk.Id)
+                            <div id="RoundsAndNotesContainer" class="position-relative flex-grow-1 d-flex flex-column justify-content-evenly  my-3  @wrk.CssAnimation">
+                                @if (!string.IsNullOrEmpty(@wrk.Note))
                                 {
-                                    firstTime = true;
+                                    <div class="mx-5 flex-grow-1 w-75 m-auto text-dark d-flex flex-row flex-wrap justify-content-start gap-3 ">
+
+                                        <div class=" fs-4 fw-bold">Note: </div>
+
+                                        <div class="fs-4 text-start"> @wrk.Note</div>
+
+                                    </div>
+                                    <hr />
                                 }
+                                <div id="RoundsContainer" class="d-flex flex-row justify-content-center flex-wrap gap-5 ">
+                                    @foreach (var round in wrk.Rounds)
+                                    {
 
-                                bool maxSetFound = false;
+                                        // declare variables and populate them with the methods
+                                        decimal previousMaxWeight = RoundInfoLogic.Get_Previous_Round_Best_Set_s_Weight(_userWorkouts, round);
+                                        int previousMaxWeightReps = RoundInfoLogic.Get_Previous_Round_Best_Set_s_Reps(_userWorkouts, round, previousMaxWeight);
 
-                                // calclulate the difference
-                                decimal WeightDifference = thisRoundMaxWeight(round) - previousMaxWeight;
-                                int RepsDifference = thisRoundMaxWeightReps(round) - previousMaxWeightReps;
+                                        // Get previous workout Id
+                                        RoundInfos matchingRoundInfo = RoundInfoLogic.Get_Round_Matching_RoundInfo(_userWorkouts, round);
+                                        Guid previousWorkoutId = RoundInfoLogic.Get_LastWorkout_Including_thisRound_Exercise(_userWorkouts, matchingRoundInfo).Id;
 
-                                <div id="RoundContainer" class=" d-flex flex-column justify-content-between shadow border rounded" style="width:450px;">
-                                    <div id="RoundHeader" class=" p-1 w-100 d-flex flex-row justify-content-between border rounded bg-secondary text-light mb-2">
-                                        <div id="RoundExerciseName" class=" flex-grow-1 ms-1 " style="font-size:22px;">
-                                            #@round.RoundNumber @round.ExerciseName
-                                        </div>
-                                        <div id="RoundTopInfos" class=" ">
-                                            @if (firstTime)
-                                            {
-                                                <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> First Time!</span></div>
-                                            }
-                                            else
-                                            {
-                                                decimal maxWeight = ExerciseInfoLogic.GetExerciseMaxWeightLifted(round.ExerciseName, _userWorkouts);
-                                                int maxWeightReps = ExerciseInfoLogic.GetExerciseMaxWeightReps(round.ExerciseName, maxWeight, _userWorkouts);
-                                                @if (thisRoundMaxWeight(round) < maxWeight)
-                                                {
-                                                    if (maxWeightReps == 1)
+                                        // Check if it's the first time
+                                        bool firstTime = false;
+                                        if (previousWorkoutId == wrk.Id)
+                                        {
+                                            firstTime = true;
+                                        }
+
+                                        bool maxSetFound = false;
+
+                                        // calclulate the difference
+                                        decimal WeightDifference = thisRoundMaxWeight(round) - previousMaxWeight;
+                                        int RepsDifference = thisRoundMaxWeightReps(round) - previousMaxWeightReps;
+
+                                        <div id="RoundContainer" class=" d-flex flex-column justify-content-start shadow border rounded" style="width:450px;">
+                                            <div id="RoundHeader" class=" p-1 w-100 d-flex flex-row justify-content-between border rounded bg-secondary text-light mb-2">
+                                                <div id="RoundExerciseName" class=" flex-grow-1 ms-1 " style="font-size:22px;">
+                                                    #@round.RoundNumber @round.ExerciseName
+                                                </div>
+                                                <div id="RoundTopInfos" class=" ">
+                                                    @if (firstTime)
                                                     {
-                                                        <span class="text-warning fs-6  "> Max: @maxWeight Kg x @maxWeightReps Rep</span>
-
+                                                        <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> First Time!</span></div>
                                                     }
                                                     else
                                                     {
-                                                        <span class="text-light fs-6 x ">Max: @maxWeight Kg x @maxWeightReps Reps</span>
-
-                                                    }
-                                                }
-                                                else if (thisRoundMaxWeight(round) == maxWeight)
-                                                {
-                                                    if (thisRoundMaxWeightReps(round) > maxWeightReps)
-                                                    {
-                                                        <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> New Max!</span></div>
-                                                    }
-                                                    else
-                                                    {
-                                                        if (maxWeight == 0)
+                                                        decimal maxWeight_BeforeThisWorkout = ExerciseInfoLogic.GetExerciseMaxWeightLifted(round.ExerciseName, _userWorkouts.Where(x => x.Id != wrk.Id).ToList());
+                                                        int maxWeightReps_BeforeThisWorkout = ExerciseInfoLogic.GetExerciseMaxWeightReps(round.ExerciseName, maxWeight_BeforeThisWorkout, _userWorkouts.Where(x => x.Id != wrk.Id).ToList());
+                                                        @if (thisRoundMaxWeight(round) < maxWeight_BeforeThisWorkout)
                                                         {
-                                                            <span class="text-light   fs-6 mt-3  "> Max: @maxWeightReps Reps</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            if (maxWeightReps == 1)
+                                                            if (maxWeightReps_BeforeThisWorkout == 1)
                                                             {
-                                                                <span class="text-light  fs-6 mt-3  "> Max: @maxWeight Kg x @maxWeightReps Rep</span>
+                                                                <span class="text-warning fs-6  "> Max: @maxWeight_BeforeThisWorkout Kg x @maxWeightReps_BeforeThisWorkout Rep</span>
 
                                                             }
                                                             else
                                                             {
-                                                                <span class="text-light fs-6 mt-3  "> Max: @maxWeight Kg x @maxWeightReps Reps</span>
+                                                                <span class="text-light fs-6 x ">Max: @maxWeight_BeforeThisWorkout Kg x @maxWeightReps_BeforeThisWorkout Reps</span>
 
                                                             }
                                                         }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    <span class="text-success  fs-6 "> New Max </span>
-
-                                                }
-                                            }
-                                        </div>
-                                    </div>
-
-
-
-
-                                    @foreach (var set in round.Sets)
-                                    {
-                                        <div id="sets" class=" w-100 h-100 d-flex flex-column justify-content-start flex-nowrap p-1">
-
-                                            <div id="set" class="d-flex flex-row justify-content-between w-100  hoverable  ">
-                                                @if (set.Weight == 0)
-                                                {
-                                                    if (set.Reps == 1)
-                                                    {
-                                                        <div class="fs-5 flex-grow-1"><b> - @set.Reps</b> rep</div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="fs-5 "><b> - @set.Reps</b> reps</div>
-                                                    }
-
-
-                                                }
-                                                else
-                                                {
-                                                    <div class="fs-5  "><b> - @set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
-
-                                                }
-
-                                                @if (set.Weight == thisRoundMaxWeight(round) && !maxSetFound)
-                                                {
-                                                    @if (WeightDifference == 0)
-                                                    {
-                                                        if (set.Reps == thisRoundMaxWeightReps(round))
+                                                        else if (thisRoundMaxWeight(round) == maxWeight_BeforeThisWorkout)
                                                         {
-                                                            if (RepsDifference != 0)
+                                                            if (thisRoundMaxWeightReps(round) > maxWeightReps_BeforeThisWorkout)
+                                                            {
+                                                                <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> New Max!</span></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (maxWeight_BeforeThisWorkout == 0)
+                                                                {
+                                                                    <span class="text-light   fs-6 mt-3  "> Max: @maxWeightReps_BeforeThisWorkout Reps</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (maxWeightReps_BeforeThisWorkout == 1)
+                                                                    {
+                                                                        <span class="text-light  fs-6 mt-3  "> Max: @maxWeight_BeforeThisWorkout Kg x @maxWeightReps_BeforeThisWorkout Rep</span>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="text-light fs-6 mt-3  "> Max: @maxWeight_BeforeThisWorkout Kg x @maxWeightReps_BeforeThisWorkout Reps</span>
+
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> New Max!</span></div>
+
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+
+
+
+
+                                            @foreach (var set in round.Sets)
+                                            {
+                                                <div id="sets" class=" w-100 h-100 d-flex flex-column justify-content-start flex-nowrap p-1">
+
+                                                    <div id="set" class="d-flex flex-row justify-content-between w-100 px-5  hoverable  ">
+                                                        @if (set.Weight == 0)
+                                                        {
+                                                            if (set.Reps == 1)
+                                                            {
+                                                                <div class="fs-5 flex-grow-1"><b>@set.Reps</b> rep</div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="fs-5 "><b>@set.Reps</b> reps</div>
+                                                            }
+
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="fs-5  "><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
+
+                                                        }
+
+                                                        @if (set.Weight == thisRoundMaxWeight(round) && !maxSetFound)
+                                                        {
+                                                            @if (WeightDifference == 0)
+                                                            {
+                                                                if (set.Reps == thisRoundMaxWeightReps(round))
+                                                                {
+                                                                    if (RepsDifference != 0)
+                                                                    {
+                                                                        maxSetFound = true;
+                                                                        <div class="@SetDifferenceClass(RepsDifference) fs-5">
+                                                                            @if (RepsDifference > 0)
+                                                                            {
+                                                                                <span>+</span>
+                                                                            }
+
+                                                                            <span>@RepsDifference  </span>
+
+                                                                            @if (MathF.Abs(RepsDifference) == 1)
+                                                                            {
+                                                                                <span> rep</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span> reps</span>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                }
+
+                                                            }
+                                                            else
                                                             {
                                                                 maxSetFound = true;
-                                                                <div class="@SetDifferenceClass(RepsDifference) fs-5">
-                                                                    @if (RepsDifference > 0)
+                                                                <div class="@SetDifferenceClass(WeightDifference)  fs-5 ">
+                                                                    @if (WeightDifference > 0)
                                                                     {
                                                                         <span>+</span>
                                                                     }
 
-                                                                    <span>@RepsDifference  </span>
-
-                                                                    @if (MathF.Abs(RepsDifference) == 1)
-                                                                    {
-                                                                        <span> rep</span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <span> reps</span>
-                                                                    }
+                                                                    @WeightDifference.ToString("0.0") KG
                                                                 </div>
                                                             }
                                                         }
+                                                    </div>
+                                                </div>
+                                            }
 
-                                                    }
-                                                    else
-                                                    {
-                                                        maxSetFound = true;
-                                                        <div class="@SetDifferenceClass(WeightDifference)  fs-5 ">
-                                                            @if (WeightDifference > 0)
-                                                            {
-                                                                <span>+</span>
-                                                            }
-
-                                                            @WeightDifference.ToString("0.0") KG
-                                                        </div>
-                                                    }
-                                                }
-                                            </div>
                                         </div>
                                     }
-                                    <hr />
                                 </div>
-                            }
-                        </div>
 
 
 
 
+
+                            </div>
+                        }
 
                     </div>
-                </div>
-               
+
+                }
+            </div>
         }
-    </div>
+        else if (is3Active)
+        {
+            <div class="d-flex flex-column justify-content-around p-5">
+                <Exercises _exercisesInfo="_exercisesInfo" _categories="_categories"></Exercises>
+            </div>
+        }
 
 
-</Animation>
+
+       
+    </Animation>
+
+
+</div>
+
 
 @code {
     string userId;
@@ -306,6 +396,9 @@
     List<ExerciseModel> _exercises = new();
     List<ExerciseCategoryModel> _categories = new();
     List<ExerciseInfos> _exercisesInfo = new();
+    List<ExerciseInfos> _mainExercisesInfo = new();
+    string welcomeMessage = "";
+    string motivationalMessage = "";
 
 
     //Getting Data
@@ -315,6 +408,10 @@
         var user = authstate.User;
         userName = user.Identity.Name;
         userId = user.Claims.FirstOrDefault().Value;
+
+
+        motivationalMessage = GetRandomMotivationalMessage();
+        welcomeMessage = GetRandomWelcomeMessage(userName);
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             _userWorkouts = await repo.GetWorkoutsByUserIdAsync(userId);
@@ -324,6 +421,81 @@
         }
         _exercisesInfo = ExerciseInfoLogic.CreateAllExercisesInfo(_exercises, _userWorkouts);
 
+        _mainExercisesInfo = ConvertListOfStringsToListOfExercisesInfos();
+
+    }
+
+
+
+
+
+    //NavMenu
+    bool is1Active = true;
+    bool is2Active = false;
+    bool is3Active = false;
+    int startAnimationKey = 0;
+    string active1 = "active";
+    string active2 = "";
+    string active3 = "";
+
+    void ShowPage1()
+    {
+        startAnimationKey--;
+        is1Active = true;
+        active1 = "active";
+
+        is2Active = false;
+        active2 = "";
+
+        is3Active = false;
+        active3 = "";
+    }
+    void ShowPage2()
+    {
+        startAnimationKey--;
+        is1Active = false;
+        active1 = "";
+
+        is2Active = true;
+        active2 = "active";
+
+        is3Active = false;
+        active3 = "";
+    }
+    void ShowPage3()
+    {
+        startAnimationKey--;
+        is1Active = false;
+        active1 = "";
+
+        is2Active = false;
+        active2 = "";
+
+        is3Active = true;
+        active3 = "active";
+    }
+
+
+    //Get dates Info
+    int GetperiodeTraining()
+    {
+        if (_userWorkouts!=null && _userWorkouts.Count != 0)
+        {
+            TimeSpan difference = DateTime.Now - _userWorkouts.MinBy(x => x.Date).Date;
+            return difference.Days;
+
+        }
+        return 0;
+
+    }
+    float CalculateTrainingRate(int reference)
+    {
+        if (GetperiodeTraining()==0)
+        {
+            return 0;
+        }
+        float rate = (_userAchievements.TotalWorkoutSessions * reference) / GetperiodeTraining(); 
+        return rate;
     }
 
     //  Add The exercise name to MainExerciseString
@@ -334,8 +506,7 @@
         {
             return;
         }
-        //else
-        //{
+
         if (_selectedMainExerciseName == "")
         {
             HideAddMainExercise();
@@ -360,7 +531,7 @@
 
             }
         }
-        //}
+        _mainExercisesInfo = ConvertListOfStringsToListOfExercisesInfos();
 
 
     }
@@ -409,12 +580,14 @@
             }
         }
         string result = mainString.Remove(mainString.Length - 1);
+
         _userAchievements.MainExercises = result;
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             await repo.UpdateMainExercisesStringByUserIdAsync(userId, _userAchievements.MainExercises);
 
         }
+        _mainExercisesInfo = ConvertListOfStringsToListOfExercisesInfos();
     }
 
     // Ui
@@ -422,15 +595,36 @@
 
     bool showAddMainExerciseActive = false;
     int KeyCounter = 0;
+    void ShowExerciseDropDown(ExerciseInfos ex)
+    {
+        ex.IsDropDownActive = !ex.IsDropDownActive;
+
+        foreach (var exerci in _mainExercisesInfo)
+        {
+            if (exerci.Name != ex.Name)
+            {
+                exerci.IsDropDownActive = false;
+
+            }
+        }
+
+
+
+
+  
+
+    }
+
     void ShowAddMainExercise()
     {
         showAddMainExerciseActive = true;
         KeyCounter++;
 
     }
-    void HideAddMainExercise()
+     void HideAddMainExercise()
     {
-        showAddMainExerciseActive = false;
+        showAddMainExerciseActive = !showAddMainExerciseActive;
+
     }
     //Braging Card
     string widthCalculated()
@@ -440,6 +634,24 @@
         string percentage = widthInstring + "%;";
         return percentage;
     }
+
+    private async Task ToggleSidebar(WorkoutModel wrk)
+    {
+        if (wrk.IsExpanded == true) // only delay when we need to set div to display: none;
+        {
+            wrk.CssAnimation= "slide-out-top";
+            await Task.Delay(300); // this works kinda clunky now
+            
+        }
+        wrk.IsExpanded = !wrk.IsExpanded;
+        wrk.CssAnimation = "slide-in-top";
+        
+
+    }
+
+
+
+
 
     //Workout board
     int rowsDisplayed = 10;
@@ -483,4 +695,88 @@
         await JSRuntime.InvokeAsync<object>("open", searchUrl, "_blank");
 
     }
+
+
+
+
+    bool showDataLabels = false;
+
+
+    class DataItem
+    {
+        public string Category { get; set; }
+        public int numberOfExercises { get; set; }
+    }
+
+    int GetNumberOfTime_Category_Trained(string categoryName)
+    {
+
+
+        List<ExerciseInfos> exercisesInfosByCategoryName = _exercisesInfo.Where(x => x.Category == categoryName).ToList();
+        int numberOfTime_Category_Trained = exercisesInfosByCategoryName.Sum(x => x.NumberOfSessions);
+        return numberOfTime_Category_Trained;
+    }
+    DataItem[] PopulateData()
+    {
+        List<DataItem> dataList = new();
+        foreach(var categeroy in _categories)
+        {
+            dataList.Add(new DataItem
+                {
+                    Category = categeroy.Name,
+                    numberOfExercises = GetNumberOfTime_Category_Trained(categeroy.Name)
+                });
+        }
+        DataItem[] data = dataList.ToArray();
+
+        return data;
+    }
+
+
+    public static string GetRandomMotivationalMessage()
+    {
+        // Define an array of possible message variations
+        string[] messages = new string[]
+        {
+        "Keep pushing yourself!",
+        "Great job so far, keep it up!",
+        "You're doing amazing, keep it up!",
+        "Your hard work is paying off, keep it up!",
+        "Don't stop now, you've got this!",
+        "Keep on training, you're making progress!",
+        "Keep up the awesome effort!",
+        "You're doing awesome, keep it up!",
+        "Keep up the consistency, it's paying off!",
+        "You're crushing it, keep up the good work!"
+        };
+
+        // Generate a random index to select a message from the array
+        Random random = new Random();
+        int index = random.Next(0, messages.Length);
+
+        // Return the selected message
+        return messages[index];
+    }
+    public string GetRandomWelcomeMessage(string userName)
+    {
+        string[] welcomeMessages = new string[] {
+        $"You're here {userName}. Let's do this!",
+        $"Welcome back, {userName}.",
+        $"Time to crush your goals. Welcome!",
+        $"Great to see you again!",
+        $"Welcome back, {userName}. Let's go!",
+        $"The journey continues. Welcome!",
+        $"Welcome, {userName}. Time to shine.",
+        $"You got this. Welcome back!",
+        $"Welcome, {userName}. Time to save the day!",
+        $"Welcome {userName} to a world of possibilities. Let's make it happen!"
+    };
+
+        Random rnd = new Random();
+        int index = rnd.Next(0, welcomeMessages.Length);
+
+        return welcomeMessages[index];
+    }
+
+    
 }

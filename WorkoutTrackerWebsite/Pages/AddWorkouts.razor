@@ -358,12 +358,12 @@
             }
 
             await repo.AddLogMessageAsync(GenerateLogMessage(InitialLogMessage, Workout, "yellow"));
-            if (string.IsNullOrEmpty(Workout.Note))
+            if (!string.IsNullOrEmpty(Workout.Note))
             {
                 workoutNote = $"{_userName}: {Workout.Note}";
                 await repo.AddLogMessageAsync(GenerateLogMessage(workoutNote, Workout, "white"));
             }
-            
+
 
             foreach (var round in Workout.Rounds)
             {
@@ -469,17 +469,21 @@
 
     async Task LoadWorkoutTemplate()
     {
-        Workout = new WorkoutModel();
-        Workout.Date = DateTime.Now;
-        Workout.Rounds = new List<RoundModel>();
-        int i = 1;
+
+        
         WorkoutTemplateModel templateModel = await GetChoosenTemplateAsync();
-        foreach (var exercise in templateModel.Exercises)
+        if (templateModel != null && templateModel.Exercises != null && templateModel.Exercises.Count != 0)
         {
-            RoundModel roundModel = new RoundModel();
-            roundModel.ExerciseName = exercise.Name;
-            roundModel.RoundNumber = i;
-            roundModel.Sets = new List<SetModel>
+            Workout = new WorkoutModel();
+            Workout.Date = DateTime.Now;
+            Workout.Rounds = new List<RoundModel>();
+            int i = 1;
+            foreach (var exercise in templateModel.Exercises)
+            {
+                RoundModel roundModel = new RoundModel();
+                roundModel.ExerciseName = exercise.Name;
+                roundModel.RoundNumber = i;
+                roundModel.Sets = new List<SetModel>
             {
                 new SetModel
                 {
@@ -488,9 +492,10 @@
                     Weight = 0,
                 }
             };
-            Workout.Rounds.Add(roundModel);
-            i++;
+                Workout.Rounds.Add(roundModel);
+                i++;
+            }
         }
-
+        
     }
 }

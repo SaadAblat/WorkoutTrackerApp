@@ -79,8 +79,10 @@ namespace WorkoutTrackerWebsite.Data
 
             List<WorkoutTemplateExercise> exercises = new List<WorkoutTemplateExercise>();
             exercises = _ctx.WorkoutTemplateExercises.Where(x=>x.WorkoutTemplateModelId == templateId).ToList();
-
-            template.Exercises = exercises;
+            if (template != null && exercises!= null && exercises.Count !=0) 
+            { 
+                template.Exercises = exercises;
+            }
 
             return template;
         }

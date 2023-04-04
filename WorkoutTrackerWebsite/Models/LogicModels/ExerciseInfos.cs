@@ -1,4 +1,6 @@
-﻿namespace WorkoutTrackerWebsite.Models.LogicModels
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WorkoutTrackerWebsite.Models.LogicModels
 {
     public class ExerciseInfos
     {
@@ -11,6 +13,9 @@
         public int NumberOfSets { get; set; }
         public int NumberOfReps { get; set; }
         public decimal TotalWeightLifted { get; set; }
+
+
+        public bool IsDropDownActive { get; set; }
 
     }
 }
