@@ -10,123 +10,93 @@
 @inject AuthenticationStateProvider GetAuthenticationStateAsync
 @layout UserLayout
 
-<div class="mt-5 container bg-white text-dark m-auto w-100 p-0 rounded-3 mb-4 " style="max-width:800px; border:solid white">
-    <h1 class="bg-dark text-light text-center fs-1 p-3">Manage Workouts</h1>
-    <div class="p-4">
-        <table class="table table-danger table-bordered">
-            <thead>
-                <tr>
-                    <th class="fs-4">Date</th>
-                    <th class="fs-4">Exercises</th>
-                    <th class="fs-4">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var wrk in _workouts.OrderBy(x => x.Date))
-                {
-                    <tr>
-                        <td class="fw-bold">@wrk.Date.ToShortDateString()</td>
-                        <td>
-                            @foreach (var round in wrk.Rounds)
-                            {
-                                if (round.RoundNumber == wrk.Rounds.Count)
-                                {
-                                    <span> @round.ExerciseName.</span>
+<img class="background" src="Images/Background.png">
 
-                                }
-                                else
-                                {
-                                    <span> @round.ExerciseName,  </span>
 
-                                }
-                            }
-                        </td>
-                        <td class="p-1" style="cursor:pointer;" @onclick="@(() =>DeleteWorkout(wrk.Id))"><button class="btn btn-danger text-center w-100  ">Delete Workout</button></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+<div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-0" style="min-height:800px; ">
+    <ul class="nav nav-tabs bg-dark fs-4 " >
+        <li >
+            <button @onclick="ShowPage1" class="nav-link @active1 ">AddWorkout</button>
+        </li>
+        <li >
+            <button @onclick="ShowPage2" class="nav-link @active2">Delete Workout</button>
+        </li>
+        <li  >
+            <button @onclick="ShowPage3" class="nav-link @active3  ">Delete template</button>
+        </li>
+    </ul>
 
+
+@if (is1Active)
+{
+    <AddWorkouts></AddWorkouts>
+}
+else if (is2Active)
+{
+    <DeleteWorkouts></DeleteWorkouts>
+}
+else if (is3Active)
+{
+    <DeleteTemplates></DeleteTemplates>
+}
 </div>
 
+
+
+
+
+
+
+
+
 @code {
-    List<WorkoutModel> _workouts = new();
+    //NavMenu
+    bool is1Active = true;
+    bool is2Active = false;
+    bool is3Active = false;
+    int startAnimationKey = 0;
+    string active1 = "active";
+    string active2 = "";
+    string active3 = "";
 
-    WorkoutModel Workout = new();
-
-    ExerciseModel Exercise = new();
-    List<ExerciseModel> _exercises = new();
-
-
-    List<ExerciseInfos> _exercisesInfo = new();
-
-    string _userName = "";
-    string _userId = "";
-
-
-    WorkoutTemplateModel _workoutTemplate = new();
-
-    Guid _templateId;
-    WorkoutTemplateModel _choosenWorkoutTemplate = new();
-    List<WorkoutTemplateModel> _workoutsTemplates = new();
-
-
-
-    protected override async Task OnInitializedAsync()
+    void ShowPage1()
     {
+        startAnimationKey--;
+        is1Active = true;
+        active1 = "active";
 
+        is2Active = false;
+        active2 = "";
 
-        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
-        var user = authstate.User;
-
-        _userName = user.Identity.Name;
-        _userId = user.Claims.FirstOrDefault().Value;
-        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
-        {
-            _workouts = await repo.GetWorkoutsByUserIdAsync(_userId);
-            _exercises = await repo.GetAllExercisesAsync();
-            _workoutsTemplates = await repo.GetWorkoutTemplatesByUserIdAsync(_userId);
-        }
-        _exercisesInfo = ExerciseInfoLogic.CreateAllExercisesInfo(_exercises, _workouts);
-
+        is3Active = false;
+        active3 = "";
     }
-    async Task DeleteWorkout(Guid id)
+    void ShowPage2()
     {
-        if (_workouts.Any(w => w.Id == id))
-        {
-            _workouts.Remove(_workouts.First(w => w.Id == id));
-        }
-        SuccessMessage("Deleting");
-        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
-        {
-            await repo.DeleteWorkoutAsync(id);
-            SuccessMessage("Deleted successfuly");
+        startAnimationKey--;
+        is1Active = false;
+        active1 = "";
 
-            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} deleted a workout on date {Workout.Date.ToShortDateString()}", Workout, "red"));
-        }
+        is2Active = true;
+        active2 = "active";
 
-
+        is3Active = false;
+        active3 = "";
     }
-    string _validationErrorMessage = "";
-    void DisplayErrorMessage(string message)
+    void ShowPage3()
     {
+        startAnimationKey--;
+        is1Active = false;
+        active1 = "";
 
-        _validationErrorMessage = message;
-    }
-    string _workoutAdded = "";
-    void SuccessMessage(string message)
-    {
-        _workoutAdded = message;
+        is2Active = false;
+        active2 = "";
+
+        is3Active = true;
+        active3 = "active";
     }
 
-    private Models.LogMessageModel GenerateLogMessage(string body, Models.WorkoutModel workout, string color)
-    {
-        Models.LogMessageModel logMessage = new();
-        logMessage.WorkoutDate = Workout.Date;
-        logMessage.MessageDate = DateTime.Now;
-        logMessage.MessageBody = body;
-        logMessage.MessageColor = color;
-        return logMessage;
-    }
+
+
+
 }

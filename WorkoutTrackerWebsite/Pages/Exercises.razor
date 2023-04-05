@@ -76,7 +76,7 @@
 
     List<ExerciseInfos> GetExercisesInfoByCategoryName(string categoryName)
     {
-        if (categoryName == "All")
+        if (categoryName == "All" || categoryName == "")
         {
             return _exercisesInfo;
         }
