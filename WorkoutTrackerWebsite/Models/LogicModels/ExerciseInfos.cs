@@ -12,8 +12,9 @@ namespace WorkoutTrackerWebsite.Models.LogicModels
         public int NumberOfSessions { get; set; }
         public int NumberOfSets { get; set; }
         public int NumberOfReps { get; set; }
-        public decimal TotalWeightLifted { get; set; }
+        public decimal TotalVolume { get; set; }
 
+        public  bool IsBodyWeight { get; set; }
 
         public bool IsDropDownActive { get; set; }
 

@@ -10,5 +10,6 @@ namespace WorkoutTrackerWebsite.Models
         public string? Category { get; set; }
 
 
+
     }
 }

@@ -1,0 +1,157 @@
+﻿@page "/AnalyseWorkouts"
+@using Microsoft.AspNetCore.Identity;
+@using System.Globalization;
+@using WorkoutTrackerWebsite.Data;
+@using Microsoft.EntityFrameworkCore;
+@using WorkoutTrackerWebsite.Logic;
+@using WorkoutTrackerWebsite.Models;
+@using WorkoutTrackerWebsite.Models.LogicModels;
+@using WorkoutTrackerWebsite.Pages.ChartComponents
+@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
+@*@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime;*@
+<PageTitle>My Workouts</PageTitle>
+@layout UserLayout
+<img class="background" src="Images/Background.png">
+<div class="bg-white" style="min-height:700px">
+    <ul class="nav nav-tabs bg-dark fs-4 ">
+        <li>
+            <button @onclick="ShowPage1" class="nav-link @active1 ">Line Chart</button>
+        </li>
+        <li>
+            <button @onclick="ShowPage2" class="nav-link @active2">Pie Chart</button>
+        </li>
+        <li>
+            <button @onclick="ShowPage3" class="nav-link @active3  ">Bar Chart</button>
+        </li>
+    </ul>
+
+    @if (is1Active)
+    {
+        <div class="m-auto p-5" id="LineGraph">
+            <LineChart Exercises="_exercises" ExercisesInfosAll="_exercisesInfo" UserWorkouts="_userWorkouts"></LineChart>
+        </div>
+    }else if (is2Active)
+    {
+        <div class="m-auto  p-5" id="PieGraph">
+            <PieChart Exercises="_exercises" ExercisesInfosAll="_exercisesInfo" UserWorkouts="_userWorkouts" Categories="_categories"></PieChart>
+        </div>
+    }
+    else if (is3Active)
+    {
+        <div class="m-auto  p-5" id="BarGraph">
+            <JustBarChart Exercises="_exercises" ExercisesInfosAll="_exercisesInfo" UserWorkouts="_userWorkouts"></JustBarChart>
+        </div>
+    }
+</div>
+
+
+@code {
+    string userId;
+    string userName;
+    UserAchievementsModel _userAchievements = new();
+    List<WorkoutModel> _userWorkouts = new();
+    List<ExerciseModel> _exercises = new();
+    List<ExerciseCategoryModel> _categories = new();
+    List<ExerciseInfos> _exercisesInfo = new();
+    
+    //Getting Data
+    protected override async Task OnInitializedAsync()
+    {
+        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        userName = user.Identity.Name;
+        userId = user.Claims.FirstOrDefault().Value;
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            _userWorkouts = await repo.GetWorkoutsByUserIdAsync(userId);
+            _userAchievements = await repo.GetUserAchievementByUserId(userId);
+            _exercises = await repo.GetAllExercisesAsync();
+            _categories = await repo.GetAllExerciseCategories();
+        }
+        _exercisesInfo= ExerciseInfoLogic.CreateAllExercisesInfo(_exercises, _userWorkouts,true);
+
+    }
+
+
+
+    //NavMenu
+    bool is1Active = true;
+    bool is2Active = false;
+    bool is3Active = false;
+    int startAnimationKey = 0;
+    string active1 = "active";
+    string active2 = "";
+    string active3 = "";
+
+    void ShowPage1()
+    {
+        startAnimationKey--;
+        is1Active = true;
+        active1 = "active";
+
+        is2Active = false;
+        active2 = "";
+
+        is3Active = false;
+        active3 = "";
+    }
+    void ShowPage2()
+    {
+        startAnimationKey--;
+        is1Active = false;
+        active1 = "";
+
+        is2Active = true;
+        active2 = "active";
+
+        is3Active = false;
+        active3 = "";
+    }
+    void ShowPage3()
+    {
+        startAnimationKey--;
+        is1Active = false;
+        active1 = "";
+
+        is2Active = false;
+        active2 = "";
+
+        is3Active = true;
+        active3 = "active";
+    }
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+

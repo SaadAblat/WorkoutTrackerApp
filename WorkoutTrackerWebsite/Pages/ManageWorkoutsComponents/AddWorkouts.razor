@@ -220,23 +220,7 @@
     //}
 
 
-    async Task DeleteWorkout(Guid id)
-    {
-        if (_workouts.Any(w => w.Id == id))
-        {
-            _workouts.Remove(_workouts.First(w => w.Id == id));
-        }
-        SuccessMessage("Deleting");
-        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
-        {
-            await repo.DeleteWorkoutAsync(id);
-            SuccessMessage("Deleted successfuly");
 
-            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} deleted a workout on date {Workout.Date.ToShortDateString()}", Workout, "red"));
-        }
-
-
-    }
 
     private void AddRound()
     {
@@ -356,11 +340,11 @@
                 InitialLogMessage = $"{_userName} added a workout on date : {Workout.Date.ToShortDateString()}";
             }
 
-            await repo.AddLogMessageAsync(GenerateLogMessage(InitialLogMessage, Workout, "yellow"));
+            await repo.AddLogMessageAsync(LogMessageModelLogic.GenerateLogMessage(InitialLogMessage, Workout, "yellow"));
             if (!string.IsNullOrEmpty(Workout.Note))
             {
                 workoutNote = $"{_userName}: {Workout.Note}";
-                await repo.AddLogMessageAsync(GenerateLogMessage(workoutNote, Workout, "white"));
+                await repo.AddLogMessageAsync(LogMessageModelLogic.GenerateLogMessage(workoutNote, Workout, "white"));
             }
 
 
@@ -376,14 +360,14 @@
                 if (thisRoundMaxWeight > maxWeightForRoundExercise)
                 {
                     string msg = $"Congratulations {_userName}! You beat your previous record in the {round.ExerciseName} exercise! your new record is {thisRoundMaxWeight} Kg x {thisRoundMaxWeightReps}";
-                    await repo.AddLogMessageAsync(GenerateLogMessage(msg, Workout, "greenyellow"));
+                    await repo.AddLogMessageAsync(LogMessageModelLogic.GenerateLogMessage(msg, Workout, "greenyellow"));
                 }
                 else if (thisRoundMaxWeight == maxWeightForRoundExercise)
                 {
                     if (thisRoundMaxWeightReps > maxWeightRepsForRoundExercise)
                     {
                         string msg = $"Congratulations {_userName}! You beat your previous record in the {round.ExerciseName} exercise! You did {thisRoundMaxWeightReps} more reps than your best";
-                        await repo.AddLogMessageAsync(GenerateLogMessage(msg, Workout, "greenyellow"));
+                        await repo.AddLogMessageAsync(LogMessageModelLogic.GenerateLogMessage(msg, Workout, "greenyellow"));
                     }
                 }
             }
@@ -400,15 +384,15 @@
         AddRound();
     }
 
-    private Models.LogMessageModel GenerateLogMessage(string body, Models.WorkoutModel workout, string color)
-    {
-        Models.LogMessageModel logMessage = new();
-        logMessage.WorkoutDate = Workout.Date;
-        logMessage.MessageDate = DateTime.Now;
-        logMessage.MessageBody = body;
-        logMessage.MessageColor = color;
-        return logMessage;
-    }
+    //private LogMessageModel GenerateLogMessage(string body, WorkoutModel workout, string color)
+    //{
+    //    LogMessageModel logMessage = new();
+    //    logMessage.WorkoutDate = Workout.Date;
+    //    logMessage.MessageDate = DateTime.Now;
+    //    logMessage.MessageBody = body;
+    //    logMessage.MessageColor = color;
+    //    return logMessage;
+    //}
 
 
     //Workout Template

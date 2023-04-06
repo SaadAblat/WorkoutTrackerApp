@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.ComponentModel;
 using WorkoutTrackerWebsite.Migrations;
+using WorkoutTrackerWebsite.Models.LogicModels;
 
 namespace WorkoutTrackerWebsite.Data
 {

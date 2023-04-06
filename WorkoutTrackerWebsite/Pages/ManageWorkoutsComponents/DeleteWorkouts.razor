@@ -6,6 +6,7 @@
 @using WorkoutTrackerWebsite.Models.LogicModels;
 <PageTitle>AddWorkout</PageTitle>
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
+@inject IJSRuntime JSRuntime;
 
 @inject AuthenticationStateProvider GetAuthenticationStateAsync
 @layout UserLayout
@@ -53,8 +54,6 @@
 @code {
     List<WorkoutModel> _workouts = new();
 
-    WorkoutModel Workout = new();
-
     ExerciseModel Exercise = new();
     List<ExerciseModel> _exercises = new();
 
@@ -91,20 +90,28 @@
         _exercisesInfo = ExerciseInfoLogic.CreateAllExercisesInfo(_exercises, _workouts);
 
     }
+
     async Task DeleteWorkout(Guid id)
     {
-        if (_workouts.Any(w => w.Id == id))
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Do you want to delete this workout?"))
         {
-            _workouts.Remove(_workouts.First(w => w.Id == id));
-        }
-        SuccessMessage("Deleting");
-        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
-        {
-            await repo.DeleteWorkoutAsync(id);
-            SuccessMessage("Deleted successfuly");
+            var workout = new WorkoutModel();
+            if (_workouts.Any(w => w.Id == id))
+            {
+                
+                workout = _workouts.First(w => w.Id == id);
+                _workouts.Remove(_workouts.First(w => w.Id == id));
+            }
+            SuccessMessage("Deleting");
+            using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+            {
+                await repo.DeleteWorkoutAsync(id);
+                SuccessMessage("Deleted successfuly");
 
-            await repo.AddLogMessageAsync(GenerateLogMessage($"{_userName} deleted a workout on date {Workout.Date.ToShortDateString()}", Workout, "red"));
+                await repo.AddLogMessageAsync(LogMessageModelLogic.GenerateLogMessage($"{_userName} deleted a workout on date {workout.Date.ToShortDateString()}", workout, "red"));
+            }
         }
+
 
 
     }
@@ -120,13 +127,5 @@
         _workoutAdded = message;
     }
 
-    private Models.LogMessageModel GenerateLogMessage(string body, Models.WorkoutModel workout, string color)
-    {
-        Models.LogMessageModel logMessage = new();
-        logMessage.WorkoutDate = Workout.Date;
-        logMessage.MessageDate = DateTime.Now;
-        logMessage.MessageBody = body;
-        logMessage.MessageColor = color;
-        return logMessage;
-    }
+
 }

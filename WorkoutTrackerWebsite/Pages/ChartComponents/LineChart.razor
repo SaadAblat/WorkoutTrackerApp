@@ -1,0 +1,185 @@
+﻿@using WorkoutTrackerWebsite.Models;
+@using WorkoutTrackerWebsite.Models.LogicModels;
+
+ <div id="LinearGraph">
+        <h3 class="text-start m-2">Choose Exercise To show on graph </h3>
+        <div class=" m-2 fs-3 mb-4 text-start w-50">
+            <RadzenCard>
+                <RadzenDropDown Style="width:100%;" TValue="string" @bind-Value="_filteredExerciseName" Placeholder="Select Exercise" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_trainedExerciseInfo.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Name" />
+            </RadzenCard>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 my-5 ">
+
+                <RadzenChart ColorScheme="ColorScheme.Divergent">
+                <RadzenLineSeries Smooth="@LineSmooth" Data="@GetAllExerciseWeightsPerDate(_filteredExerciseName,_byVolume)" CategoryProperty="Date" Title="@byWhatString()" LineType="LineType.Dashed" ValueProperty="WeightLifted">
+                        <RadzenMarkers MarkerType="MarkerType.Square" />
+                        <RadzenSeriesDataLabels Visible="@LineShowDataLabels" />
+                    </RadzenLineSeries>
+                    <RadzenCategoryAxis Padding="20" >
+                    <RadzenGridLines Visible="true" />
+                    </RadzenCategoryAxis>
+                @if (_trainedExerciseInfo.Any(x => x.Name == _filteredExerciseName))
+                {
+                    if (_trainedExerciseInfo.First(x => x.Name == _filteredExerciseName).TotalVolume > 0)
+                    {
+                        <RadzenValueAxis Min="0" FormatString="{0} kg">
+
+                            <RadzenGridLines Visible="true" />
+                            @if (_byVolume)
+                            {
+                                <RadzenAxisTitle Text="Session Total Volume" />
+
+                            }
+                            else
+                            {
+                                <RadzenAxisTitle Text="Session Max Weight" />
+
+                            }
+                        </RadzenValueAxis>
+                    }
+                    else
+                    {
+                        <RadzenValueAxis Min="0" FormatString="{0} reps">
+                            <RadzenGridLines Visible="true" />
+                            @if (_byVolume)
+                            {
+                                <RadzenAxisTitle Text="Session Total Reps" />
+
+                            }
+                            else
+                            {
+                                <RadzenAxisTitle Text="Session Max Reps" />
+
+                            }
+
+                        </RadzenValueAxis>
+                    }
+                }
+                <RadzenLegend Visible="false"/>
+                </RadzenChart>
+                <RadzenCard Style="display: flex; align-items: center; gap: 0.5rem;">
+                <RadzenCheckBox @bind-Value="@_byVolume" Name="byWhat"></RadzenCheckBox>
+                <RadzenLabel Text="By volume/By max" For="byWhat" Style="margin-right: 1rem;" />
+                    <RadzenCheckBox @bind-Value="@LineSmooth" Name="smooth"></RadzenCheckBox>
+                    <RadzenLabel Text="Smooth" For="smooth" Style="margin-right: 1rem;" />
+                    <RadzenCheckBox @bind-Value="@LineShowDataLabels" Name="dataLabels"></RadzenCheckBox>
+                    <RadzenLabel Text="Show Data Labels" For="dataLabels" />
+                </RadzenCard>
+            </div>
+        </div>
+
+    </div>
+@code {
+
+
+
+    [Parameter]
+    public List<WorkoutModel> UserWorkouts { get; set; }
+
+    [Parameter]
+    public List<ExerciseModel> Exercises { get; set; }
+
+    [Parameter]
+    public List<ExerciseInfos> ExercisesInfosAll { get; set; }
+
+    List<ExerciseInfos> _trainedExerciseInfo = new();
+
+
+
+
+    protected override void OnParametersSet()
+    {
+        _trainedExerciseInfo = ExercisesInfosAll.Where(x => x.NumberOfReps > 0).ToList();
+
+
+
+    }
+
+    string _filteredExerciseName = "";
+    //Radzen Chart
+    bool LineSmooth = false;
+    bool LineShowDataLabels = false;
+
+    //DATA
+    class LinearDataItem
+    {
+        public DateTime Date { get; set; }
+        public decimal WeightLifted { get; set; }
+    }
+
+    bool _byVolume = true;
+    string byWhatString()
+    {
+        if (_byVolume)
+        {
+            return "Total session Volume";
+        }
+        else
+        {
+            return "Session Max";
+        }
+    }
+    LinearDataItem[] GetAllExerciseWeightsPerDate(string exerciseName, bool byVolume)
+    {
+
+        List < LinearDataItem > dataList = new();
+        foreach (var wrk in UserWorkouts)
+        {
+            foreach(var round in wrk.Rounds)
+            {
+                if (round.ExerciseName == exerciseName)
+                {
+                    if (byVolume)
+                    {
+                        dataList.Add(new LinearDataItem
+                            {
+                                Date = wrk.Date,
+                                WeightLifted = GetExerciseSessionVolume(exerciseName, round)
+
+                            });
+                    }
+                    else
+                    {
+                        dataList.Add(new LinearDataItem
+                            {
+                                Date = wrk.Date,
+                                WeightLifted = GetExerciseSessionMax(exerciseName, round)
+
+                            });
+                    }
+
+                }
+            }
+        }
+        // Continue this List
+        LinearDataItem[] dataCollection = dataList.ToArray();
+
+
+        return dataCollection;
+
+    }
+
+    decimal GetExerciseSessionVolume(string exerciseName, RoundModel round)
+    {
+        decimal volume = round.Sets.Sum(x => x.Weight) * round.Sets.Sum(x => x.Reps);
+        if (volume == 0)
+        {
+            volume =  round.Sets.Sum(x => x.Reps);
+        }
+        return volume;
+    }
+    decimal GetExerciseSessionMax(string exerciseName, RoundModel round)
+    {
+        decimal volume = round.Sets.MaxBy(x => x.Weight).Weight;
+        if (volume == 0)
+        {
+            volume = round.Sets.MaxBy(x => x.Reps).Reps;
+        }
+        return volume;
+    }
+    //List<ExerciseInfos> GetExercisesInfo_That_the_user_already_trained()
+    //{
+    //    return _exercisesInfo.Where(x => x.NumberOfSessions > 0).ToList();
+    //}
+}

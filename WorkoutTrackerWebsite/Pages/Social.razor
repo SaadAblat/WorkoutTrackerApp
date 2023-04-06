@@ -1,16 +1,72 @@
-﻿@page "/Friends"
+﻿@page "/Social"
 @using Microsoft.AspNetCore.Identity;
 @using System.Text;
 @using WorkoutTrackerWebsite.Data;
 @using Microsoft.EntityFrameworkCore;
 @using WorkoutTrackerWebsite.Models;
+@using WorkoutTrackerWebsite.Models.LogicModels;
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
 <PageTitle>Friends</PageTitle>
 @layout UserLayout
 
+
 @inject NavigationManager UriHelper
 
 
+
+<div id="logContainer" class="bg-light ">
+    <div class="rounded bg-dark p-lg-5 d-flex flex-column justify-content-start">
+        
+        @for (int i = 0; i < _logMessages.TakeLast(50).Count(); i++)
+        {
+            var logMessage = _logMessages.TakeLast(50).ToList()[i];
+            <div class="d-flex flex-row justify-content-start gap-5">
+                <div class="" style="color:whitesmoke; min-width:150px;">
+                    
+
+                @if (i != 0)
+                {
+                        @if (_logMessages.TakeLast(50).ToList()[i - 1].MessageDate.ToShortTimeString() != logMessage.MessageDate.ToShortTimeString())
+                    {
+                        <span>@logMessageDateFormat(logMessage)</span>
+                    }
+                }
+
+                </div>
+                <div style="color:@logMessage.MessageColor;">@logMessage.MessageBody</div>
+            </div>
+        }
+
+
+       @* @foreach (LogMessageModel logMessage in _logMessages.TakeLast(50))
+        {
+            <div class="d-flex flex-row justify-content-start gap-5">
+                <div  class="" style="color:whitesmoke; min-width:150px;">
+                    <span>@logMessageDateFormat(logMessage)</span>
+                </div>
+                @if (messagesIndex != 0)
+                {
+                        @if (_logMessages.TakeLast(50).ToList()[messagesIndex - 1].WorkoutDate.ToShortDateString() != logMessage.WorkoutDate.ToShortDateString())
+                    {
+                            
+                    }
+                    messagesIndex++;
+                }
+                
+                else
+                {
+                    messagesIndex++;
+
+                }
+                
+                <div style="color:@logMessage.MessageColor;" >@logMessage.MessageBody</div>
+        </div>}*@
+
+            
+        
+    </div>
+    
+</div>
 
 
 
@@ -82,20 +138,43 @@
             output = @logMessage.MessageDate.ToString();
         }
 
-    return output;
+        return output;
     }
 
 
     List<LogMessageModel> _logMessages = new();
     int counter = 0;
+    int messagesIndex = 0;
 
 
-
-    protected override async Task OnInitializedAsync()
+    async Task UpdatedLogMessage()
     {
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
             _logMessages = await repo.GetAllLogMessageModels();
+        }
+    }
+    private Timer? TextTimer;
+    async Task GetLogMessages()
+    {
+        await UpdatedLogMessage();
+        TextTimer = new Timer(async (object? stateInfo) =>
+        {
+            await UpdatedLogMessage();
+            await InvokeAsync(StateHasChanged);  // NOTE: MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+        },
+        null, 2000, 2000); // fire every 2000 milliseconds
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLogMessages();
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            //// Get the initial list of log messages
+            //_logMessages = await repo.GetAllLogMessageModels();
+            
+
             _usersAchievementsList = await repo.GetAllUserAchievementsModel();
             _usersAchievementsList.OrderByDescending(x => x.TotalWeightLifted).ToList();
             foreach (var user in _usersAchievementsList)
@@ -103,7 +182,11 @@
                 await repo.UpdateUserAchievementAsync(user.UserId, user.UserName);
             }
         }
+        messagesIndex = 0;
+
     }
+    
+ 
     List<UserAchievementsModel> _usersAchievementsList = new();
     bool _sortAscending;
     int UserClassement = 0;

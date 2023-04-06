@@ -1,0 +1,108 @@
+﻿
+@using WorkoutTrackerWebsite.Logic;
+@using WorkoutTrackerWebsite.Models;
+@using WorkoutTrackerWebsite.Models.LogicModels;
+
+
+
+
+
+
+<div>You can see here each how much weight you are lifting in each exercise in a bar chart</div>
+<div  class="shadow-lg" style="max-width:1500px; overflow-x:scroll; padding:80px; min-height:600px; margin:auto">
+
+   
+    <div style="width:@calculateChartWidth(); margin:auto;">
+        <RadzenChart>
+
+            <RadzenColumnSeries  Fill="black" Data="@PopulateBarData(UserWorkouts, _trainedExerciseInfo, Exercises)" CategoryProperty="Exercise" ValueProperty="Volume" />
+            <RadzenValueAxis  Min="0" Max="_chatMaxWeight" Step="500" />
+            <RadzenValueAxis FormatString="{0} kg" />
+            <RadzenColumnOptions Radius="5" Width="60" />
+            <RadzenCategoryAxis Padding="0" />
+            <RadzenLegend Visible="false" />
+        </RadzenChart>
+    </div>
+            
+
+
+</div>
+
+
+@code {
+
+    [Parameter]
+    public List<WorkoutModel> UserWorkouts { get; set; }
+
+    [Parameter]
+    public List<ExerciseModel> Exercises { get; set; }
+
+    [Parameter]
+    public List<ExerciseInfos> ExercisesInfosAll { get; set; }
+
+    List<ExerciseInfos> _trainedExerciseInfo = new();
+
+    int _chatMaxWeight = 5000;
+    int _chartStep = 100;
+    protected override void OnParametersSet()
+    {
+        _trainedExerciseInfo = ExercisesInfosAll.Where(x => x.NumberOfReps > 0).ToList();
+        if (_trainedExerciseInfo.Count > 0)
+        {
+            _chatMaxWeight = Convert.ToInt32(_trainedExerciseInfo.MaxBy(x => x.TotalVolume).TotalVolume);
+
+        }
+
+
+    }
+
+    // bar chart
+    class BarDataItem
+    {
+        public string Exercise { get; set; }
+        public decimal Volume { get; set; }
+    }
+
+    decimal GetExerciseVolume(string exerciseName, List<WorkoutModel> userWorkouts, List<ExerciseInfos> exercisesInfo)
+    {
+        if (exercisesInfo.Any(x => x.Name == exerciseName))
+        {
+            ExerciseInfos exerciseInfo = exercisesInfo.First(x => x.Name == exerciseName);
+            if (exerciseInfo.IsBodyWeight)
+            {
+                return 0;
+            }
+            return exerciseInfo.TotalVolume;
+        }
+        else return 0;
+
+    }
+
+    BarDataItem[] PopulateBarData(List<WorkoutModel> userWorkouts, List<ExerciseInfos> exercisesInfo, List<ExerciseModel> exercises)
+    {
+        List<BarDataItem> datasList = new();
+        foreach (var execise in exercises)
+        {
+            if (GetExerciseVolume(execise.Name, userWorkouts, exercisesInfo) > 0)
+            {
+                datasList.Add(new BarDataItem
+                    {
+                        Exercise = execise.Name,
+                        Volume = GetExerciseVolume(execise.Name, userWorkouts, exercisesInfo)
+                    });
+            }
+
+
+        }
+        BarDataItem[] datsa = datasList.ToArray();
+
+        return datsa;
+    }
+
+    string calculateChartWidth()
+    {
+        int numberOfitems = @PopulateBarData(UserWorkouts, _trainedExerciseInfo, Exercises).Count();
+        int width = numberOfitems * 170;
+        return $"{width}px";
+    }
+}

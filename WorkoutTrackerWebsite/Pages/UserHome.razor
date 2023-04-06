@@ -6,6 +6,7 @@
 @using WorkoutTrackerWebsite.Logic;
 @using WorkoutTrackerWebsite.Models;
 @using WorkoutTrackerWebsite.Models.LogicModels;
+@using WorkoutTrackerWebsite.Pages.HomeComponents
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory
 @inject AuthenticationStateProvider GetAuthenticationStateAsync
 @inject NavigationManager navigationManager
@@ -18,72 +19,7 @@
 
 
 
-<div class=" position-relative m-auto  ">
-    <div class="  card m-auto p-0  ">
-        <div class="card-header bg-dark text-white">
-            <h1 class="card-title fs-1 text-center ">@userName's card  </h1>
-            <div class="d-flex flex-row flex-wrap justify-content-around gap-2 w-100 text-center">
-                <div class="fs-5" id="PeriodeTraining"><b>First workout</b> : <span class="fs-2">@GetperiodeTraining() </span> days</div>
-                <div class="fs-5"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
-                <div class="fs-5"><b>T. Workouts</b> : <span class="fs-2">@_userAchievements.TotalWorkoutSessions</span> </div>
-            </div>
-        </div>
 
-
-
-        <div class="d-flex flex-row gap-2 flex-wrap justify-content-evenly" style="min-height:120px;">
-
-            @if (ConvertListOfStringsToListOfExercisesInfos().Count != 0)
-            {
-                @foreach (var exercise in _mainExercisesInfo)
-                {
-                    
-                    <div  class="d-flex flex-column  justify-content-evenly flex-lg-wrap">
-
-                        <div  style="width:300px;">
-                            <span @onclick="(()=>ShowExerciseDropDown(exercise))" style="cursor:pointer" class="fs-5 m-auto hoverable position-relative "> @exercise.Name
-                                @if (exercise.IsDropDownActive)
-                                {
-                                    <div style="  z-index:30;" class="position-absolute  bg-light ">
-                                        <a @onclick="( async() => await DeleteExerciseFromMainExercisesString(exercise.Name))" style="cursor:pointer" class="dropdown-item text-danger ">Delete</a>
-                                    </div>
-
-                                }
-                            </span>
-                            <div class="fs-2 m-auto">@exercise.MaxWeight.ToString("0") <span class="m-auto fs-5"> Kg </span></div>
-                            
-                                
-                            
-
-                        </div>
-                    </div>
-                    
-
-                    
-                }
-                // if not full
-                @if (ConvertListOfStringsToListOfExercisesInfos().Count < 4)
-                {
-                    <div class="d-flex flex-column  justify-content-center">
-                        <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
-                    </div>
-                }
-            }
-            // Empty
-            else
-            {
-                <div class="d-flex flex-column  justify-content-center flex-lg-wrap ">
-                    <div style="color:gray; ">Pin Here your favorites Exercises (max 4).</div>
-                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
-
-                </div>
-            }
-            </div>
-            
-       
-
-    </div>
-</div>
 
 <Animation AnimationHappensOnce="false" @key="@KeyCounter" AnimationNameSelect="@AnimationsNames.zoomIn">
     @if (showAddMainExerciseActive)
@@ -129,11 +65,87 @@
     <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
         @if (is1Active)
         {
+            <div class=" position-relative m-auto  ">
+                <div class="  card m-auto p-0  ">
+                    <div class="card-header bg-dark text-white">
+                        <h1 class="card-title fs-1 text-center ">@userName's card  </h1>
+                        <div class="d-flex flex-row flex-wrap justify-content-around gap-2 w-100 text-center">
+                            <div class="fs-5" id="PeriodeTraining"><b>First workout</b> : <span class="fs-2">@GetperiodeTraining() </span> days</div>
+                            <div class="fs-5"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
+                            <div class="fs-5"><b>T. Workouts</b> : <span class="fs-2">@_userAchievements.TotalWorkoutSessions</span> </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="d-flex flex-row gap-2 flex-wrap justify-content-evenly" style="min-height:120px;">
+
+                        @if (ConvertListOfStringsToListOfExercisesInfos().Count != 0)
+                        {
+                            @foreach (var exercise in _mainExercisesInfo)
+                            {
+
+                                <div class="d-flex flex-column  justify-content-evenly flex-lg-wrap">
+
+                                    <div style="width:300px;">
+                                        <span @onclick="(()=>ShowExerciseDropDown(exercise))" style="cursor:pointer" class="fs-5 m-auto hoverable position-relative ">
+                                            @exercise.Name
+                                            @if (exercise.IsDropDownActive)
+                                            {
+                                                <div style="  z-index:30;" class="position-absolute  bg-light ">
+                                                    <a @onclick="( async() => await DeleteExerciseFromMainExercisesString(exercise.Name))" style="cursor:pointer" class="dropdown-item text-danger ">Delete</a>
+                                                </div>
+
+                                            }
+                                        </span>
+                                        <div class="fs-2 m-auto">@exercise.MaxWeight.ToString("0") <span class="m-auto fs-5"> Kg </span></div>
+
+
+
+
+                                    </div>
+                                </div>
+
+
+
+                            }
+                            // if not full
+                            @if (ConvertListOfStringsToListOfExercisesInfos().Count < 4)
+                            {
+                                <div class="d-flex flex-column  justify-content-center">
+                                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                                </div>
+                            }
+                        }
+                        // Empty
+                        else
+                        {
+                            <div class="d-flex flex-column  justify-content-center flex-lg-wrap ">
+                                <div style="color:gray; ">Pin Here your favorites Exercises (max 4).</div>
+                                <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+
+                            </div>
+                        }
+                    </div>
+
+
+
+                </div>
+            </div>
             <div id="WokroutsCharts" class=" w-100 d-flex flex-column flex-wrap gap-5 justify-content-around bg-white p-5" style="min-height:400px;">
                 <div class="flex-grow-1 shadow p-5 hoverableGetBig m-auto" style="">
                     @if (GetperiodeTraining() == 0)
                     {
-                        <div>Calculating you data...</div>
+                        if (userHaveNoWorkoutYet)
+                        {
+                            <div>It looks like you haven't added a workout yet.</div>
+                        }
+                        else
+                        {
+                            <div>Calculating you data...</div>
+
+                        }
+                       
                     }
                     else
                     {
@@ -387,7 +399,7 @@
     string welcomeMessage = "";
     string motivationalMessage = "";
 
-
+    bool userHaveNoWorkoutYet = false;
     //Getting Data
     protected override async Task OnInitializedAsync()
     {
@@ -409,7 +421,11 @@
         _exercisesInfo = ExerciseInfoLogic.CreateAllExercisesInfo(_exercises, _userWorkouts);
 
         _mainExercisesInfo = ConvertListOfStringsToListOfExercisesInfos();
-
+        
+        if (_userWorkouts.Count == 0 || _userWorkouts == null)
+        {
+            userHaveNoWorkoutYet = true;
+        }
     }
 
 

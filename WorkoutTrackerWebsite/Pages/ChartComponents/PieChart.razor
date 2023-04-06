@@ -1,0 +1,106 @@
+﻿@using WorkoutTrackerWebsite.Models;
+@using WorkoutTrackerWebsite.Models.LogicModels;
+
+<div id="WorkoutsChart1" style="min-width:300px;" class=" w-100 hoverableGetBig p-5 flex-grow-1 shadow d-flex flex-row justify-content-evenly flex-wrap">
+    <div id="Chart Info" style="width:500px;" class="">
+        
+        <div>
+
+            This is your total muscle group training volume, excluding bodyweight exercises. We determine muscle group based on the main muscle targeted by an exercise (e.g. bench press counts only for chest). See below for total volumes by muscle group:
+        </div>
+
+        <ul>
+            @foreach (var category in Categories)
+            {
+                <li>
+                    @category.Name
+                    @if (_trainedExerciseInfo.Where(x => x.Category == category.Name).Where(x => !x.IsBodyWeight).ToList().Count > 0)
+                    {
+                        <span>(</span>
+                        @foreach (var ex in _trainedExerciseInfo.Where(x => x.Category == category.Name).Where(x => !x.IsBodyWeight).ToList())
+                        {
+                            <span>@ex.Name : @ex.TotalVolume.ToString("0") Kg </span>
+                        }
+                        <span>).</span>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+    
+    <div class="flex-grow-1  ">
+        <RadzenChart  Style="min-width:200px;">
+            <RadzenPieSeries Data="@PopulateData()" Title="Category" CategoryProperty="Category" ValueProperty="numberOfExercises">
+                <RadzenSeriesDataLabels  Visible="true" />
+            </RadzenPieSeries>
+            <RadzenValueAxis FormatString="{0} kg" />
+        </RadzenChart>
+
+    </div>
+    
+</div>
+
+
+@code {
+    //pie chart
+    [Parameter]
+    public List<WorkoutModel> UserWorkouts { get; set; }
+
+    [Parameter]
+    public List<ExerciseModel> Exercises { get; set; }
+
+    [Parameter]
+    public List<ExerciseInfos> ExercisesInfosAll { get; set; }
+
+    [Parameter]
+    public List<ExerciseCategoryModel> Categories { get; set; }
+
+    List<ExerciseInfos> _trainedExerciseInfo = new();
+
+
+
+
+    protected override void OnParametersSet()
+    {
+        _trainedExerciseInfo = ExercisesInfosAll.Where(x => x.NumberOfReps > 0).ToList();
+
+
+
+    }
+    bool pieShowDataLabels = false;
+
+
+    class PieDataItem
+    {
+        public string Category { get; set; }
+        public decimal numberOfExercises { get; set; }
+    }
+
+    //int GetNumberOfTime_Category_Trained(string categoryName)
+    //{
+    //    List<ExerciseInfos> exercisesInfosByCategoryName = _trainedExerciseInfo.Where(x => x.Category == categoryName).ToList();
+    //    int numberOfTime_Category_Trained = exercisesInfosByCategoryName.Sum(x => x.NumberOfSessions);
+    //    return numberOfTime_Category_Trained;
+    //}
+    decimal GetCategoryTotalVolume(string categoryName)
+    {
+        List<ExerciseInfos> exercisesInfosByCategoryName = _trainedExerciseInfo.Where(x => x.Category == categoryName).Where(x=>!x.IsBodyWeight).ToList();
+        decimal totalVolume = exercisesInfosByCategoryName.Sum(x => x.TotalVolume);
+        return totalVolume;
+    }
+    PieDataItem[] PopulateData()
+    {
+        List<PieDataItem> dataList = new();
+        foreach (var category in Categories)
+        {
+            dataList.Add(new PieDataItem
+                {
+                    Category = category.Name,
+                    numberOfExercises = GetCategoryTotalVolume(category.Name)
+                });
+        }
+        PieDataItem[] data = dataList.ToArray();
+
+        return data;
+    }
+}

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WorkoutTrackerWebsite.Data;
+using WorkoutTrackerWebsite.Models.LogicModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
