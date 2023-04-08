@@ -1,0 +1,147 @@
+﻿@using WorkoutTrackerWebsite.Logic;
+@using WorkoutTrackerWebsite.Models;
+
+@inject NavigationManager navigationManager
+<h3>FriendsExercises</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Classement</th>
+            <th style="cursor:pointer;" @onclick="SortTableByUserName">Name</th>
+            <th style="cursor:pointer" @onclick="SortTableByPeriodTrained">Period Training</th>
+            <th style="cursor:pointer" @onclick="SortTableByTotalVolume">Total volume</th>
+            <th style="cursor:pointer" @onclick="SortTableByTotalWorkoutSessions">Total workout sessions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userAch in _friendsListIncludingTheUser)
+        {
+            <tr>
+                <th>@IncrementNumber()</th>
+                <th style="cursor:pointer" @onclick="(()=>NavigateToFirendProfile(userAch.UserId,userAch.UserName))">@userAch.UserName</th>
+                <th style="cursor:pointer">
+                    @userAch.PeriodTraining @if (userAch.PeriodTraining == 1)
+                    {
+                        <span> Day</span>
+                    }
+                    else
+                    {
+                        <span> Days</span>
+                    }
+
+                </th>
+                <th>@userAch.TotalWeightLifted.ToString("0") Kg</th>
+                <th>@userAch.TotalWorkoutSessions</th>
+
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public List<UserAchievementsModel>? UsersAchievementsList { get; set; }
+
+    [Parameter]
+    public UserFriendsModel _UserFriendsModel { get; set; }
+
+    [Parameter]
+    public List<WorkoutModel> _Allworkouts { get; set; }
+
+
+    [Parameter]
+    public string? UserId { get; set; }
+    [Parameter]
+    public string? UserName { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _friendsListIncludingTheUser = FriendsListIncludingTheUser();
+
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        UserClassement = 0;
+        _friendsListIncludingTheUser = FriendsListIncludingTheUser();
+        foreach (var ach in _friendsListIncludingTheUser)
+        {
+            ach.PeriodTraining = GetperiodeTraining(ach.UserId);
+        }
+
+    }
+    List<UserAchievementsModel> _friendsListIncludingTheUser = new();
+
+    List<UserAchievementsModel> FriendsListIncludingTheUser()
+    {
+
+        List<UserAchievementsModel> list = FriendsLogic.Friends_UserAchievements_List(_UserFriendsModel.FriendsString, UsersAchievementsList);
+        UserAchievementsModel userAchievement = UsersAchievementsList.First(x => x.UserId == UserId);
+        list.Add(userAchievement);
+        _friendsListIncludingTheUser = list;
+        foreach(var ach in _friendsListIncludingTheUser)
+        {
+            ach.PeriodTraining = GetperiodeTraining(ach.UserId);
+        }
+        return list;
+    }
+
+
+
+    int GetperiodeTraining(string userId)
+    {
+        List<WorkoutModel> userWorkouts =  _Allworkouts.Where(x => x.UserId == userId).ToList();
+        if (userWorkouts != null && userWorkouts.Count != 0)
+        {
+            TimeSpan difference = DateTime.Now - userWorkouts.MinBy(x => x.Date).Date;
+            return difference.Days;
+
+        }
+        return 0;
+
+    }
+
+    bool _sortAscending;
+    int UserClassement = 0;
+    private void SortTableByTotalWorkoutSessions()
+    {
+        _friendsListIncludingTheUser = _sortAscending ? _friendsListIncludingTheUser.OrderBy(x => x.TotalWorkoutSessions).ToList() : _friendsListIncludingTheUser.OrderByDescending(x => x.TotalWorkoutSessions).ToList();
+        _sortAscending = !_sortAscending;
+        UserClassement = 0;
+    }
+    private void SortTableByPeriodTrained()
+    {
+        _friendsListIncludingTheUser = _sortAscending ? _friendsListIncludingTheUser.OrderBy(x => x.PeriodTraining).ToList() : _friendsListIncludingTheUser.OrderByDescending(x => x.PeriodTraining).ToList();
+        _sortAscending = !_sortAscending;
+        UserClassement = 0;
+    }
+    private void SortTableByTotalVolume()
+    {
+        _friendsListIncludingTheUser = _sortAscending ? _friendsListIncludingTheUser.OrderBy(x => x.TotalWeightLifted).ToList() : _friendsListIncludingTheUser.OrderByDescending(x => x.TotalWeightLifted).ToList();
+        _sortAscending = !_sortAscending;
+        UserClassement = 0;
+    }
+    private void SortTableByUserName()
+    {
+        _friendsListIncludingTheUser = _sortAscending ? _friendsListIncludingTheUser.OrderBy(x => x.UserName).ToList() : _friendsListIncludingTheUser.OrderByDescending(x => x.UserName).ToList();
+        _sortAscending = !_sortAscending;
+        UserClassement = 0;
+    }
+    private int IncrementNumber()
+    {
+        UserClassement++;
+        return UserClassement;
+    }
+    private void NavigateToFirendProfile(string userId, string userName)
+    {
+        navigationManager.NavigateTo($"FriendProfile/{userId}/{userName}");
+    }
+    
+}

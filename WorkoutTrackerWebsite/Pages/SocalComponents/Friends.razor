@@ -1,0 +1,224 @@
+﻿@using WorkoutTrackerWebsite.Data;
+@using WorkoutTrackerWebsite.Logic;
+@using WorkoutTrackerWebsite.Models;
+@inject NavigationManager UriHelper;
+@using Microsoft.EntityFrameworkCore;
+@inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
+
+
+
+<div style="max-width: 700px;" class=" mx-auto shadow p-5">
+    <h4>Add a new friend</h4>
+    <div class="my-3">To add a friend, both of you need to exchange your ids</div>
+    <div class="mb-5">
+        <table class="table ">
+            <tbody>
+                <tr >
+                    <th>This Your id</th>
+                    @if (showUserId)
+                    {
+                        <td class="text-center" style="width:380px;">@UserId</td>
+                    }
+                    else
+                    {
+                        <td style="width:380px;" class="text-center">
+                            @foreach (char car in UserId)
+                            {
+                                if (car.ToString() == "-")
+                                {
+                                    <span>-</span>
+                                }
+                                else
+                                {
+                                    <span>X</span>
+                                    
+                                }
+                                
+                            }
+                        </td>
+                    }
+
+                    <td><button @onclick="ShowUserId" class="btn btn-primary w-100"> Show My Id</button></td>
+                </tr>
+                <tr>
+                    <th>Add your friend Id here</th>
+                    <td><input type="text" class="form-control " @bind-value="_enteredFriendId" /></td>
+                    <td><button @onclick="(async()=> await AddFriend(_enteredFriendId))" class="btn btn-primary w-100">Add friend</button></td>
+                </tr>
+                @if (ValidationMessage != "")
+                {
+                    <tr>
+                        <th class="m-auto text-center" colspan="3">   @ValidationMessage</th>
+                    </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <h4 class="mb-5">List of your friends</h4>
+    <div class="px-5">
+        <table class="table   ">
+            <tbody>
+                @foreach (var userAch in FriendsLogic.Friends_UserAchievements_List(_UserFriendsModel.FriendsString, UsersAchievementsList))
+                {
+                    <tr>
+                        <th class="w-50">@userAch.UserName</th>
+                        <td class="w-50"><button @onclick="(async()=>await DeleteFriendAsync(userAch.UserId))" class="btn btn-danger">Delete from your friends list</button></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    
+
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public List<UserAchievementsModel>? UsersAchievementsList { get; set; }
+
+    [Parameter]
+    public UserFriendsModel _UserFriendsModel { get; set; }
+
+    [Parameter]
+    public string? UserId { get; set; }
+    [Parameter]
+    public string? UserName { get; set; }
+    //
+    //************/ SAVING**********
+    //
+
+    string _enteredFriendId = "";
+
+    async Task AddFriend(string EnteredfriendId)
+    {
+        // checking if the id is valid
+        if (UsersAchievementsList.Any(x => x.UserId == EnteredfriendId))
+        {
+            // checking if the friend with the id entered is already added
+            if (FriendsLogic.Friends_UserAchievements_List(_UserFriendsModel.FriendsString, UsersAchievementsList).Any(x => x.UserId == _enteredFriendId))
+            {
+
+                ValidationMessage = "You've already added this friend";
+
+            }
+            else if (_enteredFriendId == UserId)
+            {
+                ValidationMessage = "This is your Id! Share it with your friends to add you!";
+            }
+            else
+            {
+                //If the userFriends Model is not created yet
+                if (string.IsNullOrEmpty(_UserFriendsModel.UserId))
+                {
+                    _UserFriendsModel.UserId = UserId;
+                    _UserFriendsModel.FriendsString = EnteredfriendId;
+
+                    //Add a new UserFriendsModel
+                    using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+                    {
+                        await repo.AddANewUserFriendsModelAsync(_UserFriendsModel);
+                    }
+                }
+                //If the userFriends Model is created before but its friendstring property is empty
+                else if (string.IsNullOrEmpty(_UserFriendsModel.FriendsString))
+                {
+                    _UserFriendsModel.FriendsString = EnteredfriendId;
+                    using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+                    {
+                        await repo.UpdateFriendStringAsync(_UserFriendsModel);
+                    }
+                }
+                else
+                {
+                    _UserFriendsModel.FriendsString += ";" + EnteredfriendId;
+                    using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+                    {
+                        await repo.UpdateFriendStringAsync(_UserFriendsModel);
+                    }
+                }
+                string friendName = UsersAchievementsList.First(x => x.UserId == _enteredFriendId).UserName;
+                ValidationMessage = friendName + " Added To your friends succesfully";
+                using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+                {
+                    await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage($"{UserName} Added {friendName} to his friends", UserId, "greenyellow"));
+                }
+
+
+
+
+            }
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(_enteredFriendId))
+            {
+                ValidationMessage = "Please enter a valid Id!";
+            }
+            else
+            {
+                ValidationMessage = "No Users with the entered Id";
+            }
+        }
+    }
+    async Task DeleteFriendAsync(string FriendId)
+    {
+        string UserFriendString = _UserFriendsModel.FriendsString;
+        string newFriendString = "";
+        foreach (string Id in FriendsLogic.Friends_Ids_List(UserFriendString))
+        {
+            if (Id != FriendId)
+            {
+                newFriendString += Id + ";";
+            }
+        }
+        if (newFriendString.Length > 0)
+        {
+            newFriendString = newFriendString.Remove(newFriendString.Length - 1);
+        }
+        _UserFriendsModel.FriendsString = newFriendString;
+        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        {
+            await repo.UpdateFriendStringAsync(_UserFriendsModel);
+        }
+    }
+
+    string ValidationMessage = "";
+    bool showUserId = false;
+    void ShowUserId()
+    {
+        showUserId = true;
+    }
+
+
+    //bool _sortAscending;
+    //int UserClassement = 0;
+    //private void SortTableByTotalWorkoutSessions()
+    //{
+    //    UsersAchievementsList = _sortAscending ? UsersAchievementsList.OrderBy(x => x.TotalWorkoutSessions).ToList() : UsersAchievementsList.OrderByDescending(x => x.TotalWorkoutSessions).ToList();
+    //    _sortAscending = !_sortAscending;
+    //    UserClassement = 0;
+    //}
+    //private void SortTableByTotalWeightLifted()
+    //{
+    //    UsersAchievementsList = _sortAscending ? UsersAchievementsList.OrderBy(x => x.TotalWeightLifted).ToList() : UsersAchievementsList.OrderByDescending(x => x.TotalWeightLifted).ToList();
+    //    _sortAscending = !_sortAscending;
+    //    UserClassement = 0;
+    //}
+    //private int IncrementNumber()
+    //{
+    //    UserClassement++;
+    //    return UserClassement;
+    //}
+    //private void NavigateToFirendProfile(string userId, string userName)
+    //{
+    //    UriHelper.NavigateTo($"FriendProfile/{userId}/{userName}");
+    //}
+}

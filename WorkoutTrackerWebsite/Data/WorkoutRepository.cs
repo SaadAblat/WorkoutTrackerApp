@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using System.ComponentModel;
 using WorkoutTrackerWebsite.Migrations;
 using WorkoutTrackerWebsite.Models.LogicModels;
+using WorkoutTrackerWebsite.Pages;
+using WorkoutTrackerWebsite.Pages.SocalComponents;
 
 namespace WorkoutTrackerWebsite.Data
 {
@@ -28,6 +30,40 @@ namespace WorkoutTrackerWebsite.Data
             _ctx.Dispose();
         }
         
+
+
+
+
+        public async Task UpdateFriendStringAsync(UserFriendsModel userFriendsModel)
+        {
+            _ctx.UsersFriends.Update(userFriendsModel);
+            await _ctx.SaveChangesAsync();
+        }
+        public async Task AddANewUserFriendsModelAsync(UserFriendsModel userFriendsModel)
+        {
+            await _ctx.UsersFriends.AddAsync(userFriendsModel);
+            await _ctx.SaveChangesAsync();
+
+        }
+
+        public async Task<UserFriendsModel> GetUserFriendsModel(string userId) 
+        {
+            UserFriendsModel userFriendsModel = new();
+            if (_ctx.UsersFriends != null && _ctx.UsersFriends.Count() != 0 && _ctx.UsersFriends.Any(x => x.UserId == userId))
+            {
+                userFriendsModel = await _ctx.UsersFriends.FirstAsync(x => x.UserId == userId);
+            }
+            return userFriendsModel;
+        }
+
+
+
+
+
+
+
+
+
         public async Task<ExerciseModel> GetExerciseByIdAsync(Guid id)
         {
             return await _ctx.Exercises.FirstOrDefaultAsync(x => x.Id == id);
@@ -212,8 +248,30 @@ namespace WorkoutTrackerWebsite.Data
 
         public async Task<UserAchievementsModel> GetUserAchievementByUserId(string userId)
         {
-            var userAchievemt = await _ctx.UsersAchievements.FirstOrDefaultAsync(r => r.UserId == userId);
-            return userAchievemt;
+            if (_ctx.UsersAchievements.Any(r => r.UserId == userId))
+            {
+                var userAchievemt = await _ctx.UsersAchievements.FirstAsync(r => r.UserId == userId);
+                return userAchievemt;
+
+            }
+            UserAchievementsModel userAchievement = await CreateUserAchievementAsync(userId);
+            return userAchievement;
+            
+        }
+        public async Task<UserAchievementsModel> CreateUserAchievementAsync(string userId)
+        {
+            UserAchievementsModel userAchievementsModel = new();
+
+            userAchievementsModel.UserId = userId;
+            userAchievementsModel.UserName = "";
+            userAchievementsModel.TotalWeightLifted = 0;
+            userAchievementsModel.TotalWorkoutSessions = 0;
+            userAchievementsModel.PeriodTraining = 0;
+            userAchievementsModel.MainExercises = "";
+
+            await _ctx.UsersAchievements.AddAsync(userAchievementsModel);
+            await _ctx.SaveChangesAsync();
+            return userAchievementsModel;
         }
         public async Task UpdateUserAchievementAsync(string userId, string userName)
         {
@@ -221,16 +279,7 @@ namespace WorkoutTrackerWebsite.Data
             if (userAchievement == null)
             {
                 //add if new
-                userAchievement = new UserAchievementsModel();
-                userAchievement.UserId = userId;
-                userAchievement.UserName = userName;
-                userAchievement.TotalWeightLifted = 0;
-                userAchievement.TotalWorkoutSessions = 0;
-                userAchievement.Level = 0;
-                userAchievement.MainExercises = "";
-
-                await _ctx.UsersAchievements.AddAsync(userAchievement);
-
+                userAchievement = await CreateUserAchievementAsync(userId);
             }
             //update username
             userAchievement.UserName = userName;
@@ -275,6 +324,30 @@ namespace WorkoutTrackerWebsite.Data
         public async Task<List<LogMessageModel>> GetAllLogMessageModels()
         {
             return await _ctx.LogMessages.ToListAsync();
+        }
+        public async Task<List<LogMessageModel>> GetLogMessageModelsByFriendsIds(List<string> FriendsIds, string userId)
+        {
+            List<LogMessageModel> displayedLogMessages = new();
+            List<LogMessageModel> allLogMessages = await GetAllLogMessageModels();
+            if (FriendsIds != null && FriendsIds.Count != 0)
+            {
+                // for every id in friends ids list
+                foreach (var friendId in FriendsIds)
+                {
+                    List<LogMessageModel> logMessageModelsByFriend = new();
+                    //search for the messages that have his id in userId
+                    logMessageModelsByFriend = allLogMessages.Where(x => x.UserId == friendId).ToList();
+
+                    // then add every message in that list to DisplayedlogMessages
+                    displayedLogMessages.AddRange(logMessageModelsByFriend);
+
+                }
+                List<LogMessageModel> userLogMessages = allLogMessages.Where(x => x.UserId == userId).ToList();
+                displayedLogMessages.AddRange(userLogMessages);
+
+
+            }
+            return displayedLogMessages;
         }
         public async Task<List<ExerciseCategoryModel>> GetAllExerciseCategories()
         {

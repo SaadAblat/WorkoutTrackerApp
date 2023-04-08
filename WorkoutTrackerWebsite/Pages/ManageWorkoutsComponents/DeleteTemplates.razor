@@ -6,6 +6,7 @@
 @using WorkoutTrackerWebsite.Models.LogicModels;
 <PageTitle>AddWorkout</PageTitle>
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
+@inject IJSRuntime JSRuntime;
 
 @inject AuthenticationStateProvider GetAuthenticationStateAsync
 @layout UserLayout
@@ -57,15 +58,18 @@
 
     async Task DeleteTemplate(Guid Id)
     {
-        
-        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Do you want to delete this template?"))
         {
-            await repo.DeleteWorkoutTemplateAsyncById(Id);
+            using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+            {
+                await repo.DeleteWorkoutTemplateAsyncById(Id);
+            }
+            if (_workoutsTemplates.Any(w => w.Id == Id))
+            {
+                _workoutsTemplates.Remove(_workoutsTemplates.First(w => w.Id == Id));
+            }
         }
-        if (_workoutsTemplates.Any(w => w.Id == Id))
-        {
-            _workoutsTemplates.Remove(_workoutsTemplates.First(w => w.Id == Id));
-        }
+       
     }
 
 

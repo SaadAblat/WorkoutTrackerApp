@@ -6,3 +6,14 @@
 }
 
 <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+<script>
+    function ScrollToBottom(elementId) {
+        var element = document.getElementById(elementId);
+        //element.scrollTop = element.scrollHeight;
+        element.scrollTo({
+            top: element.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
+</script>

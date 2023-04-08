@@ -7,43 +7,100 @@
 
 
 
-    <div class="BraggingCard card p-0 rounded-3">
-        <div class="card-header bg-dark text-white">
-            <h1 class="card-title fs-1 text-center ">@userName's card  </h1>
-            <div class="d-sm-inline-flex justify-content-around w-100 text-center">
-                <div class="fs-5 mx-2" id="level"><b>Level</b> : <span class="fs-2">@_userAchievements.Level</span></div>
+<div class=" card p-0 rounded-3">
+    <div class="card-header bg-dark text-white">
+        <h1 class="card-title fs-1 text-center ">@userName's card  </h1>
+        <div class="d-sm-inline-flex justify-content-around w-100 text-center">
+            <div class="fs-5 mx-2" id="PeriodTraining"><b>Period Training</b> : <span class="fs-2">@GetperiodeTraining()</span></div>
             <div class="fs-5 mx-2"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
             <div class="fs-5 mx-2"><b>T. Workouts</b> : <span class="fs-2">@_userAchievements.TotalWorkoutSessions</span> </div>
-            </div>
         </div>
+    </div>
 
-        
-        
-            <div class="Exercises">
 
-            @if (_userMainExercisesInfo.Count != 0)
-            {
-                @foreach (var exercise in _userMainExercisesInfo)
-                {
-                    <div class="ExercisesFavoriteSlot" >
-                        <div class="fs-5">@exercise.MaxWeight.ToString("0") <span class="small">KG</span></div>
-                        <div class=""><b>@exercise.Name</b></div>
-                        
-                    </div>
-                }
-            }
-            // Empty
-            else
-            {
-                <div class="emptySlot w-100 ">
-                    <div style="color:gray; margin-bottom:auto;">Your friend didn't add any favorite Exercises. (max 4).</div>
-                </div>
-            }
-            </div>
-            
-       
+
+    <div class="p-0 m-0">
+        @if (_userMainExercisesInfo.Count != 0)
+        {
+
+            <div class="text-center fs-4">@userName Favorite Exercises</div>
+                <table class="table table-responsive table-bordered ">
+                    <tbody>
+                    <tr>
+                        @foreach (var exercise in _userMainExercisesInfo)
+                        {
+
+                            <th class="w-25">@exercise.Name</th>
+                        }
+                        </tr>
+                        <tr>
+                        @foreach (var exercise in _userMainExercisesInfo)
+                        {
+
+                            <th class="w-25 fs-4">@exercise.MaxWeight.ToString("0") <span class="small">KG</span></th>
+                        }
+                        </tr>
+                
+                    </tbody>
+                </table>
+
+        }
+        else
+        {
+            <table class="table table-responsive ">
+                <tbody>
+
+                    <tr>
+                        <th style="color:gray;">Not added yet!</th>
+                        <th style="color:gray;">Not added yet!</th>
+                        <th style="color:gray;">Not added yet!</th>
+                        <th style="color:gray;">Not added yet!</th>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        }
+
 
     </div>
+    <div id="WokroutsCharts" class=" w-100 d-flex flex-column flex-wrap gap-5 justify-content-around bg-white p-5" style="min-height:400px;">
+        <div class="flex-grow-1 shadow p-5 hoverableGetBig m-auto" style="">
+            @if (GetperiodeTraining() == 0)
+            {
+                if (userHaveNoWorkoutYet)
+                {
+                    <div>It looks like @userName haven't added a workout yet</div>
+                }
+                else
+                {
+                    <div>Calculating your friend data...</div>
+
+                }
+
+            }
+            else
+            {
+                <div style="font-size:23px;" class=" text-start">
+                    <div style="font-size:27px"></div>@userName have been working out with us for <b>@GetperiodeTraining().ToString()</b> days now and have trained a total of <b>@_userAchievements.TotalWorkoutSessions</b> times. <br /> On average, that's:
+                    <ul class="m-3">
+                        <li class="m-2"><b>@CalculateTrainingRate(7)</b> training sessions per week,</li>
+                        <li class="m-2"><b>@CalculateTrainingRate(30)</b>  training sessions per month,</li>
+                        <li class="m-2"><b>@CalculateTrainingRate(365)</b>  training sessions per year.</li>
+                    </ul>
+                </div>
+            }
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+</div>
 
 
 
@@ -59,6 +116,7 @@
     List<ExerciseInfos> _userMainExercisesInfo = new();
     List<string> _mainExercises = new();
 
+    bool userHaveNoWorkoutYet = false;
     //Getting Data
     protected override async Task OnInitializedAsync()
     {
@@ -71,7 +129,33 @@
         }
 
         _userMainExercisesInfo = MainExercisesLogic.ConvertListOfStringsToListOfExercisesInfos(_userAchievements, _exercises, _userWorkouts);
+        if (_userWorkouts.Count == 0 || _userWorkouts == null)
+        {
+            userHaveNoWorkoutYet = true;
+        }
     }
 
 
+
+    //Get dates Info
+    int GetperiodeTraining()
+    {
+        if (_userWorkouts != null && _userWorkouts.Count != 0)
+        {
+            TimeSpan difference = DateTime.Now - _userWorkouts.MinBy(x => x.Date).Date;
+            return difference.Days;
+
+        }
+        return 0;
+
+    }
+    float CalculateTrainingRate(int reference)
+    {
+        if (GetperiodeTraining() == 0)
+        {
+            return 0;
+        }
+        float rate = (_userAchievements.TotalWorkoutSessions * reference) / GetperiodeTraining();
+        return rate;
+    }
 }

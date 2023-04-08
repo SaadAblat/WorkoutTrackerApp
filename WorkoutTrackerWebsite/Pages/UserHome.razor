@@ -415,6 +415,7 @@
         {
             _userWorkouts = await repo.GetWorkoutsByUserIdAsync(userId);
             _userAchievements = await repo.GetUserAchievementByUserId(userId);
+            await repo.UpdateUserAchievementAsync(userId, userName);
             _exercises = await repo.GetAllExercisesAsync();
             _categories = await repo.GetAllExerciseCategories();
         }
@@ -543,7 +544,7 @@
     List<string> GetMainExercisesListFromString()
     {
 
-        if ( _userAchievements.MainExercises == null)
+        if (_userAchievements==null ||  _userAchievements.MainExercises == null)
         {
             return new List<string>();
         }

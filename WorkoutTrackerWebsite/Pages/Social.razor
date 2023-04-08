@@ -3,216 +3,172 @@
 @using System.Text;
 @using WorkoutTrackerWebsite.Data;
 @using Microsoft.EntityFrameworkCore;
+@using WorkoutTrackerWebsite.Logic;
 @using WorkoutTrackerWebsite.Models;
 @using WorkoutTrackerWebsite.Models.LogicModels;
+@using WorkoutTrackerWebsite.Pages.SocalComponents;
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
 <PageTitle>Friends</PageTitle>
 @layout UserLayout
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
 
+<div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-auto" style="min-height:1000px; ">
 
-@inject NavigationManager UriHelper
-
-
-
-<div id="logContainer" class="bg-light ">
-    <div class="rounded bg-dark p-lg-5 d-flex flex-column justify-content-start">
-        
-        @for (int i = 0; i < _logMessages.TakeLast(50).Count(); i++)
-        {
-            var logMessage = _logMessages.TakeLast(50).ToList()[i];
-            <div class="d-flex flex-row justify-content-start gap-5">
-                <div class="" style="color:whitesmoke; min-width:150px;">
-                    
-
-                @if (i != 0)
-                {
-                        @if (_logMessages.TakeLast(50).ToList()[i - 1].MessageDate.ToShortTimeString() != logMessage.MessageDate.ToShortTimeString())
-                    {
-                        <span>@logMessageDateFormat(logMessage)</span>
-                    }
-                }
-
-                </div>
-                <div style="color:@logMessage.MessageColor;">@logMessage.MessageBody</div>
-            </div>
-        }
-
-
-       @* @foreach (LogMessageModel logMessage in _logMessages.TakeLast(50))
-        {
-            <div class="d-flex flex-row justify-content-start gap-5">
-                <div  class="" style="color:whitesmoke; min-width:150px;">
-                    <span>@logMessageDateFormat(logMessage)</span>
-                </div>
-                @if (messagesIndex != 0)
-                {
-                        @if (_logMessages.TakeLast(50).ToList()[messagesIndex - 1].WorkoutDate.ToShortDateString() != logMessage.WorkoutDate.ToShortDateString())
-                    {
-                            
-                    }
-                    messagesIndex++;
-                }
-                
-                else
-                {
-                    messagesIndex++;
-
-                }
-                
-                <div style="color:@logMessage.MessageColor;" >@logMessage.MessageBody</div>
-        </div>}*@
-
-            
-        
+    <ul class="nav nav-tabs bg-dark fs-4 ">
+        <li>
+            <button @onclick="ShowPage1" class="nav-link @active1 ">Log</button>
+        </li>
+        <li>
+            <button @onclick="ShowPage2" class="nav-link @active2">Friends</button>
+        </li>
+        <li>
+            <button @onclick="ShowPage3" class="nav-link @active3  ">Exercises</button>
+        </li>
+    </ul>
+    <div>
     </div>
-    
+
+    @if (is1Active)
+    {
+        <Log _logMessages="_logMessages" />
+    }
+    else if (is2Active)
+    {
+        <Friends UsersAchievementsList="_usersAchievementsList" _UserFriendsModel="_userFriendsModel" UserId="@_userId" UserName="@_userName" />
+    }
+    else if (is3Active)
+    {
+        <FriendsExercises _Allworkouts="_allWorkouts" UsersAchievementsList="_usersAchievementsList" _UserFriendsModel="_userFriendsModel" UserId="@_userId" UserName="@_userName"></FriendsExercises>
+    }
+    <div id="logContainer" class="bg-light d-flex flex-row justify-content-end ">
+       
+        
+
+
+
+    </div>
+
 </div>
 
 
-
-@*
-<img class="background" src="Images/Background.png">
-<div class=" bg-dark m-auto w-75 p-4 rounded">
-    <table class="table table-dark m-auto table-hover table-striped mb-5 ">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th style="cursor:pointer;" @onclick="SortTableByTotalWorkoutSessions" scope="col">Number of Workouts</th>
-                <th style="cursor:pointer;" @onclick="SortTableByTotalWeightLifted" scope="col">Total weight lifted</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var userAch in _usersAchievementsList)
-            {
-                <tr>
-                    <th scope="row">@IncrementNumber()</th>
-                    <td style="cursor:pointer" @onclick="(()=>NavigateToFirendProfile(userAch.UserId, userAch.UserName))">@userAch.UserName</td>
-                    <td>@userAch.TotalWorkoutSessions</td>
-                    <td>@userAch.TotalWeightLifted KG</td>
-                </tr>
-
-            }
-        </tbody>
-    </table>
-        
-
-    <div class="log">
-
-        <div class="logHeader">
-            <p class="">Workouts Log</p>
-        </div>
-
-        @foreach (LogMessageModel logMessage in _logMessages.TakeLast(50))
-        {
-            <div class="mb-2">
-                <div>
-                    <span class="logDate" style="color:whitesmoke">@logMessageDateFormat(logMessage)</span>
-                    <span style="color:@logMessage.MessageColor;" class="  logElement">@logMessage.MessageBody</span>
-                </div>
-            </div>
-        }
-
-        
-    </div>
-    
-</div>
-*@
 
 @code {
+    //NavMenu
+    bool is1Active = true;
+    bool is2Active = false;
+    bool is3Active = false;
+    int startAnimationKey = 0;
+    string active1 = "active";
+    string active2 = "";
+    string active3 = "";
 
-
-    string logMessageDateFormat(LogMessageModel logMessage)
+    void ShowPage1()
     {
-        string output = "";
-        if (logMessage.MessageDate.ToShortDateString() == DateTime.Today.AddDays(-1).ToShortDateString())
-        {
-            output = "Yesterday " + @logMessage.MessageDate.ToShortTimeString() + ":";
-        }
-        else if (logMessage.MessageDate.ToShortDateString() == DateTime.Today.ToShortDateString())
-        {
-            output = "Today " + @logMessage.MessageDate.ToShortTimeString() + ":";
-        }
-        else
-        {
-            output = @logMessage.MessageDate.ToString();
-        }
+        startAnimationKey--;
+        is1Active = true;
+        active1 = "active";
 
-        return output;
+        is2Active = false;
+        active2 = "";
+
+        is3Active = false;
+        active3 = "";
+    }
+    void ShowPage2()
+    {
+        startAnimationKey--;
+        is1Active = false;
+        active1 = "";
+
+        is2Active = true;
+        active2 = "active";
+
+        is3Active = false;
+        active3 = "";
+    }
+    void ShowPage3()
+    {
+        startAnimationKey--;
+        is1Active = false;
+        active1 = "";
+
+        is2Active = false;
+        active2 = "";
+
+        is3Active = true;
+        active3 = "active";
     }
 
 
+
+    //User
+    string _userName = "";
+    string _userId = "";
+    string _friendsString = "";
+    List< string> _friendsList = new();
+
+    // Log Component
     List<LogMessageModel> _logMessages = new();
-    int counter = 0;
-    int messagesIndex = 0;
-
-
+    List<LogMessageModel> _newLogMessages = new();
     async Task UpdatedLogMessage()
     {
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
-            _logMessages = await repo.GetAllLogMessageModels();
+            // Get the new list
+            //TODO : Figure out why log messages doesn't show _friendsString and _friendsList works fine!
+            _newLogMessages = await repo.GetLogMessageModelsByFriendsIds(_friendsList, _userId);
+            // check if it changed
+            if (_newLogMessages.Count != _logMessages.Count)
+            {
+                _logMessages = _newLogMessages;
+                logMessagesChanged = true;
+            }
         }
     }
     private Timer? TextTimer;
+    bool logMessagesChanged;
     async Task GetLogMessages()
     {
         await UpdatedLogMessage();
+        logMessagesChanged = false;
         TextTimer = new Timer(async (object? stateInfo) =>
         {
             await UpdatedLogMessage();
-            await InvokeAsync(StateHasChanged);  // NOTE: MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+            if (logMessagesChanged)
+            {
+                await InvokeAsync(StateHasChanged);  // NOTE: MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+                logMessagesChanged = false;
+            }
         },
         null, 2000, 2000); // fire every 2000 milliseconds
     }
+    // FriendsAchievements
+    List<UserAchievementsModel> _usersAchievementsList = new();
+    UserFriendsModel _userFriendsModel = new();
+    List<WorkoutModel> _allWorkouts = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await GetLogMessages();
+        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        _userName = user.Identity.Name;
+        _userId = user.Claims.FirstOrDefault().Value;
+
         using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
         {
-            //// Get the initial list of log messages
-            //_logMessages = await repo.GetAllLogMessageModels();
-            
-
+            _userFriendsModel = await repo.GetUserFriendsModel(_userId);
+            _allWorkouts = await repo.GetAllWorkoutsAsync();
             _usersAchievementsList = await repo.GetAllUserAchievementsModel();
             _usersAchievementsList.OrderByDescending(x => x.TotalWeightLifted).ToList();
-            foreach (var user in _usersAchievementsList)
+            foreach (var ach in _usersAchievementsList)
             {
-                await repo.UpdateUserAchievementAsync(user.UserId, user.UserName);
+                await repo.UpdateUserAchievementAsync(ach.UserId, ach.UserName);
             }
+
         }
-        messagesIndex = 0;
-
-    }
-    
- 
-    List<UserAchievementsModel> _usersAchievementsList = new();
-    bool _sortAscending;
-    int UserClassement = 0;
-
-
-    private void SortTableByTotalWorkoutSessions()
-    {
-        _usersAchievementsList = _sortAscending ? _usersAchievementsList.OrderBy(x => x.TotalWorkoutSessions).ToList() : _usersAchievementsList.OrderByDescending(x => x.TotalWorkoutSessions).ToList();
-        _sortAscending = !_sortAscending;
-        UserClassement = 0;
-    }
-    private void SortTableByTotalWeightLifted()
-    {
-        _usersAchievementsList = _sortAscending ? _usersAchievementsList.OrderBy(x => x.TotalWeightLifted).ToList() : _usersAchievementsList.OrderByDescending(x => x.TotalWeightLifted).ToList();
-        _sortAscending = !_sortAscending;
-        UserClassement = 0;
-    }
-    private int IncrementNumber()
-    {
-        UserClassement++;
-        return UserClassement;
-    }
-
-    private void NavigateToFirendProfile(string userId, string userName)
-    {
-        UriHelper.NavigateTo($"FriendProfile/{userId}/{userName}");
+        _friendsString = _userFriendsModel.FriendsString;
+        _friendsList = FriendsLogic.Friends_Ids_List(_friendsString);
+        await GetLogMessages();
     }
 
 }
