@@ -4,7 +4,7 @@
 @inject NavigationManager UriHelper;
 @using Microsoft.EntityFrameworkCore;
 @inject IDbContextFactory<WorkoutsTrackerDbContext> ContextFactory;
-
+@inject IJSRuntime JSRuntime;
 
 
 <div style="max-width: 700px;" class=" mx-auto shadow p-5">
@@ -62,9 +62,17 @@
     <div class="px-5">
         <table class="table   ">
             <tbody>
+                @if (FriendsLogic.Friends_UserAchievements_List(_UserFriendsModel.FriendsString, UsersAchievementsList).Count() == 0)
+                {
+                     <tr>
+                <td colspan="2">You haven't added any friend yet!</td>
+                    </tr>
+
+                }
                 @foreach (var userAch in FriendsLogic.Friends_UserAchievements_List(_UserFriendsModel.FriendsString, UsersAchievementsList))
                 {
                     <tr>
+                        
                         <th class="w-50">@userAch.UserName</th>
                         <td class="w-50"><button @onclick="(async()=>await DeleteFriendAsync(userAch.UserId))" class="btn btn-danger">Delete from your friends list</button></td>
                     </tr>
@@ -148,7 +156,7 @@
                 ValidationMessage = friendName + " Added To your friends succesfully";
                 using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
                 {
-                    await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage($"{UserName} Added {friendName} to his friends", UserId, "greenyellow"));
+                    await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage($"{UserName} Added {friendName} to his friends", UserId, "userAddedAFriend"));
                 }
 
 
@@ -170,23 +178,27 @@
     }
     async Task DeleteFriendAsync(string FriendId)
     {
-        string UserFriendString = _UserFriendsModel.FriendsString;
-        string newFriendString = "";
-        foreach (string Id in FriendsLogic.Friends_Ids_List(UserFriendString))
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Do you want to remove this user from your friends list ?"))
         {
-            if (Id != FriendId)
+            string UserFriendString = _UserFriendsModel.FriendsString;
+            string newFriendString = "";
+            foreach (string Id in FriendsLogic.Friends_Ids_List(UserFriendString))
             {
-                newFriendString += Id + ";";
+                if (Id != FriendId)
+                {
+                    newFriendString += Id + ";";
+                }
             }
-        }
-        if (newFriendString.Length > 0)
-        {
-            newFriendString = newFriendString.Remove(newFriendString.Length - 1);
-        }
-        _UserFriendsModel.FriendsString = newFriendString;
-        using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
-        {
-            await repo.UpdateFriendStringAsync(_UserFriendsModel);
+            if (newFriendString.Length > 0)
+            {
+                newFriendString = newFriendString.Remove(newFriendString.Length - 1);
+            }
+            _UserFriendsModel.FriendsString = newFriendString;
+            using (var repo = new WorkoutRepository(ContextFactory.CreateDbContext()))
+            {
+                await repo.UpdateFriendStringAsync(_UserFriendsModel);
+            }
+            ValidationMessage = "User deleted succesfully";
         }
     }
 

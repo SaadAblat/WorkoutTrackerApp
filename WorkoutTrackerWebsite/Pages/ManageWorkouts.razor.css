@@ -7,3 +7,26 @@
     height: 100%;
     background-size: cover;
 }
+.navCustom {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+    .navCustom:hover {
+        transform: scale(1.1);
+        transition: transform 0.2s;
+    }
+
+.navCustomOnSelected {
+    background-color: white !important;
+    color: white !important;
+}
+
+.nav-link {
+    color: white !important;
+    list-style: none !important;
+}
+
+.active {
+    color: black !important;
+}

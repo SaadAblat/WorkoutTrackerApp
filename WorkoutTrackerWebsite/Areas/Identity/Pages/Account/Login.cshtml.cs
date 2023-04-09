@@ -34,6 +34,10 @@ namespace WorkoutTrackerWebsite.Areas.Identity.Pages.Account
                 {
                     return LocalRedirect(ReturnUrl);
                 }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "The password or the name are incorrect.");
+                }
             }
             return Page();
         }
@@ -41,8 +45,8 @@ namespace WorkoutTrackerWebsite.Areas.Identity.Pages.Account
         {
             [Required]
             public string Name { get; set; }
-            [Required]
-            [EmailAddress] public string Email { get; set; }
+            //[Required]
+            //[EmailAddress] public string Email { get; set; }
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }

@@ -2,8 +2,8 @@
 @using WorkoutTrackerWebsite.Models;
 
 @inject NavigationManager navigationManager
-<h3>FriendsExercises</h3>
-<table class="table">
+
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Classement</th>
@@ -18,9 +18,9 @@
         @foreach (var userAch in _friendsListIncludingTheUser)
         {
             <tr>
-                <th>@IncrementNumber()</th>
-                <th style="cursor:pointer" @onclick="(()=>NavigateToFirendProfile(userAch.UserId,userAch.UserName))">@userAch.UserName</th>
-                <th style="cursor:pointer">
+                <td>@IncrementNumber()</td>
+                <td class="hoverable" style="cursor:pointer" @onclick="(()=>NavigateToFirendProfile(userAch.UserId,userAch.UserName))">@userAch.UserName</td>
+                <td style="cursor:pointer">
                     @userAch.PeriodTraining @if (userAch.PeriodTraining == 1)
                     {
                         <span> Day</span>
@@ -30,9 +30,9 @@
                         <span> Days</span>
                     }
 
-                </th>
-                <th>@userAch.TotalWeightLifted.ToString("0") Kg</th>
-                <th>@userAch.TotalWorkoutSessions</th>
+                </td>
+                <td>@userAch.TotalWeightLifted.ToString("0") Kg</td>
+                <td>@userAch.TotalWorkoutSessions</td>
 
             </tr>
         }
@@ -42,7 +42,13 @@
 
 
 
-
+<style>
+    .hoverable:hover{
+        color:green;
+        transform:scale(1.05);
+        transition: transform 0.1s;
+    }
+</style>
 
 
 

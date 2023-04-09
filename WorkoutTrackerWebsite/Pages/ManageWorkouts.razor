@@ -14,7 +14,7 @@
 <img class="background" src="Images/Background.png">
 
 
-<div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-0" style="min-height:800px; ">
+    <div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-0" style="min-height:1000px; ">
     <ul class="nav nav-tabs bg-dark fs-4 " >
         <li >
             <button @onclick="ShowPage1" class="nav-link @active1 ">AddWorkout</button>
@@ -28,22 +28,30 @@
     </ul>
 
 
-@if (is1Active)
-{
-    <AddWorkouts></AddWorkouts>
-}
-else if (is2Active)
-{
-    <DeleteWorkouts></DeleteWorkouts>
-}
-else if (is3Active)
-{
-    <DeleteTemplates></DeleteTemplates>
-}
+
+
+
+    @if (is1Active)
+    {
+        <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
+            <AddWorkouts></AddWorkouts>
+        </Animation>
+    }
+    else if (is2Active)
+    {
+        <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
+            <DeleteWorkouts></DeleteWorkouts>
+        </Animation>
+                
+    }
+
+    else if (is3Active)
+    {
+        <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
+            <DeleteTemplates></DeleteTemplates>
+        </Animation>
+    }
 </div>
-
-
-
 
 
 

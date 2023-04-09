@@ -6,18 +6,21 @@
 }
 <div class="col-xs-1 " align="center">
 
-    <div class="col-md-4 text-start text-white" style="max-width:500px">
+    <div class="text-start text-white" style="max-width:500px">
         <section class="formCentered">
             <form id="account" method="post">
+
                 <h2 class="text-center mb-5">Log in to your account</h2>
-                <ht />
                 <div asp-validation-summary="ModelOnly" class="text-danger" aria-required="true"></div>
-                <div>
+
+                <ht />
+                
+@*                <div>
                     <label asp-for="Input.Email" class="form-label"></label>
                     <input asp-for="Input.Email" class="form-control mb-3" />
                     
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
+                </div>*@
                 <div>
                     <label asp-for="Input.Name" class="form-label"></label>
 
@@ -29,6 +32,7 @@
                     <input asp-for="Input.Password" class="form-control" aria-required="true" />
                     <span asp-validation-for="Input.Password" class="text-danger mb-3"></span>
                 </div>
+
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mt-4">Log in</button>
                 </div>

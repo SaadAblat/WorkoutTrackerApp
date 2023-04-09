@@ -14,7 +14,7 @@
 <PageTitle>My Workouts</PageTitle>
 @layout UserLayout
 <img class="background" src="Images/Background.png">
-<div class="bg-white" style="min-height:700px">
+<div id="PageContainer" class=" w-100  bg-white m-auto" style="min-height:1000px; ">
     <ul class="nav nav-tabs bg-dark fs-4 ">
         <li>
             <button @onclick="ShowPage1" class="nav-link @active1 ">Line Chart</button>
@@ -30,18 +30,25 @@
     @if (is1Active)
     {
         <div class="m-auto p-5" id="LineGraph">
+            <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
             <LineChart Exercises="_exercises" ExercisesInfosAll="_exercisesInfo" UserWorkouts="_userWorkouts"></LineChart>
+            </Animation>
         </div>
     }else if (is2Active)
     {
         <div class="m-auto  p-5" id="PieGraph">
+            <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
             <PieChart Exercises="_exercises" ExercisesInfosAll="_exercisesInfo" UserWorkouts="_userWorkouts" Categories="_categories"></PieChart>
+            </Animation>
         </div>
     }
     else if (is3Active)
     {
         <div class="m-auto  p-5" id="BarGraph">
+
+            <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
             <JustBarChart Exercises="_exercises" ExercisesInfosAll="_exercisesInfo" UserWorkouts="_userWorkouts"></JustBarChart>
+            </Animation>
         </div>
     }
 </div>

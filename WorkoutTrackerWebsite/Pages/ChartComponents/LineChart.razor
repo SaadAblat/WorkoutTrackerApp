@@ -92,7 +92,10 @@
     {
         _trainedExerciseInfo = ExercisesInfosAll.Where(x => x.NumberOfReps > 0).ToList();
 
-
+        if (_trainedExerciseInfo!=null && _trainedExerciseInfo.Count != 0)
+        {
+            _filteredExerciseName = _trainedExerciseInfo[0].Name;
+        }
 
     }
 

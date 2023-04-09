@@ -2,9 +2,9 @@
 @using WorkoutTrackerWebsite.Models;
 @using WorkoutTrackerWebsite.Models.LogicModels;
 @inject IJSRuntime JSRuntime;
-<div class="d-flex flex-column justify-content-start " style="min-height:800px">
+<div class="d-flex flex-column justify-content-start flex-wrap " style="min-height:800px">
 
-    <div id="tableControls" class="w-auto d-flex flex-row gap-lg-5 justify-content-evenly fs-5  mb-5">
+    <div id="tableControls" class="w-auto d-flex flex-row gap-lg-5 justify-content-start flex-wrap fs-5  mb-5">
         <RadzenCard>
 
                 <div>Show only exercises already trained</div>
@@ -29,7 +29,7 @@
         </RadzenCard>
     </div>
     
-    <table class="table table-dark table-hover m-0 table-striped">
+    <table class="table table-dark table-responsive table-hover m-0 table-striped">
         <thead>
             <tr>
                 <th style="cursor:pointer; width:400px;" @onclick="SortTableByName" scope="col"> ExerciseName</th>

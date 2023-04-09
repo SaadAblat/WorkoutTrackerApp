@@ -21,23 +21,22 @@
 
 
 
-<Animation AnimationHappensOnce="false" @key="@KeyCounter" AnimationNameSelect="@AnimationsNames.zoomIn">
     @if (showAddMainExerciseActive)
     {
 
-        <div class="AddExerciseBox bg-dark rounded-2 p-2 shadow translate-middle-x m-0">
+        <div class="AddExerciseBox bg-dark rounded-2 p-2 
+qsw translate-middle-x m-0">
             <div class="d-inline-flex justify-content-between w-100">
                 <span class="m-1 text-start text-white">Search an exercise</span>
                 <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-5 m-0 " aria-hidden="true"></span>
             </div>
             <div>
-                <select class="form-select   " id="RoundExercice" @bind="_selectedMainExerciseName">
-                    <option value="">All</option>
-                    @foreach (Models.ExerciseModel exercice in _exercises.OrderBy(x => x.Name))
-                    {
-                        <option value="@exercice.Name">@exercice.Name</option>
-                    }
-                </select>
+            <div class="fs-3 mb-4 text-start w-100">
+                <RadzenCard>
+                    <RadzenDropDown Style="width:100%;" TValue="string" @bind-Value="_selectedMainExerciseName" Placeholder="Select Exercise" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_exercises.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Name" />
+                </RadzenCard>
+            </div>
+    
                 <div class="">
                     <button class="btn btn-success" @onclick="(async ()=> await SaveExerciseInToMainExercisesString())">Add Exercise To Main Exercises</button>
                 </div>
@@ -45,15 +44,14 @@
 
         </div>
     }
-</Animation>
 
-<div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-auto" style="min-height:700px; ">
-    <ul class="nav nav-tabs bg-dark fs-4 " >
+<div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-auto" style="min-height:950px; ">
+    <ul class="nav nav-tabs bg-dark fs-4 px-2" >
         <li >
-            <button @onclick="ShowPage1" class="nav-link @active1 ">Home</button>
+            <button @onclick="ShowPage1" class="nav-link @active1 ">Welcome</button>
         </li>
         <li >
-            <button @onclick="ShowPage2" class="nav-link @active2">My Workouts</button>
+            <button @onclick="ShowPage2" class="nav-link @active2">Workouts</button>
         </li>
         <li  >
             <button @onclick="ShowPage3" class="nav-link @active3  ">Exercises</button>
@@ -66,9 +64,9 @@
         @if (is1Active)
         {
             <div class=" position-relative m-auto  ">
-                <div class="  card m-auto p-0  ">
+                <div class="   m-auto p-0  ">
                     <div class="card-header bg-dark text-white">
-                        <h1 class="card-title fs-1 text-center ">@userName's card  </h1>
+                        <h1 class="card-title fs-1 text-center ">@userName's profile  </h1>
                         <div class="d-flex flex-row flex-wrap justify-content-around gap-2 w-100 text-center">
                             <div class="fs-5" id="PeriodeTraining"><b>First workout</b> : <span class="fs-2">@GetperiodeTraining() </span> days</div>
                             <div class="fs-5"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
@@ -92,8 +90,8 @@
                                             @exercise.Name
                                             @if (exercise.IsDropDownActive)
                                             {
-                                                <div style="  z-index:30;" class="position-absolute  bg-light ">
-                                                    <a @onclick="( async() => await DeleteExerciseFromMainExercisesString(exercise.Name))" style="cursor:pointer" class="dropdown-item text-danger ">Delete</a>
+                                                <div @onclick="( async() => await DeleteExerciseFromMainExercisesString(exercise.Name))" style="  z-index:30;" class="position-absolute rounded  bg-dark p-2 text-center dropdownItemFather w-100 ">
+                                                    <span style="cursor:pointer" class="text-danger dropdownItemCustom ">Delete</span>
                                                 </div>
 
                                             }
@@ -373,7 +371,7 @@
         }
         else if (is3Active)
         {
-            <div class="d-flex flex-column justify-content-around p-5">
+            <div class="d-flex flex-column justify-content-around  flex-wrap p-5">
                 <Exercises _exercisesInfo="_exercisesInfo" _categories="_categories"></Exercises>
             </div>
         }

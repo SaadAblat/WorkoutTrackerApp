@@ -32,8 +32,15 @@ namespace WorkoutTrackerWebsite.Areas.Identity.Pages.Account
         {
             ReturnUrl = Url.Content("~/");
             if (ModelState.IsValid)
+
             {
-                var identity = new IdentityUser { UserName = Input.Name, Email = Input.Email };
+                var userExists = await _userManager.FindByNameAsync(Input.Name);
+                if (userExists != null)
+                {
+                    ModelState.AddModelError(string.Empty, "This username is already taken.");
+                    return Page();
+                }
+                var identity = new IdentityUser { UserName = Input.Name};
                 var result = await _userManager.CreateAsync(identity, Input.Password);
                 if (result.Succeeded)
                 {
@@ -41,14 +48,15 @@ namespace WorkoutTrackerWebsite.Areas.Identity.Pages.Account
                     return LocalRedirect(ReturnUrl);
                 }
             }
+ 
             return Page();
         }
         public class InputModel
         {
             [Required]
             public string Name { get; set; }
-            [Required]
-            [EmailAddress] public string Email { get; set; }
+            //[Required]
+            //[EmailAddress] public string Email { get; set; }
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }

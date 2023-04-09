@@ -1,31 +1,37 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
+﻿<div class="top-row ps-3 navbar navbar-dark  ">
+    <div class="container-fluid ">
         <a class="navbar-brand" href="">WorkoutTrackerWebsite</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
+<div class="@NavMenuCssClass w-auto"  @onclick="ToggleNavMenu">
+
+    <nav class="flex-column" >
+        <div class="nav-item px-3" >
             <NavLink class="nav-link" href="UserHome" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="AnalyseWorkouts">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Analyse Workouts
+                <span class="oi oi-pie-chart" aria-hidden="true"></span> Insights
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="ManageWorkouts">
-                <span class="oi oi-plus" aria-hidden="true"></span> Manage Workouts
+                <span class="oi oi-document" aria-hidden="true"></span> Manage Workouts
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Social">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Social
+                <span class="oi oi-people" aria-hidden="true"></span> Social
+            </NavLink>
+        </div>
+        <div class="  nav-item px-3">
+            <NavLink class="  nav-link" href="Identity/Account/Logout">
+                <span class="hoverRed"> <span class="oi oi-account-logout hoverRed" aria-hidden="true"></span> Logout</span>
             </NavLink>
         </div>
     </nav>

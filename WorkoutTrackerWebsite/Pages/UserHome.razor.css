@@ -56,7 +56,17 @@
 }
 
 
+.dropdownItemCustom{
+    text-decoration:none;
+    list-style:none;
+}
+.dropdownItemCustom:hover{
+    color:white;
 
+}
+.dropdownItemFather:hover {
+    background-color: #7a7a7a !important;
+}
 
 
 

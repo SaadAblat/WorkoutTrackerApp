@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.ComponentModel;
-using WorkoutTrackerWebsite.Migrations;
+
 using WorkoutTrackerWebsite.Models.LogicModels;
 using WorkoutTrackerWebsite.Pages;
 using WorkoutTrackerWebsite.Pages.SocalComponents;
@@ -346,6 +346,11 @@ namespace WorkoutTrackerWebsite.Data
                 displayedLogMessages.AddRange(userLogMessages);
 
 
+            }
+            else
+            {
+                List<LogMessageModel> userLogMessages = allLogMessages.Where(x => x.UserId == userId).ToList();
+                displayedLogMessages.AddRange(userLogMessages);
             }
             return displayedLogMessages;
         }

@@ -14,15 +14,15 @@
 
 <div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-auto" style="min-height:1000px; ">
 
-    <ul class="nav nav-tabs bg-dark fs-4 ">
+    <ul class="nav w-100 nav-tabs bg-dark fs-4 ">
         <li>
             <button @onclick="ShowPage1" class="nav-link @active1 ">Log</button>
         </li>
         <li>
-            <button @onclick="ShowPage2" class="nav-link @active2">Friends</button>
+            <button @onclick="ShowPage2" class="nav-link @active2">Manage friends</button>
         </li>
         <li>
-            <button @onclick="ShowPage3" class="nav-link @active3  ">Exercises</button>
+            <button @onclick="ShowPage3" class="nav-link @active3  ">Dashboard</button>
         </li>
     </ul>
     <div>
@@ -30,15 +30,33 @@
 
     @if (is1Active)
     {
-        <Log _logMessages="_logMessages" />
+
+
+        <div >
+             <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
+            <Log _logMessages="_logMessages" />
+            </Animation>
+        </div>
     }
     else if (is2Active)
     {
-        <Friends UsersAchievementsList="_usersAchievementsList" _UserFriendsModel="_userFriendsModel" UserId="@_userId" UserName="@_userName" />
+        <div >
+             <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
+            <Friends UsersAchievementsList="_usersAchievementsList" _UserFriendsModel="_userFriendsModel" UserId="@_userId" UserName="@_userName" />
+            </Animation>
+
+        </div>
+        
     }
     else if (is3Active)
     {
-        <FriendsExercises _Allworkouts="_allWorkouts" UsersAchievementsList="_usersAchievementsList" _UserFriendsModel="_userFriendsModel" UserId="@_userId" UserName="@_userName"></FriendsExercises>
+        <div >
+             <Animation @key="@startAnimationKey" AnimationNameSelect="@AnimationsNames.fadeUp" AnimationDurationSet="800" AnimationDelaySet="90">
+            <FriendsExercises _Allworkouts="_allWorkouts" UsersAchievementsList="_usersAchievementsList" _UserFriendsModel="_userFriendsModel" UserId="@_userId" UserName="@_userName"></FriendsExercises>
+            </Animation>
+
+        </div>
+        
     }
     <div id="logContainer" class="bg-light d-flex flex-row justify-content-end ">
        

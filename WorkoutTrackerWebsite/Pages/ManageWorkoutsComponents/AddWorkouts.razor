@@ -14,132 +14,165 @@
 <div  class="container bg-white text-dark m-auto p-0 rounded-3 AddWorkoutContainer text-start ">
     <div>
         <div class="m-auto ">
-            <div class="bg-dark rounded mb-4">
+            <div class="bg-dark rounded m-4">
                 <h1 class="text-light text-center fs-1 p-3">Add a new workout</h1>
             </div>
-            <div class="shadow fs-3 m-auto text-center w-100">
+            <div class=" fs-3 m-auto text-center w-100">
 
-                <RadzenCard>
-                    <div class="fs-5">Load workout exercises from your workout templates</div>
-                    <div class="m-auto ">
-                        <RadzenDropDown Style=" min-width:400px; max-width:600px;" TValue="Guid" @bind-Value="_templateId" Placeholder="Select template" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_workoutsTemplates.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Id" />
-                        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="LoadWorkoutTemplate">Load Template</RadzenButton>
-                    </div>
+                <div class="shadow px-5">
 
+                    <div class="w-100 d-flex flex-row justify-content-between flex-wrap">
 
-                </RadzenCard>
-            </div>
-            <div class="  w-100 ">
-                <div id="DateAndNote" class=" my-4 d-flex flex-row flex-wrap justify-content-evenly gap-1">
-                    <div id="Date" style="min-width:400px" class="shadow flex-grow-1">
-                        <div style="height:60px;" class=" text-center p-2 bg-dark text-light rounded fs-3  w-100 fw-bold mb-3">Set workout's date</div>
-                        <input style="max-width:400px;" type="date" class=" mt-5 form-control form-control-sm border-3 m-auto text-center fs-5 mb-4  " id="WorkoutDate" @bind-value="Workout.Date" />
-                    </div>
-                    <div id="Note" style="min-width:400px" class="shadow flex-grow-1">
-                        <div style="height:60px;" class=" p-2 bg-dark rounded text-light fs-3 text-center m-auto w-100 fw-bold mb-3">Workout Note</div>
-                        <div class="m-auto p-3 w-100">
-                            <textarea style="height:150px" placeholder="Add a Note" class=" form-control shadow" @bind="Workout.Note" />
+                        <div class="fs-5">Load workout exercises from your workout templates</div>
+                        <div class="">
+                            <RadzenDropDown Style=" min-width:400px; max-width:600px;" TValue="Guid" @bind-Value="_templateId" Placeholder="Select template" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_workoutsTemplates.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Id" />
+                            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="LoadWorkoutTemplate">Load Template</RadzenButton>
                         </div>
                     </div>
 
-
-
-                </div>
-
-                <div id="Rounds" class="shadow w-100 m-auto text-center justify-content-center  d-flex flex-row flex-wrap">
-                    <div style="max-height:60px;" class=" p-2 ps-3 bg-dark rounded text-light text-center fs-3 w-100 fw-bold mb-3">Workout Rounds</div>
-
-                    @if (Workout.Rounds != null)
-                    {
-                        @foreach (Models.RoundModel round in Workout.Rounds)
-                        {
-                            
-                            <Animation AnimationHappensOnce="true"  AnimationNameSelect="@AnimationsNames.fadeDown">
-                            <div class="shadow  border-3  border-secondary rounded-3 m-1 p-3  ">
-                                
-                                <span @onclick="@(() => DeleteRound(round))" class="closeX oi oi-x text-end "></span>
-                                <span class=" text-start roundNumber ">#@round.RoundNumber</span>
-                                <div for="RoundExercice" class="text-start fs-5 fw-bold  " style="max-width:300px;">@round.ExerciseName </div>
-                                <div>
-                                    <div class="fs-3 mb-4 text-start w-100">
-                                        <RadzenCard>
-                                            <RadzenDropDown Style="width:100%;" TValue="string" @bind-Value="round.ExerciseName" Placeholder="Select Exercise" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_exercises.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Name" />
-                                        </RadzenCard>
-                                    </div>
-                                </div>
-                                    <div>
-
-
-                                        <table class="table shadow table-bordered rounded  ">
-                                            <thead>
-                                                <tr>
-                                                    <th class="fs-6" style="min-width:50px;" scope="col">Set</th>
-                                                    <th class="fs-6" style="min-width:50px;" scope="col">Weight</th>
-                                                    <th class="fs-6" style="min-width:50px;" scope="col">Reps</th>
-                                                    <th class="fs-6" style="min-width:50px;" scope="col"></th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-
-                                                @if (round.Sets != null)
-                                                {
-                                                    foreach (Models.SetModel set in round.Sets)
-                                                    {
-
-
-                                                        <tr>
-                                                            <th class="fs-6" scope="row">#@set.SetNumber</th>
-                                                            <td><input type="number" min="0" id="SetWeight" class=" fs-6 text-center m-auto   fw-bold text-black" style="max-width:80px; min-height:30px;" @bind-value="set.Weight" /> Kg</td>
-                                                            <td class="fs-6 "><input type="number" min="1" id="SetReps" class="fs-6 text-center m-auto   fw-bold text-black" style="max-width:80px; min-height:30px;" @bind-value="set.Reps" /> Rep</td>
-                                                            <td> <span @onclick="@(() => DeleteSet(round, set))" class="oi oi-x m-auto deleteOi"></span></td>
-                                                        </tr>
-                                                    }
-                                                }
-                                                <tr>
-                                                    <th @onclick="@(() => AddSet(round))" colspan="4" class="w-100 addSet">
-                                                        <span class="oi oi-plus  me-3 text-center "></span>
-                                                    </th>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                               
-                            </div>
-                            </Animation>
-                            
-
-                        }
-                    }
-                    <div class="m-1 p-3 d-flex flex-column flex-wrap justify-content-center px-5 m-3">
-                        <button class="btn btn-success fs-3 " @onclick="AddRound">Add a new round</button>
+                    <hr />
+                    <div class=" w-100 d-flex flex-row flex-wrap justify-content-between ">
+                        <div class="fs-5">Set workout's date</div>
+                        <input style="max-width:400px;" type="date" class=" form-control  text-center fs-5  " id="WorkoutDate" @bind-value="Workout.Date" />
                     </div>
-                    <div class="w-100 d-flex flex-row flex-wrap justify-content-evenly   gap-1   mb-5 ">
-                        <div id="ValidationMessage" class="w-100 my-4">
-                            <div @key="@errorMessageKey" class="fs-4 validation-message shake ">@_validationErrorMessage</div>
-                            <div class="text-success m-1 fs-4">@_workoutAdded</div>
+                    <hr />
+                    <div class="w-100 d-flex flex-row flex-wrap justify-content-between ">
+
+                        <div class="fs-5">Add a note to your workout (optional)</div>
+                        <div class="px-5 py-3 w-100">
+                            <textarea style="height:150px" placeholder="Add a Note" class=" form-control " @bind="Workout.Note" />
                         </div>
-                        <div id="Addtemplate" class="flex-grow-1 d-flex flex-column justify-content-center      border">
-                            <div class=" m-auto mt-1 fs-4">Add workout as a new template</div>
-                            <div class="d-flex flex-column justify-content-center ">
-                                <label class="pe-2 form-label fs-5" for="templateName">Enter Template Name</label>
-                                <input class=" form-control w-75 m-auto" id="templateName" type="text" @bind-value="@_workoutTemplate.Name" />
-                            </div>
-
-                            <button class="btn btn-primary m-3 fs-2" type="submit" @onclick="(()=>AddWorkoutAsATemplateAsync(_userId, _workoutTemplate.Name))"> SAVE as template</button>
-                        </div>
-                        <div id="AddWorkout" class="flex-grow-1 text-center border d-flex flex-column justify-content-between">
-
-                            <div class="mt-1 fs-4">Add workout to your record</div>
-                            <button class="btn btn-success m-3 fs-2" type="submit" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
-
-
-                        </div>
+                    </div>
+                    <hr />
+                    <div class="text-start fs-5">Add Workout's Rounds</div>
+                    <div id="Rounds" class=" w-100  justify-content-start  d-flex flex-row flex-wrap">
                         
 
+                        @if (Workout.Rounds != null)
+                        {
+                            @foreach (Models.RoundModel round in Workout.Rounds)
+                            {
+
+                                <Animation AnimationHappensOnce="true" AnimationNameSelect="@AnimationsNames.fadeDown">
+                                    <div class="  m-1 p-3  ">
+
+                                        
+                                        <div>
+
+
+                                            <table class="table  table-bordered rounded  ">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="4">
+                                                            <span @onclick="@(() => DeleteRound(round))" class="closeX oi oi-x text-end "></span>
+                                                            <span class=" text-start roundNumber ">#@round.RoundNumber</span>
+                                                            <div for="RoundExercice" class="text-start fs-5 fw-bold  " style="max-width:300px;">@round.ExerciseName </div>
+                                                            <div>
+                                                                <div class="fs-3 mb-4 text-start w-100">
+
+                                                                    <RadzenDropDown Style="width:100%;" TValue="string" @bind-Value="round.ExerciseName" Placeholder="Select Exercise" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_exercises.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Name" />
+
+                                                                </div>
+                                                            </div>
+
+                                                        </th>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="fs-6" style="min-width:50px;" scope="col">Set</th>
+                                                        <th class="fs-6" style="min-width:50px;" scope="col">Weight</th>
+                                                        <th class="fs-6" style="min-width:50px;" scope="col">Reps</th>
+                                                        <th class="fs-6" style="min-width:50px;" scope="col"></th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                    @if (round.Sets != null)
+                                                    {
+                                                        foreach (Models.SetModel set in round.Sets)
+                                                        {
+
+
+                                                            <tr>
+                                                                <th style="font-size:20px;" class="m-auto" scope="row">#@set.SetNumber</th>
+                                                                <td style="font-size:20px;">
+                                                                    <input  type="number" min="0" id="SetWeight" class=" text-center m-auto   fw-bold text-black" style="max-width:70px; min-height:30px; font-size:20px;" @bind-value="set.Weight" /> 
+                                                                    Kg</td>
+                                                                <td style="font-size:20px;">
+                                                                    <input type="number" min="1" id="SetReps" class=" text-center m-auto   fw-bold text-black" style="font-size:20px; max-width:70px; min-height:30px;" @bind-value="set.Reps" /> 
+                                                                    Rep</td>
+                                                                <td style="font-size:20px;"> <span @onclick="@(() => DeleteSet(round, set))" class="oi oi-x m-auto deleteOi"></span></td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    <tr>
+                                                        <th style="font-size:20px;" @onclick="@(() => AddSet(round))" colspan="4" class="w-100 addSet">
+                                                            <span class="oi oi-plus  me-3 text-center "></span>
+                                                        </th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    
+                                </Animation>
+
+
+                            }
+                        }
+                        </div>
+                        <div class="m-1 p-3 d-flex flex-column flex-wrap justify-content-center px-5 m-3">
+                            <button style="max-width:700px;" class="btn btn-success m-auto fs-3 " @onclick="AddRound">Add a new round</button>
+                        </div>
+                        <div>
+                        <div class="w-100 d-flex flex-row flex-wrap justify-content-evenly   gap-1   mb-5 ">
+                            <div id="ValidationMessage" class="w-100 my-4">
+                                <div @key="@errorMessageKey" class="fs-4 validation-message shake ">@_validationErrorMessage</div>
+                                <div class="text-success m-1 fs-4">@_workoutAdded</div>
+                            </div>
+                            <div id="Addtemplate" class="flex-grow-1 d-flex flex-column justify-content-center      border">
+                                <div class=" m-auto mt-1 fs-4">Add workout as a new template</div>
+                                <div class="d-flex flex-column justify-content-center ">
+                                    <label class="pe-2 form-label fs-5" for="templateName">Enter Template Name</label>
+                                    <input class=" form-control w-75 m-auto" id="templateName" type="text" @bind-value="@_workoutTemplate.Name" />
+                                </div>
+
+                                <button class="btn btn-primary m-3 fs-2" type="submit" @onclick="(()=>AddWorkoutAsATemplateAsync(_userId, _workoutTemplate.Name))"> SAVE as template</button>
+                            </div>
+                            <div id="AddWorkout" class="flex-grow-1 text-center border d-flex flex-column justify-content-between">
+
+                                <div class="mt-1 fs-4">Add workout to your record</div>
+                                <button class="btn btn-success m-3 fs-2" type="submit" @onclick="(()=>AddWorkoutAsync(_userId))"> SAVE WORKOUT</button>
+
+
+                            </div>
+
+
+                        </div>
                     </div>
+                    
                 </div>
+                
+            </div>
+            
+            <div class="  w-100 ">
+                <div id="DateAndNote" class=" my-4 d-flex flex-row flex-wrap justify-content-evenly gap-1">
+                    <div id="Date" style="min-width:400px" class=" flex-grow-1">
+                        
+                       
+                    </div>
+                    <div id="Note" style="min-width:400px" class=" flex-grow-1">
+                        
+                    </div>
+
+
+
+                </div>
+
+                
 
 
 
@@ -340,11 +373,11 @@
                 InitialLogMessage = $"{_userName} added a workout on date : {Workout.Date.ToShortDateString()}";
             }
 
-            await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage(InitialLogMessage, Workout, "yellow"));
+            await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage(InitialLogMessage, Workout, "userAddedAWorkout"));
             if (!string.IsNullOrEmpty(Workout.Note))
             {
                 workoutNote = $"{_userName}: {Workout.Note}";
-                await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage(workoutNote, Workout, "white"));
+                await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage(workoutNote, Workout, "userNote"));
             }
 
 
@@ -360,14 +393,14 @@
                 if (thisRoundMaxWeight > maxWeightForRoundExercise)
                 {
                     string msg = $"Congratulations {_userName}! You beat your previous record in the {round.ExerciseName} exercise! your new record is {thisRoundMaxWeight} Kg x {thisRoundMaxWeightReps}";
-                    await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage(msg, Workout, "greenyellow"));
+                    await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage(msg, Workout, "newRecord"));
                 }
                 else if (thisRoundMaxWeight == maxWeightForRoundExercise)
                 {
                     if (thisRoundMaxWeightReps > maxWeightRepsForRoundExercise)
                     {
                         string msg = $"Congratulations {_userName}! You beat your previous record in the {round.ExerciseName} exercise! You did {thisRoundMaxWeightReps} more reps than your best";
-                        await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage(msg, Workout, "greenyellow"));
+                        await repo.AddLogMessageAsync(LogMessageLogic.GenerateLogMessage(msg, Workout, "newRecord"));
                     }
                 }
             }

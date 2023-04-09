@@ -61,3 +61,6 @@
         display: block;
     }
 }
+.hoverRed:hover{
+    color:red;
+}

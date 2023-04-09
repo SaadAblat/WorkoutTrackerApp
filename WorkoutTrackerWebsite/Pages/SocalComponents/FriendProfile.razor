@@ -1,7 +1,10 @@
 ﻿@layout UserLayout
 @*Need somehow to hide those values*@
 @page "/FriendProfile/{userId}/{userName}"
-<FriendBragingCard UserId="@userId" userName="@userName"></FriendBragingCard>
+<div id="PageContainer" class=" w-100  bg-white m-auto" style="min-height:1000px; ">
+    <FriendBragingCard UserId="@userId" userName="@userName"></FriendBragingCard>
+
+</div>
 
 @code {
     [Parameter]
