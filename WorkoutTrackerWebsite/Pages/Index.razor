@@ -13,18 +13,24 @@
             <img class="background" src="Images/WorkoutPictureHome.jpg">
             <section id="WelcomSection" class="text-center">
                 <h1 id="Title">Welcome</h1>
-                <h1 id="Subtitle">To workout tracker Website</h1>
+                <h1 id="Subtitle">To your workout tracker Website</h1>
                 <section id="QASection" class="translate-middle-x">
-                    <div>
-                        <h1 id="Question">Here you can</h1>
-                    </div>
+
 
 
                     <Animation AnimationNameSelect="@AnimationsNames.fade" AnimationDurationSet="1000" AnimationDelaySet="50" @key=@CurrentText>
                         <span id="Answer">@CurrentText</span>
                     </Animation>
-                    <button @onclick="RedirectToLogin" class="btn btn-success register">Start Now!</button>
+                    <div class="my-5">
+                        <p class="m-auto text-center" style="max-width:1000px; font-size:22px;">Track and visualize your workouts 
+                            with this web app! Create an account, log in, and add details like notes, rounds, sets, 
+                            weight, and reps. Stay motivated by connecting with friends and sharing workout achievements.
+                            
+                        </p>
+                    </div>
 
+                    <button @onclick="RedirectToLogin" class="btn btn-success register">Start Now!</button>
+                    <small> This project is an ongoing learning process!</small>
             </section>
           
 
@@ -47,8 +53,12 @@
     List<string> AnswerTexts = new()
     {
         "Add Workouts",
+        "Add Routines",
         "Track you progres",
-        "Save the exercises"
+        "Connect to your friends",
+        "Stay Motivated"
+
+
     };
     string CurrentText = "";
     private Timer? TextTimer;

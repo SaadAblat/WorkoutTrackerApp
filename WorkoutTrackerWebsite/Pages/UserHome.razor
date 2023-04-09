@@ -132,18 +132,19 @@ qsw translate-middle-x m-0">
             </div>
             <div id="WokroutsCharts" class=" w-100 d-flex flex-column flex-wrap gap-5 justify-content-around bg-white p-5" style="min-height:400px;">
                 <div class="flex-grow-1 shadow p-5 hoverableGetBig m-auto" style="">
-                    @if (GetperiodeTraining() == 0)
+                    @if (userHaveNoWorkoutYet)
                     {
-                        if (userHaveNoWorkoutYet)
-                        {
-                            <div>It looks like you haven't added a workout yet.</div>
-                        }
-                        else
-                        {
-                            <div>Calculating you data...</div>
 
-                        }
+                        <div>It looks like you haven't added a workout yet.</div>
+
+
+                            
+
                        
+                    }
+                    else if (_userWorkouts.Count() == 0)
+                    {
+                        <div>Calculating your data...</div>
                     }
                     else
                     {
