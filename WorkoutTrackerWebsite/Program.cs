@@ -14,7 +14,7 @@ builder.Services.AddServerSideBlazor();
 
 
 // Data Access
-var cs = builder.Configuration.GetConnectionString("WorkoutTrackerConnection");
+var cs = builder.Configuration.GetConnectionString("Azure");
 
 builder.Services.AddDbContextFactory<WorkoutsTrackerDbContext>(
     options => options.UseSqlServer(cs));

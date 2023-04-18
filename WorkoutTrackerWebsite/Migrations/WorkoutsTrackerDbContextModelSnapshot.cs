@@ -236,52 +236,52 @@ namespace WorkoutTrackerWebsite.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("61dea103-d9c7-4e05-8014-893b16bff671"),
+                            Id = new Guid("f8016bc0-2aed-491f-bd90-aa871f848590"),
                             Name = "Chest"
                         },
                         new
                         {
-                            Id = new Guid("c21e35be-91f8-44ff-ad35-1e688e6b218a"),
+                            Id = new Guid("8dd92cbc-4b24-4029-8dd2-c0763b8c8dea"),
                             Name = "Shoulder"
                         },
                         new
                         {
-                            Id = new Guid("6d6e5a35-14d5-441d-ac79-c06d40d6963d"),
+                            Id = new Guid("bd55e67d-bc0e-42f3-b383-39fc58b5aaea"),
                             Name = "Bicep"
                         },
                         new
                         {
-                            Id = new Guid("964aae36-6fdc-4285-873d-a279ea06d6d4"),
+                            Id = new Guid("471dc78d-ccec-4f7d-8175-ee1be9533f99"),
                             Name = "Tricep"
                         },
                         new
                         {
-                            Id = new Guid("1c55238a-a78d-4855-a826-caeff8f13148"),
+                            Id = new Guid("6f10ee07-f7de-42b3-a697-a44f30666606"),
                             Name = "Legs"
                         },
                         new
                         {
-                            Id = new Guid("6da5b50e-1fdb-4ec0-808f-4df5e36967fb"),
+                            Id = new Guid("2ec41abb-d87d-4bbf-a682-22da9e43eea5"),
                             Name = "Back"
                         },
                         new
                         {
-                            Id = new Guid("ce0e5e86-b033-4bb2-9c01-bca9000b0ab3"),
+                            Id = new Guid("c0fed27a-1f10-40a0-806c-a5551b765304"),
                             Name = "Glutes"
                         },
                         new
                         {
-                            Id = new Guid("0190c6ad-8841-48f5-be44-c4ffa65eeb3c"),
+                            Id = new Guid("c9a03327-6e38-4b56-a0a9-c728c875e265"),
                             Name = "Abs"
                         },
                         new
                         {
-                            Id = new Guid("a7247de7-329f-41e4-a445-f67568126522"),
+                            Id = new Guid("39ddfaa1-77b3-4df0-9650-b3a90163a7e0"),
                             Name = "Calves"
                         },
                         new
                         {
-                            Id = new Guid("73f8b056-ae84-4007-b569-d986965b1a83"),
+                            Id = new Guid("0d5ab2a2-14b0-4fd2-a18c-33166c77e5f3"),
                             Name = "Forearms"
                         });
                 });
@@ -305,1297 +305,1297 @@ namespace WorkoutTrackerWebsite.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a4fc6319-c0e6-4122-a8af-a75616d9152a"),
+                            Id = new Guid("bd2eae5a-2c0c-47fd-b353-fb084bf099e5"),
                             Category = "Chest",
                             Name = "Bar Dip"
                         },
                         new
                         {
-                            Id = new Guid("9f0b8d2e-aba2-4997-b357-410bb6af9b63"),
+                            Id = new Guid("34af233b-3b87-4c99-a036-9a55caa608fa"),
                             Category = "Chest",
                             Name = "Bench Press"
                         },
                         new
                         {
-                            Id = new Guid("ee5339ac-346c-4594-bb8c-c32d73d66767"),
+                            Id = new Guid("9f228b96-a8a7-485b-89f4-ecde1a147cf1"),
                             Category = "Chest",
                             Name = "Cable Chest Press"
                         },
                         new
                         {
-                            Id = new Guid("1af013f9-a389-485c-8cb8-fe7bf7bbbc06"),
+                            Id = new Guid("be612f94-39ef-422d-87e1-e2b12908924f"),
                             Category = "Chest",
                             Name = "Close-Grip Bench Press"
                         },
                         new
                         {
-                            Id = new Guid("02034963-214a-4d3a-b06f-6de9809c927a"),
+                            Id = new Guid("f6fe6034-bd95-4506-b5a1-9d673cbe6d88"),
                             Category = "Chest",
                             Name = "Close-Grip Feet-Up Bench Press"
                         },
                         new
                         {
-                            Id = new Guid("62ee1c06-e3d1-4a3d-ae78-d94f7629c3df"),
+                            Id = new Guid("4204f089-8f91-45db-b039-0eb86d729a27"),
                             Category = "Chest",
                             Name = "Decline Bench Press"
                         },
                         new
                         {
-                            Id = new Guid("58e199e7-0f55-4074-93af-b347ff717d35"),
+                            Id = new Guid("dea1687f-47ca-4004-8b9d-1c014b3a3fa0"),
                             Category = "Chest",
                             Name = "Dumbbell Chest Fly"
                         },
                         new
                         {
-                            Id = new Guid("c83071d4-4c66-450a-96f5-8c864c75c78e"),
+                            Id = new Guid("5e0a1428-9bba-4c70-b778-a05e4cfab3d5"),
                             Category = "Chest",
                             Name = "Dumbbell Chest Press"
                         },
                         new
                         {
-                            Id = new Guid("94d72dc6-0192-4b0f-b497-9ac9eac5195c"),
+                            Id = new Guid("b5136d65-f174-4650-8ad8-adc208c45957"),
                             Category = "Chest",
                             Name = "Dumbbell Decline Chest Press"
                         },
                         new
                         {
-                            Id = new Guid("f9165751-9aa1-4fb4-897e-bf203827ca43"),
+                            Id = new Guid("15cd1615-f73c-415d-a1bb-ceba757b043e"),
                             Category = "Chest",
                             Name = "Dumbbell Floor Press"
                         },
                         new
                         {
-                            Id = new Guid("a386ea4d-bad1-4281-b686-a05fdf84fff8"),
+                            Id = new Guid("4d616183-6757-47d9-8e19-21c902610d84"),
                             Category = "Chest",
                             Name = "Dumbbell Pullover"
                         },
                         new
                         {
-                            Id = new Guid("a6c1779d-f2a8-4845-9b5a-3cbe2b62f49c"),
+                            Id = new Guid("1072898d-93b4-4332-95b5-81fce1467d66"),
                             Category = "Chest",
                             Name = "Feet-Up Bench Press"
                         },
                         new
                         {
-                            Id = new Guid("1f9cf358-1d94-46a2-a627-430b94a9328c"),
+                            Id = new Guid("d80ea772-6a29-43b9-8f2e-709c651977b3"),
                             Category = "Chest",
                             Name = "Floor Press"
                         },
                         new
                         {
-                            Id = new Guid("b5a5fe11-d6bc-4a6c-8c21-4ef0107a27f7"),
+                            Id = new Guid("8f88700c-c1d4-4c19-9b22-5d6e6777ffb8"),
                             Category = "Chest",
                             Name = "Incline Bench Press"
                         },
                         new
                         {
-                            Id = new Guid("6c419251-0388-4583-851f-936e0f1b90e8"),
+                            Id = new Guid("70b55350-7876-4940-a41b-d34790a3dcba"),
                             Category = "Chest",
                             Name = "Incline Dumbbell Press"
                         },
                         new
                         {
-                            Id = new Guid("1d19cb7d-1297-4834-ac0f-8ee32f8d5b15"),
+                            Id = new Guid("efcb9aa0-61aa-4d65-b5f9-ac2856166407"),
                             Category = "Chest",
                             Name = "Incline Push-Up"
                         },
                         new
                         {
-                            Id = new Guid("7b43e5b4-2619-4080-a5a9-412defa11a63"),
+                            Id = new Guid("62f09e36-dcd6-4dba-a666-8f504e24d3cb"),
                             Category = "Chest",
                             Name = "Kneeling Incline Push-Up"
                         },
                         new
                         {
-                            Id = new Guid("a84ff3c1-3a43-4c53-9b1a-3f45a6528365"),
+                            Id = new Guid("8bcdaf36-c439-42d6-85b3-9b1afd4ececf"),
                             Category = "Chest",
                             Name = "Kneeling Push-Up"
                         },
                         new
                         {
-                            Id = new Guid("1257c062-80ca-419b-ba2f-de3e8900c19d"),
+                            Id = new Guid("c674aff0-dafd-47bf-981f-1cf9030819ba"),
                             Category = "Chest",
                             Name = "Machine Chest Fly"
                         },
                         new
                         {
-                            Id = new Guid("b68fcfc7-997b-4d3e-83e4-db65b452e1d6"),
+                            Id = new Guid("2f6ce80f-5080-48ad-bb8d-2be634b6b736"),
                             Category = "Chest",
                             Name = "Machine Chest Press"
                         },
                         new
                         {
-                            Id = new Guid("68f624a2-49b0-4d9b-abdb-efd9b3a9693e"),
+                            Id = new Guid("79679e9e-64bb-44ae-a847-13c11bf51737"),
                             Category = "Chest",
                             Name = "Pec Deck"
                         },
                         new
                         {
-                            Id = new Guid("21a0fc1f-5f54-44a7-bead-0e320eeec2e4"),
+                            Id = new Guid("83227b67-d8a9-48a4-8974-7dc9a0cbc163"),
                             Category = "Chest",
                             Name = "Push-Up"
                         },
                         new
                         {
-                            Id = new Guid("4d08f948-ce18-47c2-8a25-36914ca1c105"),
+                            Id = new Guid("171538f1-bd3d-4f69-8a5d-5c80d159d173"),
                             Category = "Chest",
                             Name = "Push-Up Against Wall"
                         },
                         new
                         {
-                            Id = new Guid("b1b2f0f6-3d75-46db-bbb8-f3a3651cd439"),
+                            Id = new Guid("841f9812-8dc8-4182-8137-411433034919"),
                             Category = "Chest",
                             Name = "Push-Ups With Feet in Rings"
                         },
                         new
                         {
-                            Id = new Guid("85c12ca1-95a4-456e-af08-974b1a6a2c10"),
+                            Id = new Guid("07aeff38-0985-466b-a406-f953e6597c1a"),
                             Category = "Chest",
                             Name = "Resistance Band Chest Fly"
                         },
                         new
                         {
-                            Id = new Guid("41a52b97-6ba0-4c35-9b3e-3d7f60be73e1"),
+                            Id = new Guid("bcc228f6-0007-47c4-b215-781347679b7a"),
                             Category = "Chest",
                             Name = "Smith Machine Bench Press"
                         },
                         new
                         {
-                            Id = new Guid("25238f55-7d83-41d7-8d46-ab448fe42ab7"),
+                            Id = new Guid("5f3d9be3-4ffe-4c94-bb0e-0fe1cc8ed23d"),
                             Category = "Chest",
                             Name = "Smith Machine Incline Bench Press"
                         },
                         new
                         {
-                            Id = new Guid("4a293620-d086-4d9e-987b-1213127b7867"),
+                            Id = new Guid("5b02cd89-c570-465d-8b2d-0d577e16936b"),
                             Category = "Chest",
                             Name = "Standing Cable Chest Fly"
                         },
                         new
                         {
-                            Id = new Guid("31e1587c-d57e-4690-9b3d-012c32515585"),
+                            Id = new Guid("0771a484-fca9-465d-8040-ebea9178e982"),
                             Category = "Shoulder",
                             Name = "Band External Shoulder Rotation"
                         },
                         new
                         {
-                            Id = new Guid("968db85b-c84a-4bad-ae00-b6bafbca4269"),
+                            Id = new Guid("9d029e4f-0083-4fb1-a305-9c94e86d7cc0"),
                             Category = "Shoulder",
                             Name = "Band Internal Shoulder Rotation"
                         },
                         new
                         {
-                            Id = new Guid("5287ecae-4423-48b0-984b-a6fe775070d9"),
+                            Id = new Guid("fd806d4c-ab4a-4e37-bf6b-481273564560"),
                             Category = "Shoulder",
                             Name = "Band Pull-Apart"
                         },
                         new
                         {
-                            Id = new Guid("96956feb-0b02-4d9e-850f-08c62c486043"),
+                            Id = new Guid("148fb42d-ad0a-4e61-8caf-f66a6614acb5"),
                             Category = "Shoulder",
                             Name = "Barbell Front Raise"
                         },
                         new
                         {
-                            Id = new Guid("e2cddf04-b7d5-4950-bb24-b6223d8d1ae6"),
+                            Id = new Guid("7998e15b-30c7-4b29-a729-664577b182c0"),
                             Category = "Shoulder",
                             Name = "Barbell Rear Delt Row"
                         },
                         new
                         {
-                            Id = new Guid("7717600c-c0db-404a-9ac6-677adf4f8d04"),
+                            Id = new Guid("168cab0f-e233-4fb2-be84-d1db85be8148"),
                             Category = "Shoulder",
                             Name = "Barbell Upright Row"
                         },
                         new
                         {
-                            Id = new Guid("a3ff1089-cb13-41d1-80d6-e124b45267d6"),
+                            Id = new Guid("db4ee30e-84df-4d5e-aa0f-d1ac8a764dd6"),
                             Category = "Shoulder",
                             Name = "Behind the Neck Press"
                         },
                         new
                         {
-                            Id = new Guid("7b1460ff-8973-4cdd-873f-5b4dacff53e8"),
+                            Id = new Guid("79822338-6771-4079-9d75-f6e2c45765fc"),
                             Category = "Shoulder",
                             Name = "Cable Lateral Raise"
                         },
                         new
                         {
-                            Id = new Guid("e8b3ca24-06c7-4453-a008-f05c780bedb3"),
+                            Id = new Guid("2fd15d2e-67d1-44fc-91f8-7667edd66515"),
                             Category = "Shoulder",
                             Name = "Cable Rear Delt Row"
                         },
                         new
                         {
-                            Id = new Guid("63afbf5a-7822-497f-8251-2353ec6e6d7a"),
+                            Id = new Guid("2c71e76a-06be-44d3-9f1f-18de4c99485c"),
                             Category = "Shoulder",
                             Name = "Dumbbell Front Raise"
                         },
                         new
                         {
-                            Id = new Guid("93b3f675-c5f9-435c-9001-682d081d7f34"),
+                            Id = new Guid("5d38fc58-645b-49d9-815c-62ab0f19b298"),
                             Category = "Shoulder",
                             Name = "Dumbbell Horizontal Internal Shoulder Rotation"
                         },
                         new
                         {
-                            Id = new Guid("914a8547-4583-48af-b6ab-52d1b835c75d"),
+                            Id = new Guid("bb810523-f886-4e5a-a1d9-134c28b5286c"),
                             Category = "Shoulder",
                             Name = "Dumbbell Horizontal External Shoulder Rotation"
                         },
                         new
                         {
-                            Id = new Guid("fdf37ac0-0bb9-483e-b643-870301993aba"),
+                            Id = new Guid("65f3bf41-51a1-4c87-a63d-07af6dd87f67"),
                             Category = "Shoulder",
                             Name = "Dumbbell Lateral Raise"
                         },
                         new
                         {
-                            Id = new Guid("cbb54891-c26f-4ffa-bd63-c00b5a3ff9b3"),
+                            Id = new Guid("c65a919c-cb29-4daf-8992-5408d7fc037e"),
                             Category = "Shoulder",
                             Name = "Dumbbell Rear Delt Row"
                         },
                         new
                         {
-                            Id = new Guid("23b1d92d-4013-47b7-ad45-643150c86474"),
+                            Id = new Guid("ae582b87-2fc8-44be-8eba-98e3888869d2"),
                             Category = "Shoulder",
                             Name = "Dumbbell Shoulder Press"
                         },
                         new
                         {
-                            Id = new Guid("77eb103e-edda-405c-afaa-79a82889e320"),
+                            Id = new Guid("cd6665e7-2bb2-4c9f-b2c1-dd84c3eadd36"),
                             Category = "Shoulder",
                             Name = "Face Pull"
                         },
                         new
                         {
-                            Id = new Guid("f2e83444-d593-4818-b8b6-aed176aebc1d"),
+                            Id = new Guid("c601a369-35f5-4c4b-b0b1-4ddaaa0c403c"),
                             Category = "Shoulder",
                             Name = "Front Hold"
                         },
                         new
                         {
-                            Id = new Guid("c3183c3c-a219-4e22-9ef3-5eecbcbc1794"),
+                            Id = new Guid("dcffe063-147c-4f65-b38e-c66062306f5d"),
                             Category = "Shoulder",
                             Name = "Lying Dumbbell External Shoulder Rotation"
                         },
                         new
                         {
-                            Id = new Guid("d7c067ef-a54c-470b-8889-048f1c4486ca"),
+                            Id = new Guid("aa13ac8d-7a22-46a1-88c3-69d322fc0d63"),
                             Category = "Shoulder",
                             Name = "Lying Dumbbell Internal Shoulder Rotation"
                         },
                         new
                         {
-                            Id = new Guid("9a7d8966-1d59-470a-9a22-d78c0157aac5"),
+                            Id = new Guid("0d29c68e-494c-4936-94f7-9aaa233f0a68"),
                             Category = "Shoulder",
                             Name = "Machine Lateral Raise"
                         },
                         new
                         {
-                            Id = new Guid("59e2f868-65cf-48ea-9530-e4dbe71079f7"),
+                            Id = new Guid("ca9a58ad-36e5-456e-a10d-e0042c3cb96f"),
                             Category = "Shoulder",
                             Name = "Machine Shoulder Press"
                         },
                         new
                         {
-                            Id = new Guid("2957181d-9c92-4efd-9936-c3a5d79b9703"),
+                            Id = new Guid("0c26b68a-1a0c-49a8-9494-13c2dd7875be"),
                             Category = "Shoulder",
                             Name = "Monkey Row"
                         },
                         new
                         {
-                            Id = new Guid("d0691483-7d87-45a4-b7ff-83f34b05ddbd"),
+                            Id = new Guid("58a50017-31ba-49ab-b2fb-bb5621624157"),
                             Category = "Shoulder",
                             Name = "Overhead Press"
                         },
                         new
                         {
-                            Id = new Guid("318af06a-caee-48cd-9f1c-4568fabd9279"),
+                            Id = new Guid("8354bf9d-42c5-4637-bf82-b5d6f1818ee4"),
                             Category = "Shoulder",
                             Name = "Plate Front Raise"
                         },
                         new
                         {
-                            Id = new Guid("a517b5f8-d146-45fc-8776-eb9c949ff1b5"),
+                            Id = new Guid("c93efc6c-1419-4352-b71d-161e4faf3791"),
                             Category = "Shoulder",
                             Name = "Power Jerk"
                         },
                         new
                         {
-                            Id = new Guid("d4c71792-fd12-4ac2-9a03-097307e4646b"),
+                            Id = new Guid("bdcea1ee-00f2-4101-afa2-335bd5fa0bc0"),
                             Category = "Shoulder",
                             Name = "Push Press"
                         },
                         new
                         {
-                            Id = new Guid("92021c37-db58-459a-b919-bb5c991a7d2f"),
+                            Id = new Guid("88e93410-f69b-4041-959c-cfbd26a03403"),
                             Category = "Shoulder",
                             Name = "Reverse Dumbbell Flyes"
                         },
                         new
                         {
-                            Id = new Guid("1d038d62-8a6d-4a57-aa34-6c669b8085ab"),
+                            Id = new Guid("f7a44e94-e8a6-4293-b27e-18253d90d9f7"),
                             Category = "Shoulder",
                             Name = "Reverse Machine Fly"
                         },
                         new
                         {
-                            Id = new Guid("06df4c06-01b3-463e-96f4-e9e6773f48c2"),
+                            Id = new Guid("eb8f163d-b97f-4334-810b-40214fba5691"),
                             Category = "Shoulder",
                             Name = "Seated Dumbbell Shoulder Press"
                         },
                         new
                         {
-                            Id = new Guid("c1d20037-df5b-4557-8459-c9f229109f3f"),
+                            Id = new Guid("35464eab-20fa-4279-bb42-3f680fe563bb"),
                             Category = "Shoulder",
                             Name = "Seated Barbell Overhead Press"
                         },
                         new
                         {
-                            Id = new Guid("bf3fc640-7759-46c9-a75e-5bd6bc747e19"),
+                            Id = new Guid("b4da1602-9a39-4a0c-8461-f91eb94a6fd9"),
                             Category = "Shoulder",
                             Name = "Seated Smith Machine Shoulder Press"
                         },
                         new
                         {
-                            Id = new Guid("111134e4-7b1e-47c4-a74e-a317c7561870"),
+                            Id = new Guid("c01df4a7-f973-4003-8899-395509d52ab7"),
                             Category = "Shoulder",
                             Name = "Snatch Grip Behind the Neck Press"
                         },
                         new
                         {
-                            Id = new Guid("d78de9a2-8718-40fd-abd2-897c0b8461bc"),
+                            Id = new Guid("77c18141-be95-468c-93ee-d705d46acdf6"),
                             Category = "Shoulder",
                             Name = "Squat Jerk"
                         },
                         new
                         {
-                            Id = new Guid("f9270ea5-b7e9-4cb4-beaa-a90571773aba"),
+                            Id = new Guid("2dfc90d7-5cb2-43a4-be1b-ae36dde4ea11"),
                             Category = "Shoulder",
                             Name = "Split Jerk"
                         },
                         new
                         {
-                            Id = new Guid("3a930ec9-79a3-4e4d-a579-06f5baa98a8a"),
+                            Id = new Guid("7ee2349c-8a69-4018-9eb4-08f71b33ffdc"),
                             Category = "Bicep",
                             Name = "Barbell Curl"
                         },
                         new
                         {
-                            Id = new Guid("272648f1-a3be-494c-9950-75f806111423"),
+                            Id = new Guid("f9be2d18-a4f3-4999-8b88-da858fd26ef1"),
                             Category = "Bicep",
                             Name = "Barbell Preacher Curl"
                         },
                         new
                         {
-                            Id = new Guid("8e006b73-b384-488b-b2f6-e880ebc7d928"),
+                            Id = new Guid("41fb04ae-76b0-4c8f-8264-b7a8d087eb8f"),
                             Category = "Bicep",
                             Name = "Bodyweight Curl"
                         },
                         new
                         {
-                            Id = new Guid("793ed83b-fee9-4e66-b26f-f119ba850e08"),
+                            Id = new Guid("49e73689-bc44-4259-9268-d9bc5ba1039e"),
                             Category = "Bicep",
                             Name = "Cable Curl With Bar"
                         },
                         new
                         {
-                            Id = new Guid("df8ece85-e20a-4d27-b55b-f11f18127058"),
+                            Id = new Guid("33f6e7b5-8ab1-4479-8fab-2b3a7222c1b5"),
                             Category = "Bicep",
                             Name = "Cable Curl With Rope"
                         },
                         new
                         {
-                            Id = new Guid("040ba28d-ad06-4e3a-977d-817e8959b986"),
+                            Id = new Guid("1b953cc9-cfd8-4d42-972a-3231ca261d02"),
                             Category = "Bicep",
                             Name = "Concentration Curl"
                         },
                         new
                         {
-                            Id = new Guid("10b3d711-3ad7-4b35-97d4-044ba7e242bb"),
+                            Id = new Guid("1f597490-20db-4c73-a685-bfc141ee99d9"),
                             Category = "Bicep",
                             Name = "Dumbbell Curl"
                         },
                         new
                         {
-                            Id = new Guid("06feff9c-69ba-41b4-b962-105371d34660"),
+                            Id = new Guid("e6d9729f-19a3-41b3-9feb-fc80d817b66a"),
                             Category = "Bicep",
                             Name = "Dumbbell Preacher Curl"
                         },
                         new
                         {
-                            Id = new Guid("956a3ea9-97c7-4b0b-b648-0008326cc72e"),
+                            Id = new Guid("58f19d13-386d-4cec-9a49-638b44df9333"),
                             Category = "Bicep",
                             Name = "Hammer Curl"
                         },
                         new
                         {
-                            Id = new Guid("d0477ea0-476c-4401-8e28-aad655d2c57b"),
+                            Id = new Guid("c75f032a-1e8d-454b-8a67-f2f86d29fd91"),
                             Category = "Bicep",
                             Name = "Incline Dumbbell Curl"
                         },
                         new
                         {
-                            Id = new Guid("5c5cbf8e-5985-403d-a5cc-049c00b62245"),
+                            Id = new Guid("598dbdee-684d-4b84-a485-bc260b4b55de"),
                             Category = "Bicep",
                             Name = "Machine Bicep Curl"
                         },
                         new
                         {
-                            Id = new Guid("a82f9888-5066-4d93-a0c0-e6f146b4aa26"),
+                            Id = new Guid("77bc4c7b-1c2d-41ef-9a7c-cd8315af040b"),
                             Category = "Bicep",
                             Name = "Spider Curl"
                         },
                         new
                         {
-                            Id = new Guid("79396d19-409a-477e-bc5f-7810868f502d"),
+                            Id = new Guid("643fcd91-ffd7-443b-aa07-43fea276177f"),
                             Category = "Tricep",
                             Name = "Barbell Standing Triceps Extension"
                         },
                         new
                         {
-                            Id = new Guid("07223acf-2e53-41f3-87d2-8513bc3f5a8a"),
+                            Id = new Guid("708ace27-4dfa-43a5-9419-4eb7ef1c0a0b"),
                             Category = "Tricep",
                             Name = "Barbell Lying Triceps Extension"
                         },
                         new
                         {
-                            Id = new Guid("9b14de2c-df64-4b66-b3bf-47f473e2e4e5"),
+                            Id = new Guid("868c1034-880d-4d21-8fae-971a68bf3457"),
                             Category = "Tricep",
                             Name = "Bench Dip"
                         },
                         new
                         {
-                            Id = new Guid("0ab86e28-121e-4540-92af-941a3b18379b"),
+                            Id = new Guid("41f83d10-070f-475b-92e2-1e5c56664941"),
                             Category = "Tricep",
                             Name = "Close-Grip Push-Up"
                         },
                         new
                         {
-                            Id = new Guid("d41dad43-b273-4216-a809-53e8aa799a1c"),
+                            Id = new Guid("b281ac05-5afa-43e8-898f-03dc957cb045"),
                             Category = "Tricep",
                             Name = "Dumbbell Lying Triceps Extension"
                         },
                         new
                         {
-                            Id = new Guid("1dc573f6-4c96-4516-9188-8ba63788ecbd"),
+                            Id = new Guid("3f8f84d6-1848-4bed-a5da-6215f4323b7a"),
                             Category = "Tricep",
                             Name = "Dumbbell Standing Triceps Extension"
                         },
                         new
                         {
-                            Id = new Guid("5e37d2a2-6592-4ff0-b5e3-c6787ffd6470"),
+                            Id = new Guid("6c7fac59-c9b6-414d-9c5d-621d7bcd5c78"),
                             Category = "Tricep",
                             Name = "Overhead Cable Triceps Extension"
                         },
                         new
                         {
-                            Id = new Guid("f18bc2f9-c540-49e2-a3f7-9794a4548b75"),
+                            Id = new Guid("f6673576-4e92-466f-9bb8-3769d1390961"),
                             Category = "Tricep",
                             Name = "Tricep Bodyweight Extension"
                         },
                         new
                         {
-                            Id = new Guid("eaba1ac5-5fba-4649-adfe-fdbaad6bb97e"),
+                            Id = new Guid("0be3be0d-ba4b-43fb-a85b-5696a4bfd107"),
                             Category = "Tricep",
                             Name = "Tricep Pushdown With Bar"
                         },
                         new
                         {
-                            Id = new Guid("be3d663c-5491-4929-9ecd-9cf68a440eb9"),
+                            Id = new Guid("d8ebe4d5-8a60-415c-90f9-05da59f810e1"),
                             Category = "Tricep",
                             Name = "Tricep Pushdown With Rope"
                         },
                         new
                         {
-                            Id = new Guid("87a1ada2-32ce-4ede-ad75-2501c4c2fde7"),
+                            Id = new Guid("a6f72ee9-8b07-4e20-95c6-f2ba4ebdc5c2"),
                             Category = "Legs",
                             Name = "Air Squat"
                         },
                         new
                         {
-                            Id = new Guid("e9c3df19-0172-4b34-9fe3-0c9847b783ea"),
+                            Id = new Guid("af3ca46e-e3bb-42fd-bdc9-335e5777c654"),
                             Category = "Legs",
                             Name = "Barbell Hack Squat"
                         },
                         new
                         {
-                            Id = new Guid("7336f959-4a65-442a-8046-7ddccdc15aa8"),
+                            Id = new Guid("1f404d20-3f1c-4dcf-b636-2999f324b26c"),
                             Category = "Legs",
                             Name = "Barbell Lunge"
                         },
                         new
                         {
-                            Id = new Guid("be601fe5-0c43-40cf-b504-a21cba2ebae8"),
+                            Id = new Guid("b5f20365-c298-4a9c-990c-35f5571e0aab"),
                             Category = "Legs",
                             Name = "Barbell Walking Lunge"
                         },
                         new
                         {
-                            Id = new Guid("69f7ab3a-ff4f-41cf-a66a-858aa8b9ffda"),
+                            Id = new Guid("b35cfbf7-b26d-4b23-94a9-082d3eb6edad"),
                             Category = "Legs",
                             Name = "Belt Squat"
                         },
                         new
                         {
-                            Id = new Guid("f7f343fc-0690-47fd-8b1b-76d5755f7a99"),
+                            Id = new Guid("f5dd8bb0-9d1c-4db7-bc84-feb48a44bf6a"),
                             Category = "Legs",
                             Name = "Body Weight Lunge"
                         },
                         new
                         {
-                            Id = new Guid("c84e7f2c-5109-46ec-88fa-6a37b2a86589"),
+                            Id = new Guid("051c79a9-162d-4e74-bdc0-f450f6af630d"),
                             Category = "Legs",
                             Name = "Box Squat"
                         },
                         new
                         {
-                            Id = new Guid("2d31757b-b7a7-4449-8d62-b8c7fd290379"),
+                            Id = new Guid("5e53ae20-d08b-427b-8c20-14ed9793b506"),
                             Category = "Legs",
                             Name = "Bulgarian Split Squat"
                         },
                         new
                         {
-                            Id = new Guid("0e20ddcf-0e03-426e-ab13-141d39df66ed"),
+                            Id = new Guid("d71b1e4f-752a-4b7b-a5b8-b98c69fa20ba"),
                             Category = "Legs",
                             Name = "Chair Squat"
                         },
                         new
                         {
-                            Id = new Guid("2d2e141a-1c00-4fb9-b976-b4b8b9409a90"),
+                            Id = new Guid("ce7b65f3-9248-442d-a2b4-1f55deac27f3"),
                             Category = "Legs",
                             Name = "Dumbbell Lunge"
                         },
                         new
                         {
-                            Id = new Guid("fed9c48b-c513-495b-9b21-1c91dfbb648a"),
+                            Id = new Guid("18808320-a63b-428e-9d0b-7560c3f11b32"),
                             Category = "Legs",
                             Name = "Dumbbell Squat"
                         },
                         new
                         {
-                            Id = new Guid("a9eee132-41f0-46f7-9474-3eb406c4648f"),
+                            Id = new Guid("0b96bd27-b63f-4fa1-8b5a-63ee46ebcef8"),
                             Category = "Legs",
                             Name = "Front Squat"
                         },
                         new
                         {
-                            Id = new Guid("860ed2c2-2d09-4c6e-924e-c5aed2672f7a"),
+                            Id = new Guid("b6836fc3-2722-4f15-bf6c-4a18226cda8b"),
                             Category = "Legs",
                             Name = "Goblet Squat"
                         },
                         new
                         {
-                            Id = new Guid("edbc006f-a21c-4a8d-ad52-c6e2663a702e"),
+                            Id = new Guid("997ed233-9301-448f-96b1-7eb7a08fb51b"),
                             Category = "Legs",
                             Name = "Hack Squat Machine"
                         },
                         new
                         {
-                            Id = new Guid("7f80a75e-3405-47a7-b9c3-56bc656b30d8"),
+                            Id = new Guid("9a20b882-ee0f-4efc-9c98-1ac37eb77df9"),
                             Category = "Legs",
                             Name = "Half Air Squat"
                         },
                         new
                         {
-                            Id = new Guid("6792c225-20d3-4f6a-8237-aa6ab52b8d3f"),
+                            Id = new Guid("aeb001e4-9ff6-4bb4-974d-ebf45c64041a"),
                             Category = "Legs",
                             Name = "Hip Adduction Machine"
                         },
                         new
                         {
-                            Id = new Guid("eab50a42-0db3-49f8-b6f1-85af7ac2fce6"),
+                            Id = new Guid("020dbec6-88dc-407d-a143-6a752798cb88"),
                             Category = "Legs",
                             Name = "Landmine Hack Squat"
                         },
                         new
                         {
-                            Id = new Guid("0bd81753-43d6-484d-bc95-3bdd82f225c0"),
+                            Id = new Guid("60f3686e-ece4-4bd1-85bd-f4e4f1695aa0"),
                             Category = "Legs",
                             Name = "Landmine Squat"
                         },
                         new
                         {
-                            Id = new Guid("3eee306d-66f9-41bd-9d90-91b93c34e99a"),
+                            Id = new Guid("7f7d7b5c-667c-4fbd-97e6-7995a40398bf"),
                             Category = "Legs",
                             Name = "Leg Extension"
                         },
                         new
                         {
-                            Id = new Guid("1891b6d3-8785-434b-a956-caee1292091f"),
+                            Id = new Guid("2184f984-c84b-4559-8c08-138651c8ffb5"),
                             Category = "Legs",
                             Name = "Leg Press"
                         },
                         new
                         {
-                            Id = new Guid("8369846b-aba4-4f39-8521-42db1ba1c1b2"),
+                            Id = new Guid("2bdafd89-ff93-4598-9459-bc07599fb037"),
                             Category = "Legs",
                             Name = "Lying Leg Curl"
                         },
                         new
                         {
-                            Id = new Guid("59af639d-c0a0-4d30-8c6b-767e2377b110"),
+                            Id = new Guid("2c008989-756f-438a-bdd8-2910c4ca3c83"),
                             Category = "Legs",
                             Name = "Pause Squat"
                         },
                         new
                         {
-                            Id = new Guid("3003d0d7-8506-49fe-b8af-cee6f1a02e9e"),
+                            Id = new Guid("9b66c24c-dbd7-44bd-be76-8b92673d9d8a"),
                             Category = "Legs",
                             Name = "Romanian Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("9da945df-5f76-4d35-88ef-60da67002532"),
+                            Id = new Guid("7c34d6d2-0ee9-4c30-8c86-ff1f68a3e956"),
                             Category = "Legs",
                             Name = "Safety Bar Squat"
                         },
                         new
                         {
-                            Id = new Guid("c43eccdb-a777-4133-bc1c-8c41fb5aa032"),
+                            Id = new Guid("d63a1b14-af1d-4c14-adf0-ac18acc90250"),
                             Category = "Legs",
                             Name = "Seated Leg Curl"
                         },
                         new
                         {
-                            Id = new Guid("ebf7f6d8-38c7-47cb-929a-fa94aa91c284"),
+                            Id = new Guid("60a7a47c-54de-41c9-963a-8e6b0e7e8019"),
                             Category = "Legs",
                             Name = "Shallow Body Weight Lunge"
                         },
                         new
                         {
-                            Id = new Guid("f4f502d3-e9cd-49db-85af-88584957a2b4"),
+                            Id = new Guid("5fd6eba4-19a4-4437-8664-7fe9c40829cf"),
                             Category = "Legs",
                             Name = "Side Lunges (Bodyweight)"
                         },
                         new
                         {
-                            Id = new Guid("bf79d6ed-a73d-441c-886b-9613e6723874"),
+                            Id = new Guid("7c8d41f8-ab25-4d2a-a337-feb1aedb576e"),
                             Category = "Legs",
                             Name = "Smith Machine Squat"
                         },
                         new
                         {
-                            Id = new Guid("35609971-afe2-4759-959f-082ac13da261"),
+                            Id = new Guid("c5e13a34-953e-4fb6-a53a-313bf6edd032"),
                             Category = "Legs",
                             Name = "Squat"
                         },
                         new
                         {
-                            Id = new Guid("9c70870e-41de-4303-ab58-53cb4881b943"),
+                            Id = new Guid("ece65b4d-10a6-47eb-9458-9968b3b873c8"),
                             Category = "Legs",
                             Name = "Step Up"
                         },
                         new
                         {
-                            Id = new Guid("2aeebfaf-0175-41b9-b05d-f5150430b4a8"),
+                            Id = new Guid("fbdd8aec-313d-4a92-b10a-f0106e7fc5c2"),
                             Category = "Legs",
                             Name = "Step Up"
                         },
                         new
                         {
-                            Id = new Guid("9dc7c5f0-a950-4897-912b-bf4d39f27084"),
+                            Id = new Guid("bdfaaa8e-73f3-4b3d-b567-7763da727b07"),
                             Category = "Back",
                             Name = "Back Extension"
                         },
                         new
                         {
-                            Id = new Guid("305ee5da-9705-4c8a-bbae-69a489ae5409"),
+                            Id = new Guid("0195a832-e02f-4b6f-8b68-82b996d044cd"),
                             Category = "Back",
                             Name = "Barbell Row"
                         },
                         new
                         {
-                            Id = new Guid("6d17bcbb-e47c-4a05-ac88-63c6a939ebb9"),
+                            Id = new Guid("aa064d10-6084-4d50-887c-8a092d77dde6"),
                             Category = "Back",
                             Name = "Barbell Shrug"
                         },
                         new
                         {
-                            Id = new Guid("7c7a7b9f-9496-4ad9-91bd-c1ff29df6035"),
+                            Id = new Guid("cda6a5ed-25ec-46b2-a48e-b47a138b6ef6"),
                             Category = "Back",
                             Name = "Block Snatch"
                         },
                         new
                         {
-                            Id = new Guid("436beff5-e9e0-4be8-ba5f-f3506787cc92"),
+                            Id = new Guid("cbb1304c-4cc6-4440-a06d-6da5270e78ae"),
                             Category = "Back",
                             Name = "Cable Close Grip Seated Row"
                         },
                         new
                         {
-                            Id = new Guid("ba9ba4d5-9764-4cd1-b593-14009e2ae526"),
+                            Id = new Guid("31e73b95-f194-4c99-88c6-5f20d6db60a2"),
                             Category = "Back",
                             Name = "Cable Wide Grip Seated Row"
                         },
                         new
                         {
-                            Id = new Guid("dfacaaca-271f-446e-b00b-381494ffde5f"),
+                            Id = new Guid("2718bc15-cbb7-4154-b493-e4c560577769"),
                             Category = "Back",
                             Name = "Chin-Up"
                         },
                         new
                         {
-                            Id = new Guid("c2aff932-4eda-415c-9612-b093a115c4b9"),
+                            Id = new Guid("e0b10898-2629-48c4-9330-f0c373b5778e"),
                             Category = "Back",
                             Name = "Clean"
                         },
                         new
                         {
-                            Id = new Guid("93a19498-f750-4cf8-b08c-11c05251d21f"),
+                            Id = new Guid("e2d10c6f-30bf-4b1a-b4df-8be1c8d02525"),
                             Category = "Back",
                             Name = "Clean and Jerk"
                         },
                         new
                         {
-                            Id = new Guid("d9978b8a-5502-475a-beb4-31154c7db345"),
+                            Id = new Guid("5fa8dc38-ba04-4c6d-ae33-de307c73afef"),
                             Category = "Back",
                             Name = "Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("acf0c26a-f957-4e4c-91d8-485bcf1db648"),
+                            Id = new Guid("8e0457d9-2464-40d2-b9a2-7f55112596ad"),
                             Category = "Back",
                             Name = "Deficit Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("33d5c97b-4c76-448e-824d-b6981dda75fc"),
+                            Id = new Guid("2c89c5f6-2b61-4135-9f0b-66eb973433d8"),
                             Category = "Back",
                             Name = "Dumbbell Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("52b235e4-3433-4884-906a-ed4b528338a0"),
+                            Id = new Guid("1a693bdf-98dd-48bc-895b-cd39477b851c"),
                             Category = "Back",
                             Name = "Dumbbell Row"
                         },
                         new
                         {
-                            Id = new Guid("b3192f6c-ef95-4f34-bfa5-5fa7c56782cd"),
+                            Id = new Guid("29fa82b8-544f-4fbf-a9f3-48acea9a3043"),
                             Category = "Back",
                             Name = "Dumbbell Shrug"
                         },
                         new
                         {
-                            Id = new Guid("06791ba7-abaf-4d92-ba3d-56cd0c6c2dfd"),
+                            Id = new Guid("86ed4039-fd53-4530-b4cf-f8614120e47a"),
                             Category = "Back",
                             Name = "Floor Back Extension"
                         },
                         new
                         {
-                            Id = new Guid("a210098d-6baa-473c-88d7-a9894d46a815"),
+                            Id = new Guid("da6fa21f-9422-4487-94b5-3f72183ae390"),
                             Category = "Back",
                             Name = "Good Morning"
                         },
                         new
                         {
-                            Id = new Guid("4aa11a86-7299-44bb-9da4-a2d1ec8ca1ba"),
+                            Id = new Guid("5185fdfc-8840-46a7-b8cf-1b8cb0c0c999"),
                             Category = "Back",
                             Name = "Hang Clean"
                         },
                         new
                         {
-                            Id = new Guid("1d8aec9a-73d2-4d18-b8f9-282b9c742e93"),
+                            Id = new Guid("3f751e15-fbec-414b-b250-278d662c35d1"),
                             Category = "Back",
                             Name = "Hang Power Clean"
                         },
                         new
                         {
-                            Id = new Guid("d7d5506f-d049-43ed-923a-66544cc8faa3"),
+                            Id = new Guid("7cd2ff93-c339-4e07-9545-2b644499f4c2"),
                             Category = "Back",
                             Name = "Hang Power Snatch"
                         },
                         new
                         {
-                            Id = new Guid("38c021ed-f77b-4f41-93e8-f3979fc36311"),
+                            Id = new Guid("45e7897b-ee56-4135-949e-abd3d65a6a78"),
                             Category = "Back",
                             Name = "Hang Snatch"
                         },
                         new
                         {
-                            Id = new Guid("81d1477b-9434-4208-bc44-584a546dc08f"),
+                            Id = new Guid("b9dadb6e-e562-4c60-a996-077441e7aaba"),
                             Category = "Back",
                             Name = "Inverted Row"
                         },
                         new
                         {
-                            Id = new Guid("02c18c57-210c-4119-808c-455b16f35315"),
+                            Id = new Guid("d946c68b-368c-4361-b7d7-858a1eb2f3d2"),
                             Category = "Back",
                             Name = "Inverted Row with Underhand Grip"
                         },
                         new
                         {
-                            Id = new Guid("678b1f50-c2b4-4ea7-bc4b-0da58b5a0807"),
+                            Id = new Guid("14b00c40-7f25-49b0-8e9d-b032babda43b"),
                             Category = "Back",
                             Name = "Kettlebell Swing"
                         },
                         new
                         {
-                            Id = new Guid("dd1dfdce-d8a1-49c7-b7b5-6a04cc51f1c1"),
+                            Id = new Guid("da5120aa-9f08-479e-89bc-52ab7dde4aa2"),
                             Category = "Back",
                             Name = "Lat Pulldown With Pronated Grip"
                         },
                         new
                         {
-                            Id = new Guid("a8b9ba38-e4c6-4a3d-929f-64d5e07bbf67"),
+                            Id = new Guid("c9542f7a-b9a5-478f-86a8-6b7b9c6a4258"),
                             Category = "Back",
                             Name = "Lat Pulldown With Supinated Grip"
                         },
                         new
                         {
-                            Id = new Guid("6a582a91-0fc5-4943-898f-9baa0098b392"),
+                            Id = new Guid("eee56879-3588-46f1-9ad8-50c6c68d4a54"),
                             Category = "Back",
                             Name = "One-Handed Cable Row"
                         },
                         new
                         {
-                            Id = new Guid("155f27d6-6f0d-4893-9c12-bef9b7c19c64"),
+                            Id = new Guid("0afca2c5-dd1c-4840-b19a-a07cd19be991"),
                             Category = "Back",
                             Name = "One-Handed Lat Pulldown"
                         },
                         new
                         {
-                            Id = new Guid("3acf41cc-508e-4aa3-a320-72faed89a2fd"),
+                            Id = new Guid("d1256f14-3a35-451f-b59d-b98ea1f7adfe"),
                             Category = "Back",
                             Name = "Pause Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("31eebc44-904a-45e8-8fd6-26e0ab7a9c94"),
+                            Id = new Guid("08e841a3-37e2-4502-a6c2-5933c267d5ec"),
                             Category = "Back",
                             Name = "Pendlay Row"
                         },
                         new
                         {
-                            Id = new Guid("34c760a2-8b13-42d0-ad35-dbb899beec71"),
+                            Id = new Guid("d910fad4-24b0-47d8-9aff-3c59f78da81f"),
                             Category = "Back",
                             Name = "Power Clean"
                         },
                         new
                         {
-                            Id = new Guid("a85d58eb-1442-498f-82a9-cdfcbfe72e6b"),
+                            Id = new Guid("275350af-74c6-41e8-9b39-53bd02a96f8a"),
                             Category = "Back",
                             Name = "Power Snatch"
                         },
                         new
                         {
-                            Id = new Guid("867bb980-16d8-4726-acf4-e5edde4bbce0"),
+                            Id = new Guid("9541112a-e24a-4f6b-9e9a-95a2292fa3fd"),
                             Category = "Back",
                             Name = "Pull-Up"
                         },
                         new
                         {
-                            Id = new Guid("9d713f0e-5b77-40cb-9006-c116248aed41"),
+                            Id = new Guid("3d64e4db-1f54-417a-82b6-c357bc392f45"),
                             Category = "Back",
                             Name = "Rack Pull"
                         },
                         new
                         {
-                            Id = new Guid("e822ee8d-ea40-4221-833c-869e8fe1bddf"),
+                            Id = new Guid("cee22187-0749-4c54-98cd-08699a2194c5"),
                             Category = "Back",
                             Name = "Seal Row"
                         },
                         new
                         {
-                            Id = new Guid("857a9f34-6cfa-419c-8a26-bce1881957be"),
+                            Id = new Guid("44ceae4e-9697-4e4d-ae26-abf4b080c754"),
                             Category = "Back",
                             Name = "Seated Machine Row"
                         },
                         new
                         {
-                            Id = new Guid("4659b3dd-e8dc-4f92-9c8c-fb18074a7b89"),
+                            Id = new Guid("bc9f38b0-6b86-4402-b64b-fae920f82eb2"),
                             Category = "Back",
                             Name = "Snatch"
                         },
                         new
                         {
-                            Id = new Guid("49c84d5e-e9ee-4549-9d29-28178a130d8f"),
+                            Id = new Guid("8b82e7b8-8108-4064-b6ac-9b7ad77e94bf"),
                             Category = "Back",
                             Name = "Snatch Grip Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("bfb410d2-a216-417f-bbc2-129c8770f403"),
+                            Id = new Guid("cb6c99d4-e472-4828-85c5-9ce2d6f37923"),
                             Category = "Back",
                             Name = "Stiff-Legged Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("4e78c17b-bc12-413a-9e7d-e0a277ac850e"),
+                            Id = new Guid("82fd2301-32ea-4f0f-82a4-80ac13d4854b"),
                             Category = "Back",
                             Name = "Straight Arm Lat Pulldown"
                         },
                         new
                         {
-                            Id = new Guid("612d9da5-1a24-4a83-80d7-c75fbe90278e"),
+                            Id = new Guid("97bec9ba-c9e7-4826-9db4-c83524d1bdf6"),
                             Category = "Back",
                             Name = "Sumo Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("59b21579-53fb-4044-8f1d-417e156bc532"),
+                            Id = new Guid("9ef8f0a5-616f-4c9a-a89c-72ed25c82cf2"),
                             Category = "Back",
                             Name = "T-Bar Row"
                         },
                         new
                         {
-                            Id = new Guid("94650533-766e-41b5-a105-3eba0f40daef"),
+                            Id = new Guid("20bdbda2-57e6-4cdd-8bca-9673045c734d"),
                             Category = "Back",
                             Name = "Trap Bar Deadlift With High Handles"
                         },
                         new
                         {
-                            Id = new Guid("6d8a11ec-db54-4540-8483-d800ade06454"),
+                            Id = new Guid("8de64c24-59b2-44b5-8133-abb52a25835e"),
                             Category = "Back",
                             Name = "Trap Bar Deadlift With Low Handles"
                         },
                         new
                         {
-                            Id = new Guid("ded2f188-2d7e-422b-a89f-cccbae9d2a2f"),
+                            Id = new Guid("86e2400b-7e4a-4b35-b728-1d6bbd8543ac"),
                             Category = "Glutes",
                             Name = "Banded Side Kicks"
                         },
                         new
                         {
-                            Id = new Guid("e5a5d5a3-3059-48ad-adfe-ac3d0b0db9fb"),
+                            Id = new Guid("6e89286f-8143-4c9d-b6e3-c1d6257ef0c2"),
                             Category = "Glutes",
                             Name = "Cable Pull Through"
                         },
                         new
                         {
-                            Id = new Guid("b3773efe-9df9-4a62-9f88-4023c372d1f5"),
+                            Id = new Guid("869ce2b8-93f3-45c5-93f6-89db958b862f"),
                             Category = "Glutes",
                             Name = "Clamshells"
                         },
                         new
                         {
-                            Id = new Guid("daf36e28-1f36-42aa-b1cc-5e9a99bbeb2e"),
+                            Id = new Guid("8659e390-937b-4c90-8204-05e943b1610c"),
                             Category = "Glutes",
                             Name = "Dumbbell Romanian Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("03f4382f-dfb8-4466-9b60-4c1ace628138"),
+                            Id = new Guid("a365cf55-0c7d-42ec-8a26-a5d609295bfb"),
                             Category = "Glutes",
                             Name = "Dumbbell Frog Pumps"
                         },
                         new
                         {
-                            Id = new Guid("b061664b-6e5f-4cb3-b293-b0c9d9e9ffc0"),
+                            Id = new Guid("f59dda33-f215-4b6f-bf77-4c3c2bf78bec"),
                             Category = "Glutes",
                             Name = "Fire Hydrants"
                         },
                         new
                         {
-                            Id = new Guid("eb8f2b01-17ef-4764-b893-44e527c8142f"),
+                            Id = new Guid("7bf7f9ed-b4ba-4429-bce5-39bcf2bab6fa"),
                             Category = "Glutes",
                             Name = "Frog Pumps"
                         },
                         new
                         {
-                            Id = new Guid("0e5cbe57-dd13-4ad0-a4dc-05d134f95f97"),
+                            Id = new Guid("43ee40ac-86cc-4a97-aa41-8b15bbd52044"),
                             Category = "Glutes",
                             Name = "Glute Bridge"
                         },
                         new
                         {
-                            Id = new Guid("ab2898b4-1b15-4ecd-ac46-2ce79ba7a24f"),
+                            Id = new Guid("99b07bd3-1516-44d5-b09f-aba231b25cfa"),
                             Category = "Glutes",
                             Name = "Hip Abduction Against Band"
                         },
                         new
                         {
-                            Id = new Guid("d3e85fa8-c86c-481b-ac14-f7c320cf5b21"),
+                            Id = new Guid("1ebfff2f-983c-4284-9a6c-e28480ae7aa0"),
                             Category = "Glutes",
                             Name = "Hip Abduction Machine"
                         },
                         new
                         {
-                            Id = new Guid("b6ed3c3e-90bb-4d24-8788-4800916969ce"),
+                            Id = new Guid("09cd1404-1ad1-4863-b178-a59c5fe3bce5"),
                             Category = "Glutes",
                             Name = "Hip Thrust"
                         },
                         new
                         {
-                            Id = new Guid("0453f88d-50bc-4718-81a6-87e3688e2f7e"),
+                            Id = new Guid("5681e267-ee5c-47cb-9713-4167746c06e1"),
                             Category = "Glutes",
                             Name = "Hip Thrust Machine"
                         },
                         new
                         {
-                            Id = new Guid("2a48737e-9d73-4b20-8851-ef0f0b86a653"),
+                            Id = new Guid("c26e55ea-945f-4f9c-91c5-ae36a06a0637"),
                             Category = "Glutes",
                             Name = "Hip Thrust With Band Around Knees"
                         },
                         new
                         {
-                            Id = new Guid("83c3704d-0cf0-4473-b9ba-94860cc0d830"),
+                            Id = new Guid("6be6f932-5431-4e83-b591-46ff91a06ad8"),
                             Category = "Glutes",
                             Name = "Lateral Walk With Band"
                         },
                         new
                         {
-                            Id = new Guid("98c23ca4-05bb-4665-ad6d-93c1373a07e0"),
+                            Id = new Guid("fc6ed00a-b7f4-4a2a-8629-208ec3eec8ce"),
                             Category = "Glutes",
                             Name = "Machine Glute Kickbacks"
                         },
                         new
                         {
-                            Id = new Guid("dc09acca-9521-4592-892c-afc30e85d46c"),
+                            Id = new Guid("f558b0e1-d154-4b18-a85b-dd29130e24ce"),
                             Category = "Glutes",
                             Name = "One-Legged Glute Bridge"
                         },
                         new
                         {
-                            Id = new Guid("fa3abbdd-566e-4ee0-bd92-c77eaf178a03"),
+                            Id = new Guid("556bea9c-c390-43eb-983d-5c936426fdca"),
                             Category = "Glutes",
                             Name = "One-Legged Hip Thrust"
                         },
                         new
                         {
-                            Id = new Guid("65668a36-1917-4e4a-b227-7f4395e78922"),
+                            Id = new Guid("8dd315f0-6717-476d-a84e-3873fef8cf28"),
                             Category = "Glutes",
                             Name = "Single Leg Romanian Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("ef606e1a-a1e4-421d-8880-a0c493614e95"),
+                            Id = new Guid("89be0df6-0a43-42b2-b025-c41021840f03"),
                             Category = "Glutes",
                             Name = "Standing Glute Kickback in Machine"
                         },
                         new
                         {
-                            Id = new Guid("27b4f10b-79af-4cec-b29b-ed6de99da78d"),
+                            Id = new Guid("e0b1048b-2996-46d1-80e2-0f413d854e2d"),
                             Category = "Glutes",
                             Name = "Step Up"
                         },
                         new
                         {
-                            Id = new Guid("a3f398f4-17ec-49b2-8675-103a3af0d8ac"),
+                            Id = new Guid("7148656d-2127-486f-a184-385c865a0bf4"),
                             Category = "Abs",
                             Name = "Cable Crunch"
                         },
                         new
                         {
-                            Id = new Guid("033f1db1-d728-458d-ba23-22bbf0b2c93e"),
+                            Id = new Guid("1c6c480b-1bfb-475c-a251-c566eca15713"),
                             Category = "Abs",
                             Name = "Crunch"
                         },
                         new
                         {
-                            Id = new Guid("dcdac711-5b9f-4f55-8ff3-c3b0a9d43149"),
+                            Id = new Guid("7638e619-71af-4ed6-9c08-c09e69b156e9"),
                             Category = "Abs",
                             Name = "Dead Bug"
                         },
                         new
                         {
-                            Id = new Guid("4b73f71e-4d5a-43af-a1b0-ee9ff7cee0b4"),
+                            Id = new Guid("8f670c50-0a69-4164-8110-42baba5f84ae"),
                             Category = "Abs",
                             Name = "Hanging Leg Raise"
                         },
                         new
                         {
-                            Id = new Guid("fdfbef0a-dcf4-4032-86d0-e91fd8e2997a"),
+                            Id = new Guid("1124f543-56fa-47fd-9aff-93c92cba3f69"),
                             Category = "Abs",
                             Name = "Hanging Knee Raise"
                         },
                         new
                         {
-                            Id = new Guid("fbfedb62-5ff4-4663-8511-12bbf45735ae"),
+                            Id = new Guid("d8c180fa-947f-4272-a59d-53fdfdc63be2"),
                             Category = "Abs",
                             Name = "Hanging Sit-Up"
                         },
                         new
                         {
-                            Id = new Guid("394ecfa4-c2f8-4ddd-a0ca-d093a6364dec"),
+                            Id = new Guid("ae189018-e101-43f0-ab3f-79fb8287c903"),
                             Category = "Abs",
                             Name = "High to Low Wood Chop with Band"
                         },
                         new
                         {
-                            Id = new Guid("17627963-2005-434f-b003-734eb44139a2"),
+                            Id = new Guid("4181a217-c83e-46e4-9701-dbdb7304b6d4"),
                             Category = "Abs",
                             Name = "Horizontal Wood Chop with Band"
                         },
                         new
                         {
-                            Id = new Guid("b0025ea6-b3dc-4209-af86-f884a18152e4"),
+                            Id = new Guid("71f76ec7-a6ca-4b6d-b5a6-5b633e19bdf1"),
                             Category = "Abs",
                             Name = "Kneeling Ab Wheel Roll-Out"
                         },
                         new
                         {
-                            Id = new Guid("89a896ce-75e6-453f-9aa4-a8c64fee4cae"),
+                            Id = new Guid("482cd1d2-aca5-4588-8e65-2fd31c395e7f"),
                             Category = "Abs",
                             Name = "Kneeling Plank"
                         },
                         new
                         {
-                            Id = new Guid("7707c431-3314-452d-b619-99388f764362"),
+                            Id = new Guid("2bef41ee-826f-4b08-b4ea-60cf237093ca"),
                             Category = "Abs",
                             Name = "Kneeling Side Plank"
                         },
                         new
                         {
-                            Id = new Guid("03e051f4-56ce-4604-8f12-9c31744a34dd"),
+                            Id = new Guid("5b44873f-c84d-4786-b014-580eb0a8242b"),
                             Category = "Abs",
                             Name = "Lying Leg Raise"
                         },
                         new
                         {
-                            Id = new Guid("4a1d8b7b-0d70-41a4-90c8-18240d735f46"),
+                            Id = new Guid("ae15bb14-b103-4442-a4d6-e70fe28e69e5"),
                             Category = "Abs",
                             Name = "Lying Windshield Wiper"
                         },
                         new
                         {
-                            Id = new Guid("eef4b799-aa34-4e0e-ab17-7a68f68a4edc"),
+                            Id = new Guid("73f71447-3db2-4849-bfb4-57aaa3fdb3f1"),
                             Category = "Abs",
                             Name = "Lying Windshield Wiper with Bent Knees"
                         },
                         new
                         {
-                            Id = new Guid("6eb6798a-cabf-466f-8599-7d11318ebb2a"),
+                            Id = new Guid("fa76314b-4800-405c-a586-b6be7c8aadf6"),
                             Category = "Abs",
                             Name = "Machine Crunch"
                         },
                         new
                         {
-                            Id = new Guid("eedb7dd2-3933-4fd3-9b68-05a6b2567969"),
+                            Id = new Guid("4091072b-c826-4a0c-85da-65c442cb20a9"),
                             Category = "Abs",
                             Name = "Mountain Climbers"
                         },
                         new
                         {
-                            Id = new Guid("cdc48ab8-132a-4945-8f95-52349ac77be4"),
+                            Id = new Guid("7d2195f8-44e8-4120-b372-48daaef4b88a"),
                             Category = "Abs",
                             Name = "Oblique Crunch"
                         },
                         new
                         {
-                            Id = new Guid("c85fafc5-6a8d-489b-b9a2-51189b82b8d6"),
+                            Id = new Guid("c5323025-ac01-4d8c-b8fb-8929c38a1e9f"),
                             Category = "Abs",
                             Name = "Oblique Sit-Up"
                         },
                         new
                         {
-                            Id = new Guid("ea505092-c8c5-4859-a801-f9bb2fcdb158"),
+                            Id = new Guid("30f73001-2ab0-492a-b5b2-7db21cf0a478"),
                             Category = "Abs",
                             Name = "Plank"
                         },
                         new
                         {
-                            Id = new Guid("ce869a6c-dd9a-49f9-9ce9-cab728c5a805"),
+                            Id = new Guid("800af0ad-03b7-431d-97ea-471094f7bef3"),
                             Category = "Abs",
                             Name = "Side Plank"
                         },
                         new
                         {
-                            Id = new Guid("c9a85270-c779-4c6a-8492-ab3c05d2d5ee"),
+                            Id = new Guid("347400f2-7b3b-409b-a8b6-9dfd26f042c4"),
                             Category = "Abs",
                             Name = "Sit-Up"
                         },
                         new
                         {
-                            Id = new Guid("3d5d67f4-4bfd-4eae-94f2-c86792d99f4a"),
+                            Id = new Guid("1571f5c7-cb1b-4232-92e6-921c8ff53c4f"),
                             Category = "Calves",
                             Name = "Eccentric Heel Drop"
                         },
                         new
                         {
-                            Id = new Guid("e71db73c-555f-4b17-bb6c-da0a5d30c2ce"),
+                            Id = new Guid("e71207f0-4897-4381-ad59-f74ec79e3c1b"),
                             Category = "Calves",
                             Name = "Heel Raise"
                         },
                         new
                         {
-                            Id = new Guid("5bf3b30a-9f7b-4f35-98a1-e7604968ab12"),
+                            Id = new Guid("8520e565-8c06-4968-b621-e6360eb1988e"),
                             Category = "Calves",
                             Name = "Seated Calf Raise"
                         },
                         new
                         {
-                            Id = new Guid("c470715c-27c2-4484-ad4d-ffdf24c4e142"),
+                            Id = new Guid("2827b667-0232-4943-8195-fa6c69e9d114"),
                             Category = "Calves",
                             Name = "Standing Calf Raise"
                         },
                         new
                         {
-                            Id = new Guid("d165c3da-07a3-4c1d-bfc3-251a6d313c5e"),
+                            Id = new Guid("95cb9196-9d41-42db-9b28-519ffda00126"),
                             Category = "Forearms",
                             Name = "Barbell Wrist Curl"
                         },
                         new
                         {
-                            Id = new Guid("9c9411d2-5b86-4c6b-aea9-ff8000fea7a1"),
+                            Id = new Guid("b027c1cd-90ed-4e8a-8d0e-6d479dfd5972"),
                             Category = "Forearms",
                             Name = "Barbell Wrist Curl Behind the Back"
                         },
                         new
                         {
-                            Id = new Guid("2173ce52-c7ac-4949-a6a4-c307bb85a02a"),
+                            Id = new Guid("2a5fa146-00ef-49e3-8f2b-eb9e8f1d9442"),
                             Category = "Forearms",
                             Name = "Bar Hang"
                         },
                         new
                         {
-                            Id = new Guid("0dc86e88-2f62-4c56-8449-46648a44edaa"),
+                            Id = new Guid("5482f7bb-3d29-4a5d-91d7-dae1c1fa434b"),
                             Category = "Forearms",
                             Name = "Dumbbell Wrist Curl"
                         },
                         new
                         {
-                            Id = new Guid("092f6f32-e76b-4dae-b42c-5365e8c6532f"),
+                            Id = new Guid("2195315e-127b-4329-8e1e-f2986dc5a750"),
                             Category = "Forearms",
                             Name = "Farmers Walk"
                         },
                         new
                         {
-                            Id = new Guid("8b966457-eef0-417a-a930-10a4d21ed1a7"),
+                            Id = new Guid("a9d18b6d-6abc-4411-b382-bc072c4d90c3"),
                             Category = "Forearms",
                             Name = "Fat Bar Deadlift"
                         },
                         new
                         {
-                            Id = new Guid("a0d1f3b6-e4ab-45e6-b15f-1f72e4e6e6d2"),
+                            Id = new Guid("a40e150c-4535-4ad4-922c-c6969fdf69f9"),
                             Category = "Forearms",
                             Name = "Gripper"
                         },
                         new
                         {
-                            Id = new Guid("5388353e-3948-403d-88ef-96bbb49be73a"),
+                            Id = new Guid("a008d5b4-0e42-45bf-84cf-7d5dce3b5085"),
                             Category = "Forearms",
                             Name = "One-Handed Bar Hang"
                         },
                         new
                         {
-                            Id = new Guid("d2f8d0b3-3f0f-4a34-9869-e4b2e6c1fb26"),
+                            Id = new Guid("37a22e2e-329d-4ffd-9484-8bdb6bbb211a"),
                             Category = "Forearms",
                             Name = "Plate Pinch"
                         },
                         new
                         {
-                            Id = new Guid("2e751622-9f00-487e-bd66-f3a93ab10a90"),
+                            Id = new Guid("4d3106fb-2c61-41d9-8f8f-851aa6e03b71"),
                             Category = "Forearms",
                             Name = "Plate Wrist Curl"
                         },
                         new
                         {
-                            Id = new Guid("450ee0d1-228a-4ae2-b985-8118fa023605"),
+                            Id = new Guid("f3fbd829-6834-49e8-aade-4abe533b4637"),
                             Category = "Forearms",
                             Name = "Towel Pull-Up"
                         },
                         new
                         {
-                            Id = new Guid("1e6bf50e-80f4-425f-b6ec-baab56662fc3"),
+                            Id = new Guid("a6bfc80e-6d51-4822-94ac-f2eb42de677a"),
                             Category = "Forearms",
                             Name = "Barbell Wrist Extension"
                         },
                         new
                         {
-                            Id = new Guid("0d6a84ed-1113-4e5c-92a3-6f5f7c3bdc99"),
+                            Id = new Guid("988606f6-4e9a-4b3e-b0c8-66d585c10213"),
                             Category = "Forearms",
                             Name = "Dumbbell Wrist Extension"
                         });
