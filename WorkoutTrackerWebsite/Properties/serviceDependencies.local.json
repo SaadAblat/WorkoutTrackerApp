@@ -9,6 +9,13 @@
       "type": "mssql.azure",
       "connectionId": "ConnectionStrings:WorkoutTrackerConnection",
       "dynamicId": null
+    },
+    "signalr1": {
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.SignalRService/SignalR/blazorServerApplicationsSignalr",
+      "type": "signalr.azure",
+      "connectionId": "Azure:SignalR:ConnectionString",
+      "dynamicId": null
     }
   }
 }
