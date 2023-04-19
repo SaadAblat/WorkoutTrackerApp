@@ -8,9 +8,9 @@
         <AuthorizeView>
             <NotAuthorized>
                 <div class="top-row TopNavBar bg-dark" >
-                    <a class="text-white text-decoration-none  fs-4 hoverable" href="Identity/Account/Register" target="_blank">Register</a>
-                    <a class="text-white text-decoration-none  fs-4 hoverable" href="Identity/Account/Login" target="_blank">Log in</a>
-                    <a style="margin-left:20px;left:50%;color:gold;" class="navbar-brand " href="">WorkoutTrackerWebsite</a>
+                    <a class="text-white text-decoration-none  hoverable" href="Identity/Account/Register" target="_blank">Register</a>
+                    <a class="text-white text-decoration-none  hoverable" href="Identity/Account/Login" target="_blank">Log in</a>
+                    <a style="color:gold;" class="navbar-brand " href="">WorkoutsTracker</a>
                 </div>
             </NotAuthorized>
         </AuthorizeView>
@@ -19,9 +19,17 @@
         
         @Body
 
-        <footer class="bg-light modal-footer ">
-            <p>Saad Ablat 2023</p>
-        </footer>
+        <div class="footer">
+            <div class="footer-row">
+                <p class="footer-text">Copyright © 2023. All rights are reserved</p>
+            </div>
+            <div class="footer-links">
+                <a class="footer-link" href="https://github.com/SaadAblat" target="_blank"><i class="fab fa-github text-dark"></i>  </a>
+                <a class="footer-link" href="https://www.linkedin.com/in/saad-ablat-82237816b/" target="_blank"><i class="fab fa-linkedin text-dark"></i>  </a>
+            </div>
+   
+
+        </div>
     </main>
     
 </div>
@@ -29,38 +37,10 @@
 
 <style>
 
-    .hoverable:hover {
-        color: yellow !important;
-        transform: scale(1.1);
-        transition: transform 0.4s;
-    }
-    .hoverable{
-        transition: transform 0.4s;
-        margin-right:40px;
-    }
 
-    .TopNavBar{
-        position:relative;
-        /*background: radial-gradient(circle, yellow 0%, rgba(0,0,0,1) 40%)!important;*/
-        min-height:3rem;
-        width:100%;
-        border-bottom: solid;
-        border-top: solid;
-        border-color: black;
-        position: fixed !important;
-        display:flex;
-        flex-wrap:wrap;
-        /*style ="min-height:70px;border-color:yellow"*/
-    }
 
-    footer {
-        width: 100%;
-        font-size: 20px;
-        position:fixed;
-        bottom:0;
-        color:black;
-        padding:5px;
-    }
+
+    
 
 
 

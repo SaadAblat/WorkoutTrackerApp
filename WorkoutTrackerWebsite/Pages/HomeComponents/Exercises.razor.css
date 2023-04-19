@@ -1,0 +1,43 @@
+﻿@media (max-width:900px) {
+    .fs-huge {
+        font-size: 19px;
+    }
+
+    .fs-big {
+        font-size: 16px;
+    }
+
+    .fs-medium {
+        font-size: 14px;
+    }
+
+    .fs-small {
+        font-size: 12px;
+    }
+
+    .fs-tiny {
+        font-size: 9px;
+    }
+}
+
+@media (min-width:900px) {
+    .fs-huge {
+        font-size: 30px;
+    }
+
+    .fs-big {
+        font-size: 25px;
+    }
+
+    .fs-medium {
+        font-size: 23px;
+    }
+
+    .fs-small {
+        font-size: 20px;
+    }
+
+    .fs-tiny {
+        font-size: 17px;
+    }
+}

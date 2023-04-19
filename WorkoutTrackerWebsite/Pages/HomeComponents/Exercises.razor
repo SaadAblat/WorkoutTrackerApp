@@ -2,38 +2,29 @@
 @using WorkoutTrackerWebsite.Models;
 @using WorkoutTrackerWebsite.Models.LogicModels;
 @inject IJSRuntime JSRuntime;
-<div class="d-flex flex-column justify-content-start flex-wrap " style="min-height:800px">
+<div class="d-flex flex-column justify-content-start " style="min-height:800px">
 
-    <div id="tableControls" class="w-auto d-flex flex-row gap-lg-5 justify-content-start flex-wrap fs-5  mb-5">
+    <div id="tableControls" class="mx-auto w-auto d-flex flex-row flex-wrap gap-2 justify-content-start  fs-small  mb-5">
         <RadzenCard>
 
                 <div>Show only exercises already trained</div>
-                <input class="form-check-input  fs-3" type="checkbox" @bind-value="isTrainedOnlyFilterActive" />
+            <input class="form-check-input  fs-small" type="checkbox" @bind-value="isTrainedOnlyFilterActive" />
 
-            
-        </RadzenCard>
-        <RadzenCard>
-
-                <div>Rows displayed</div>
-                <input style="width:100px" class="form-control fs-5" type="number" @bind-value="rowsDisplayed" />
-
-        </RadzenCard>
-        <RadzenCard>
-
-            <div class="fs-5">Filter exercise by muscle-group</div>
+            <div class="fs-small">Filter exercise by muscle-group</div>
             <div class="m-auto ">
-                <RadzenDropDown Style=" min-width:400px; max-width:600px;" TValue="string" @bind-Value="selectedCategory" Placeholder="Filter by category" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(AddAllToCategories().OrderBy(x=>x.Id))" TextProperty="Name" ValueProperty="Name" />
+                <RadzenDropDown Style=" max-width:600px;" TValue="string" @bind-Value="selectedCategory" Placeholder="Filter by category" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(AddAllToCategories().OrderBy(x=>x.Id))" TextProperty="Name" ValueProperty="Name" />
             </div>
-
-
+                            <div>Rows displayed</div>
+            <input  class="form-control fs-small" type="number" @bind-value="rowsDisplayed" />
         </RadzenCard>
+
     </div>
     
-    <table class="table table-dark table-responsive table-hover m-0 table-striped">
+    <table class="fs-tiny table table-dark table-responsive table-hover m-0 table-striped">
         <thead>
             <tr>
-                <th style="cursor:pointer; width:400px;" @onclick="SortTableByName" scope="col"> ExerciseName</th>
-                <th style="cursor:pointer" class="pe-auto" @onclick="SortTableByCategoryName" scope="col"> ExerciseCategoy</th>
+                <th style="cursor:pointer; " @onclick="SortTableByName" scope="col"> ExerciseName</th>
+                <th style="cursor:pointer"  @onclick="SortTableByCategoryName" scope="col"> ExerciseCategoy</th>
                 <th style="cursor:pointer" @onclick="SortTableByTimesTrained" scope="col">Number of sessions </th>
                 <th style="cursor:pointer" @onclick="SortTableByMaxWeight" scope="col">Max Weight</th>
             </tr>

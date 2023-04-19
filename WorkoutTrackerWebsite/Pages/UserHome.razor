@@ -28,10 +28,10 @@
 qsw translate-middle-x m-0">
             <div class="d-inline-flex justify-content-between w-100">
                 <span class="m-1 text-start text-white">Search an exercise</span>
-                <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-5 m-0 " aria-hidden="true"></span>
+                <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-small m-0 " aria-hidden="true"></span>
             </div>
             <div>
-            <div class="fs-3 mb-4 text-start w-100">
+            <div class="fs-big mb-4 text-start w-100">
                 <RadzenCard>
                     <RadzenDropDown Style="width:100%;" TValue="string" @bind-Value="_selectedMainExerciseName" Placeholder="Select Exercise" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_exercises.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Name" />
                 </RadzenCard>
@@ -46,7 +46,7 @@ qsw translate-middle-x m-0">
     }
 
 <div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-auto" style="min-height:950px; ">
-    <ul class="nav nav-tabs bg-dark fs-4 px-2" >
+    <ul class="nav fs-medium nav-tabs bg-dark px-2" >
         <li >
             <button @onclick="ShowPage1" class="nav-link @active1 ">Welcome</button>
         </li>
@@ -66,11 +66,11 @@ qsw translate-middle-x m-0">
             <div class=" position-relative m-auto  ">
                 <div class="   m-auto p-0  ">
                     <div class="card-header bg-dark text-white">
-                        <h1 class="card-title fs-1 text-center ">@userName's profile  </h1>
+                        <h1 class="card-title fs-huge text-center ">@userName's profile  </h1>
                         <div class="d-flex flex-row flex-wrap justify-content-around gap-2 w-100 text-center">
-                            <div class="fs-5" id="PeriodeTraining"><b>First workout</b> : <span class="fs-2">@GetperiodeTraining() </span> days</div>
-                            <div class="fs-5"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
-                            <div class="fs-5"><b>T. Workouts</b> : <span class="fs-2">@_userAchievements.TotalWorkoutSessions</span> </div>
+                            <div class="fs-small" id="PeriodeTraining"><b>First workout</b> : <span class="fs-medium">@GetperiodeTraining() </span> days</div>
+                            <div class="fs-small"><b>T. Lifted</b> : <span class="fs-medium">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
+                            <div class="fs-small"><b>T. Workouts</b> : <span class="fs-medium">@_userAchievements.TotalWorkoutSessions</span> </div>
                         </div>
                     </div>
 
@@ -83,10 +83,10 @@ qsw translate-middle-x m-0">
                             @foreach (var exercise in _mainExercisesInfo)
                             {
 
-                                <div class="d-flex flex-column  justify-content-evenly flex-lg-wrap">
+                                <div class="d-flex flex-column  justify-content-evenly ">
 
-                                    <div style="width:300px;">
-                                        <span @onclick="(()=>ShowExerciseDropDown(exercise))" style="cursor:pointer" class="fs-5 m-auto hoverable position-relative ">
+                                    <div >
+                                        <span @onclick="(()=>ShowExerciseDropDown(exercise))" style="cursor:pointer" class="fs-small m-auto hoverable position-relative ">
                                             @exercise.Name
                                             @if (exercise.IsDropDownActive)
                                             {
@@ -96,7 +96,7 @@ qsw translate-middle-x m-0">
 
                                             }
                                         </span>
-                                        <div class="fs-2 m-auto">@exercise.MaxWeight.ToString("0") <span class="m-auto fs-5"> Kg </span></div>
+                                        <div class="fs-big ">@exercise.MaxWeight.ToString("0") <span class="m-auto fs-small"> Kg </span></div>
 
 
 
@@ -111,7 +111,7 @@ qsw translate-middle-x m-0">
                             @if (ConvertListOfStringsToListOfExercisesInfos().Count < 4)
                             {
                                 <div class="d-flex flex-column  justify-content-center">
-                                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                                    <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-small text-success add  text-center  " aria-hidden="true"></div>
                                 </div>
                             }
                         }
@@ -120,7 +120,7 @@ qsw translate-middle-x m-0">
                         {
                             <div class="d-flex flex-column  justify-content-center flex-lg-wrap ">
                                 <div style="color:gray; ">Pin Here your favorites Exercises (max 4).</div>
-                                <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-5 text-success add  text-center  " aria-hidden="true"></div>
+                                <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-small text-success add  text-center  " aria-hidden="true"></div>
 
                             </div>
                         }
@@ -130,7 +130,7 @@ qsw translate-middle-x m-0">
 
                 </div>
             </div>
-            <div id="WokroutsCharts" class=" w-100 d-flex flex-column flex-wrap gap-5 justify-content-around bg-white p-5" style="min-height:400px;">
+            <div id="WokroutsCharts" class=" w-100 d-flex flex-column flex-wrap gap-5 justify-content-around bg-white" style="min-height:400px;">
                 <div class="flex-grow-1 shadow p-5 hoverableGetBig m-auto" style="">
                     @if (userHaveNoWorkoutYet)
                     {
@@ -148,12 +148,12 @@ qsw translate-middle-x m-0">
                     }
                     else
                     {
-                        <div style="font-size:23px;" class=" text-start">
-                            <div style="font-size:27px"><b>@welcomeMessage</b></div>You've been working out with us for <b>@GetperiodeTraining().ToString()</b> days now and have trained a total of <b>@_userAchievements.TotalWorkoutSessions</b> times. <br /> On average, that's:
-                            <ul class="m-3">
-                                <li class="m-2"><b>@CalculateTrainingRate(7)</b> training sessions per week,</li>
-                                <li class="m-2"><b>@CalculateTrainingRate(30)</b>  training sessions per month,</li>
-                                <li class="m-2"><b>@CalculateTrainingRate(365)</b>  training sessions per year.</li>
+                        <div class=" text-start fs-small">
+                            <div class=" fs-big"><b>@welcomeMessage</b></div>You've been working out with us for <b>@GetperiodeTraining().ToString()</b> days now and have trained a total of <b>@_userAchievements.TotalWorkoutSessions</b> times. <br /> On average, that's:
+                            <ul class="">
+                                <li ><b>@CalculateTrainingRate(7)</b> training sessions per week,</li>
+                                <li ><b>@CalculateTrainingRate(30)</b>  training sessions per month,</li>
+                                <li ><b>@CalculateTrainingRate(365)</b>  training sessions per year.</li>
                             </ul>
                             @motivationalMessage
                         </div>
@@ -170,13 +170,13 @@ qsw translate-middle-x m-0">
         {
             <div style="max-width:1800px;" id=" Workouts" class=" card bg-light rounded-3 my-1 w-100 m-auto shadow-lg d-flex flex-column justify-content-start ">
                 <div id="WorkoutsHeader" class="card-header">
-                    <h1 class="card-title text-center ">My Workouts</h1>
+                    <h1 class="card-title text-center fs-huge ">My Workouts</h1>
                 </div>
                 @foreach (var wrk in _userWorkouts.OrderByDescending(x => x.Date).ToList().Take(rowsDisplayed))
                 {
                     <div id="Workout" class="position-relative shadow-lg rounded" style="width:95%; margin:10px auto">
                         <div @onclick="(async() => await ToggleSidebar(wrk))" id="dateHolder" class=" bg-dark text-light" style="cursor:pointer;">
-                            <div class="text-center fs-3  ">@wrk.Date.ToString("D")</div>
+                            <div class="text-center fs-big ">@wrk.Date.ToString("D")</div>
                         </div>
                         @if (wrk.IsExpanded)
                         {
@@ -185,9 +185,9 @@ qsw translate-middle-x m-0">
                                 {
                                     <div class="mx-5 flex-grow-1 w-75 m-auto text-dark d-flex flex-row flex-wrap justify-content-start gap-3 ">
 
-                                        <div class=" fs-4 fw-bold">Note: </div>
+                                        <div class=" fs-medium fw-bold">Note: </div>
 
-                                        <div class="fs-4 text-start"> @wrk.Note</div>
+                                        <div class="fs-small text-start"> @wrk.Note</div>
 
                                     </div>
                                     <hr />
@@ -217,15 +217,15 @@ qsw translate-middle-x m-0">
                                         decimal WeightDifference = thisRoundMaxWeight(round) - previousMaxWeight;
                                         int RepsDifference = thisRoundMaxWeightReps(round) - previousMaxWeightReps;
 
-                                        <div id="RoundContainer" class=" d-flex flex-column justify-content-start shadow border rounded" style="width:450px;">
+                                        <div id="RoundContainer" class=" d-flex flex-column justify-content-start shadow border rounded" style="max-width:500px; min-width:250px;">
                                             <div id="RoundHeader" class=" p-1 w-100 d-flex flex-row justify-content-between border rounded bg-secondary text-light mb-2">
-                                                <div id="RoundExerciseName" class=" flex-grow-1 ms-1 " style="font-size:22px;">
+                                                <div id="RoundExerciseName" class="fs-medium flex-grow-1 ms-1 " >
                                                     #@round.RoundNumber @round.ExerciseName
                                                 </div>
                                                 <div id="RoundTopInfos" class=" ">
                                                     @if (firstTime)
                                                     {
-                                                        <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> First Time!</span></div>
+                                                        <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-small  fst-italic "> First Time!</span></div>
                                                     }
                                                     else
                                                     {
@@ -235,12 +235,12 @@ qsw translate-middle-x m-0">
                                                         {
                                                             if (maxWeightReps_BeforeThisWorkout == 1)
                                                             {
-                                                                <span class="text-warning fs-6  "> Max: @maxWeight_BeforeThisWorkout Kg x @maxWeightReps_BeforeThisWorkout Rep</span>
+                                                                <span class="text-warning fs-small  "> Max: @maxWeight_BeforeThisWorkout Kg x @maxWeightReps_BeforeThisWorkout Rep</span>
 
                                                             }
                                                             else
                                                             {
-                                                                <span class="text-light fs-6 x ">Max: @maxWeight_BeforeThisWorkout Kg x @maxWeightReps_BeforeThisWorkout Reps</span>
+                                                                <span class="text-light fs-small  x ">Max: @maxWeight_BeforeThisWorkout Kg x @maxWeightReps_BeforeThisWorkout Reps</span>
 
                                                             }
                                                         }
@@ -273,7 +273,7 @@ qsw translate-middle-x m-0">
                                                         }
                                                         else
                                                         {
-                                                            <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold  fs-6  fst-italic "> New Max!</span></div>
+                                                            <div class="bg-success shadow-sm"><span class="text-white m-1  rounded  fw-bold fs-small   fst-italic "> New Max!</span></div>
 
                                                         }
                                                     }
@@ -292,18 +292,18 @@ qsw translate-middle-x m-0">
                                                         {
                                                             if (set.Reps == 1)
                                                             {
-                                                                <div class="fs-5 flex-grow-1"><b>@set.Reps</b> rep</div>
+                                                                <div class="fs-small flex-grow-1"><b>@set.Reps</b> rep</div>
                                                             }
                                                             else
                                                             {
-                                                                <div class="fs-5 "><b>@set.Reps</b> reps</div>
+                                                                <div class="fs-small "><b>@set.Reps</b> reps</div>
                                                             }
 
 
                                                         }
                                                         else
                                                         {
-                                                            <div class="fs-5  "><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
+                                                            <div class="fs-small   "><b>@set.Weight.ToString("0.0")</b> Kg x <b>@set.Reps</b> rep</div>
 
                                                         }
 
@@ -316,7 +316,7 @@ qsw translate-middle-x m-0">
                                                                     if (RepsDifference != 0)
                                                                     {
                                                                         maxSetFound = true;
-                                                                        <div class="@SetDifferenceClass(RepsDifference) fs-5">
+                                                                        <div class="@SetDifferenceClass(RepsDifference) fs-small ">
                                                                             @if (RepsDifference > 0)
                                                                             {
                                                                                 <span>+</span>
@@ -340,7 +340,7 @@ qsw translate-middle-x m-0">
                                                             else
                                                             {
                                                                 maxSetFound = true;
-                                                                <div class="@SetDifferenceClass(WeightDifference)  fs-5 ">
+                                                                <div class="@SetDifferenceClass(WeightDifference)  fs-small  ">
                                                                     @if (WeightDifference > 0)
                                                                     {
                                                                         <span>+</span>

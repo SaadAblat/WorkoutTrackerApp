@@ -61,6 +61,15 @@
         display: block;
     }
 }
+@media (max-width: 800px) {
+    .navbarCustom{
+        position:absolute;
+        z-index:40;
+        background-color:black;
+        width:100vw !important;
+        border-bottom-left-radius:3%;
+    }
+}
 .hoverRed:hover{
     color:red;
 }
