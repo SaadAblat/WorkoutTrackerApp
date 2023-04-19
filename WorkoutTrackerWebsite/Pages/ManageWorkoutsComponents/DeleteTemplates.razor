@@ -11,15 +11,15 @@
 @inject AuthenticationStateProvider GetAuthenticationStateAsync
 @layout UserLayout
 
-<div class="container bg-white text-dark  w-100 p-0 rounded-3 " style="max-width:800px; border:solid white">
-    <h1 class="bg-dark text-light text-center m-4 fs-1 p-3">Manage Workouts</h1>
-    <div class="p-4">
+<div class="m-auto bg-white text-dark  w-100 p-0 rounded-3 " style="max-width:1000px; border:solid white">
+    <h1 class="bg-dark text-light text-center m-4 fs-big p-3">Manage Templates</h1>
+    <div class="p-r">
         <table class="table table-danger table-bordered">
             <thead>
                 <tr>
-                    <th class="fs-4">Date</th>
-                    <th class="fs-4">Exercises</th>
-                    <th class="fs-4">Delete</th>
+                    <th class="fs-medium">Date</th>
+                    <th class="fs-medium">Exercises</th>
+                    <th class="fs-medium">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,25 +27,25 @@
                 {
                     int i = 1;
                     <tr>
-                        <td class="fw-bold">@template.Name</td>
+                        <td class="fw-bold fs-medium ">@template.Name</td>
                         <td>
                             
                             @foreach (var exercise in template.Exercises)
                             {
                                 if (i == template.Exercises.Count)
                                 {
-                                    <span>@exercise.Name, </span>
+                                    <span class="fs-medium">@exercise.Name, </span>
 
                                 }
                                 else
                                 {
-                                    <span>@exercise.Name.</span>
+                                    <span class="fs-medium">@exercise.Name.</span>
 
                                 }
                                 i++;
                             }
                         </td>
-                        <td class="p-1" style="cursor:pointer;" @onclick="@(() =>DeleteTemplate(template.Id))"><button class="btn btn-danger text-center w-100  ">Delete Template</button></td>
+                        <td class="p-1 fs-medium" style="cursor:pointer;" @onclick="@(() =>DeleteTemplate(template.Id))"><button class="btn btn-danger text-center w-100  fs-medium ">Delete Template</button></td>
                     </tr>
                 }
             </tbody>

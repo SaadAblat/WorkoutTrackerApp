@@ -24,8 +24,7 @@
     @if (showAddMainExerciseActive)
     {
 
-        <div class="AddExerciseBox bg-dark rounded-2 p-2 
-qsw translate-middle-x m-0">
+    <div class="AddExerciseBox bg-dark rounded-2 p-2 translate-middle-x m-0">
             <div class="d-inline-flex justify-content-between w-100">
                 <span class="m-1 text-start text-white">Search an exercise</span>
                 <span @onclick="HideAddMainExercise" style="color:red; cursor:pointer" class="oi oi-circle-x fs-small m-0 " aria-hidden="true"></span>
@@ -45,7 +44,7 @@ qsw translate-middle-x m-0">
         </div>
     }
 
-<div id="PageContainer" class=" w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-auto" style="min-height:950px; ">
+<div class="PageContainer w-100 d-flex flex-column flex-wrap  justify-content-start bg-white m-auto" >
     <ul class="nav fs-medium nav-tabs bg-dark px-2" >
         <li >
             <button @onclick="ShowPage1" class="nav-link @active1 ">Welcome</button>
@@ -65,7 +64,7 @@ qsw translate-middle-x m-0">
         {
             <div class=" position-relative m-auto  ">
                 <div class="   m-auto p-0  ">
-                    <div class="card-header bg-dark text-white">
+                    <div class="bg-dark text-white">
                         <h1 class="card-title fs-huge text-center ">@userName's profile  </h1>
                         <div class="d-flex flex-row flex-wrap justify-content-around gap-2 w-100 text-center">
                             <div class="fs-small" id="PeriodeTraining"><b>First workout</b> : <span class="fs-medium">@GetperiodeTraining() </span> days</div>
@@ -119,7 +118,7 @@ qsw translate-middle-x m-0">
                         else
                         {
                             <div class="d-flex flex-column  justify-content-center flex-lg-wrap ">
-                                <div style="color:gray; ">Pin Here your favorites Exercises (max 4).</div>
+                                <div class="fs-small" style="color:gray; ">Pin Here your favorites Exercises (max 4).</div>
                                 <div @onclick="ShowAddMainExercise" style=" cursor:pointer; " class="oi oi-plus fs-small text-success add  text-center  " aria-hidden="true"></div>
 
                             </div>

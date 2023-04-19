@@ -1,0 +1,14 @@
+﻿
+@media (max-width:900px){
+    .choose-graph-container {
+        width:100%;
+    }
+}
+@media (min-width:900px) {
+
+    .choose-graph-container {
+        width: 50%;
+        margin:auto;
+    }
+}
+

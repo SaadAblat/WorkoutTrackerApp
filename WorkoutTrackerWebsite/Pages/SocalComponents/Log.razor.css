@@ -6,13 +6,13 @@
     
     margin: 20px auto ;
 
-    padding:80px;
+
     display:flex;
     flex-direction:column;
     justify-content:start;
-    border-radius:3%;
 
-    background-color:antiquewhite;
+
+    background-color:papayawhip;
     
     
     
@@ -20,82 +20,113 @@
 
 .message {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
 
-    font-size: 18px;
-    border-block: 1px dashed #c3c3c25f;
-    border-radius: 2%;
+
     padding: 5px;
     font-family: 'Eczar', serif;
     font-family: 'Merienda', cursive;
 }
-@media (max-width: 1100px) {
-    #log-messages {
-        padding: 10px;
-        min-width:450px !important;
+@media (min-width: 900px) {
+    .message {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 5px;
 
     }
-        .message {
+
+    #log-messages {
+        padding: 10px;
+        min-width: 450px
+    }
+    .message {
         font-size: 15px;
         border-radius: 2%;
         padding: 0px;
-
     }
+
     .messageDate {
         font-weight: 600;
-        min-width:120px !important;
+        min-width: 200px ;
         position: relative;
         bottom: -15px;
     }
 }
-.messageDate {
-        font-weight: 600;
-        min-width:200px;
-        position:relative;
-        bottom:-15px;
-        
 
 
-    }
-.messageBody {
-    position: relative;
-    bottom: -15px;
-}
-
-
-
-.userAddedAWorkout {
-    color: green;
-}
-.newRecord {
-    color: green;
-}
-.userDeletedAWorkout {
-            color: red;
+    @media (max-width: 900px) {
+        .message {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 5px;
         }
-.userAddedAFriend {
-    color: green;
-}
+        #log-messages {
+            padding: 10px;
+            min-width: 200px
+        }
 
+        .message {
+            font-size: 15px;
+            border-radius: 2%;
+            padding: 0px;
+        }
 
-/*scroll bar*/
-::-webkit-scrollbar {
-    width: 10px;
-
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888;
-}
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
+        .messageDate {
+            font-weight: 600;
+            min-width: 50px;
+            position: relative;
+            bottom: -15px;
+            margin:auto;
+        }
     }
+
+    .messageDate {
+        font-weight: 600;
+        position: relative;
+        bottom: -15px;
+    }
+
+    .messageBody {
+        position: relative;
+        bottom: -15px;
+    }
+
+
+
+    .userAddedAWorkout {
+        color: green;
+    }
+
+    .newRecord {
+        color: green;
+    }
+
+    .userDeletedAWorkout {
+        color: red;
+    }
+
+    .userAddedAFriend {
+        color: green;
+    }
+
+
+    /*scroll bar*/
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }

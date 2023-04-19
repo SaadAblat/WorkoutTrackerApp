@@ -9,11 +9,11 @@
 
 <div class="  p-0 rounded-3">
     <div class="card-header bg-dark text-white">
-        <h1 class="card-title fs-1 text-center ">@userName's profile  </h1>
+        <h1 class="card-title fs-big text-center ">@userName's profile  </h1>
         <div class="d-sm-inline-flex justify-content-around w-100 text-center">
-            <div class="fs-5 mx-2" id="PeriodTraining"><b>Period Training</b> : <span class="fs-2">@GetperiodeTraining()</span></div>
-            <div class="fs-5 mx-2"><b>T. Lifted</b> : <span class="fs-2">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
-            <div class="fs-5 mx-2"><b>T. Workouts</b> : <span class="fs-2">@_userAchievements.TotalWorkoutSessions</span> </div>
+            <div class="fs-small mx-2" id="PeriodTraining"><b>Period Training</b> : <span class="fs-medium">@GetperiodeTraining()</span></div>
+            <div class="fs-small mx-2"><b>T. Lifted</b> : <span class="fs-medium">@_userAchievements.TotalWeightLifted.ToString("0") </span> Kg</div>
+            <div class="fs-small mx-2"><b>T. Workouts</b> : <span class="fs-medium">@_userAchievements.TotalWorkoutSessions</span> </div>
         </div>
     </div>
 
@@ -23,21 +23,21 @@
         @if (_userMainExercisesInfo.Count != 0)
         {
 
-            <div class="text-center fs-4">@userName Favorite Exercises</div>
+            <div class="text-center fs-medium">@userName Favorite Exercises</div>
                 <table class="table table-responsive table-bordered ">
                     <tbody>
                     <tr>
                         @foreach (var exercise in _userMainExercisesInfo)
                         {
 
-                            <th class="w-25">@exercise.Name</th>
+                            <th class="w-25 fs-medium">@exercise.Name</th>
                         }
                         </tr>
                         <tr>
                         @foreach (var exercise in _userMainExercisesInfo)
                         {
 
-                            <th class="w-25 fs-4">@exercise.MaxWeight.ToString("0") <span class="small">KG</span></th>
+                            <th class="w-25 fs-medium">@exercise.MaxWeight.ToString("0") <span class="small">KG</span></th>
                         }
                         </tr>
                 
@@ -64,8 +64,8 @@
 
 
     </div>
-    <div id="WokroutsCharts" class=" w-100 d-flex flex-column flex-wrap gap-5 justify-content-around bg-white p-5" style="min-height:400px;">
-        <div class="flex-grow-1 shadow p-5 hoverableGetBig m-auto" style="">
+    <div id="WokroutsCharts" class=" w-100 d-flex flex-column flex-wrap gap-5 justify-content-around bg-white " style="min-height:400px;">
+        <div class="flex-grow-1 shadow hoverableGetBig m-auto p-1" style="">
             @if (GetperiodeTraining() == 0)
             {
                 if (userHaveNoWorkoutYet)

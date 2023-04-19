@@ -11,41 +11,41 @@
 
 
 
-<div  class="container bg-white text-dark m-auto p-0 rounded-3 AddWorkoutContainer text-start ">
+<div  class=" bg-white text-dark m-auto p-0 rounded-3 AddWorkoutContainer text-start ">
     <div>
         <div class="m-auto ">
             <div class="bg-dark rounded m-4">
                 <h1 class="text-light text-center fs-1 p-3">Add a new workout</h1>
             </div>
-            <div class=" fs-3 m-auto text-center w-100">
+            <div class=" fs-big m-auto text-center w-100">
 
-                <div class="shadow px-5">
+                <div class="shadow px-2">
 
                     <div class="w-100 d-flex flex-row justify-content-between flex-wrap">
 
-                        <div class="fs-5">Load workout exercises from your workout templates</div>
+                        <div class="fs-medium">Load workout exercises from your workout templates</div>
                         <div class="">
-                            <RadzenDropDown Style=" min-width:400px; max-width:600px;" TValue="Guid" @bind-Value="_templateId" Placeholder="Select template" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_workoutsTemplates.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Id" />
+                            <RadzenDropDown Style="  max-width:600px;" TValue="Guid" @bind-Value="_templateId" Placeholder="Select template" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_workoutsTemplates.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Id" />
                             <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="LoadWorkoutTemplate">Load Template</RadzenButton>
                         </div>
                     </div>
 
                     <hr />
                     <div class=" w-100 d-flex flex-row flex-wrap justify-content-between ">
-                        <div class="fs-5">Set workout's date</div>
-                        <input style="max-width:400px;" type="date" class=" form-control  text-center fs-5  " id="WorkoutDate" @bind-value="Workout.Date" />
+                        <div class="fs-medium">Set workout's date</div>
+                        <input style="max-width:400px;" type="date" class=" form-control  text-center fs-medium  " id="WorkoutDate" @bind-value="Workout.Date" />
                     </div>
                     <hr />
                     <div class="w-100 d-flex flex-row flex-wrap justify-content-between ">
 
-                        <div class="fs-5">Add a note to your workout (optional)</div>
-                        <div class="px-5 py-3 w-100">
+                        <div class="fs-medium">Add a note to your workout (optional)</div>
+                        <div class=" py-3 w-100">
                             <textarea style="height:150px" placeholder="Add a Note" class=" form-control " @bind="Workout.Note" />
                         </div>
                     </div>
                     <hr />
-                    <div class="text-start fs-5">Add Workout's Rounds</div>
-                    <div id="Rounds" class=" w-100  justify-content-start  d-flex flex-row flex-wrap">
+                    <div class="text-start fs-medium">Add Workout's Rounds</div>
+                    <div id="Rounds" class=" w-100  justify-content-center d-flex flex-row flex-wrap">
                         
 
                         @if (Workout.Rounds != null)
@@ -66,9 +66,9 @@
                                                         <th colspan="4">
                                                             <span @onclick="@(() => DeleteRound(round))" class="closeX oi oi-x text-end "></span>
                                                             <span class=" text-start roundNumber ">#@round.RoundNumber</span>
-                                                            <div for="RoundExercice" class="text-start fs-5 fw-bold  " style="max-width:300px;">@round.ExerciseName </div>
+                                                            <div for="RoundExercice" class="text-start fs-5 fw-bold  " style="max-width:400px;">@round.ExerciseName </div>
                                                             <div>
-                                                                <div class="fs-3 mb-4 text-start w-100">
+                                                                <div class="fs-big mb-4 text-start w-100">
 
                                                                     <RadzenDropDown Style="width:100%;" TValue="string" @bind-Value="round.ExerciseName" Placeholder="Select Exercise" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_exercises.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Name" />
 
@@ -79,10 +79,10 @@
                                                         
                                                     </tr>
                                                     <tr>
-                                                        <th class="fs-6" style="min-width:50px;" scope="col">Set</th>
-                                                        <th class="fs-6" style="min-width:50px;" scope="col">Weight</th>
-                                                        <th class="fs-6" style="min-width:50px;" scope="col">Reps</th>
-                                                        <th class="fs-6" style="min-width:50px;" scope="col"></th>
+                                                        <th class="fs-small"scope="col">Set</th>
+                                                        <th class="fs-small" scope="col">Weight</th>
+                                                        <th class="fs-small" scope="col">Reps</th>
+                                                        <th class="fs-small" scope="col"></th>
 
                                                     </tr>
                                                 </thead>
@@ -96,19 +96,19 @@
 
 
                                                             <tr>
-                                                                <th style="font-size:20px;" class="m-auto" scope="row">#@set.SetNumber</th>
-                                                                <td style="font-size:20px;">
-                                                                    <input  type="number" min="0" id="SetWeight" class=" text-center m-auto   fw-bold text-black" style="max-width:70px; min-height:30px; font-size:20px;" @bind-value="set.Weight" /> 
+                                                                <th class="m-auto fs-big" scope="row">#@set.SetNumber</th>
+                                                                <td class=" fs-big ">
+                                                                    <input type="number" min="0" id="SetWeight" class=" text-center fs-big m-auto  text-black" style="max-width:65px;  min-height:30px;" @bind-value="set.Weight" />
                                                                     Kg</td>
-                                                                <td style="font-size:20px;">
-                                                                    <input type="number" min="1" id="SetReps" class=" text-center m-auto   fw-bold text-black" style="font-size:20px; max-width:70px; min-height:30px;" @bind-value="set.Reps" /> 
+                                                                <td class="fs-big">
+                                                                    <input type="number" min="1" id="SetReps" class=" fs-big text-center m-auto   text-black" style=" max-width:65px; min-height:30px;" @bind-value="set.Reps" />
                                                                     Rep</td>
-                                                                <td style="font-size:20px;"> <span @onclick="@(() => DeleteSet(round, set))" class="oi oi-x m-auto deleteOi"></span></td>
+                                                                <td class="fs-big;"> <span @onclick="@(() => DeleteSet(round, set))" class="oi oi-x m-auto deleteOi"></span></td>
                                                             </tr>
                                                         }
                                                     }
                                                     <tr>
-                                                        <th style="font-size:20px;" @onclick="@(() => AddSet(round))" colspan="4" class="w-100 addSet">
+                                                        <th @onclick="@(() => AddSet(round))" colspan="4" class="w-100 fs-big addSet">
                                                             <span class="oi oi-plus  me-3 text-center "></span>
                                                         </th>
                                                     </tr>
@@ -124,7 +124,7 @@
                             }
                         }
                         </div>
-                        <div class="m-1 p-3 d-flex flex-column flex-wrap justify-content-center px-5 m-3">
+                        <div class="m-1 p-3 d-flex flex-column flex-wrap justify-content-center m-3">
                             <button style="max-width:700px;" class="btn btn-success m-auto fs-3 " @onclick="AddRound">Add a new round</button>
                         </div>
                         <div>
@@ -160,11 +160,11 @@
             
             <div class="  w-100 ">
                 <div id="DateAndNote" class=" my-4 d-flex flex-row flex-wrap justify-content-evenly gap-1">
-                    <div id="Date" style="min-width:400px" class=" flex-grow-1">
+                    <div id="Date"  class=" flex-grow-1">
                         
                        
                     </div>
-                    <div id="Note" style="min-width:400px" class=" flex-grow-1">
+                    <div id="Note"  class=" flex-grow-1">
                         
                     </div>
 

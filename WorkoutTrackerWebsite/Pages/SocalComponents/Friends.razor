@@ -8,29 +8,29 @@
 
 
 <div style="max-width: 700px;" class=" mx-auto shadow p-5">
-    <h4>Add a new friend</h4>
-    <div class="my-3">To add a friend, both of you need to exchange your ids</div>
+    <h4 class="fs-huge">Add a new friend</h4>
+    <div class="my-3 fs-medium">To add a friend, both of you need to exchange your ids</div>
     <div class="mb-5">
         <table class="table ">
             <tbody>
                 <tr >
-                    <th>This Your id</th>
+                    <th class="fs-small">Your id</th>
                     @if (showUserId)
                     {
-                        <td class="text-center" style="width:380px;">@UserId</td>
+                        <td class="text-center fs-small"  >@UserId</td>
                     }
                     else
                     {
-                        <td style="width:380px;" class="text-center">
+                        <td  class="text-center ">
                             @foreach (char car in UserId)
                             {
                                 if (car.ToString() == "-")
                                 {
-                                    <span>-</span>
+                                    <span class="fs-small">-</span>
                                 }
                                 else
                                 {
-                                    <span>X</span>
+                                    <span class="fs-small">X</span>
                                     
                                 }
                                 
@@ -38,12 +38,12 @@
                         </td>
                     }
 
-                    <td><button @onclick="ShowUserId" class="btn btn-primary w-100"> Show My Id</button></td>
+                    <td><button @onclick="ShowUserId" class="btn btn-primary w-100 fs-small"> Show My Id</button></td>
                 </tr>
                 <tr>
-                    <th>Add your friend Id here</th>
-                    <td><input type="text" class="form-control " @bind-value="_enteredFriendId" /></td>
-                    <td><button @onclick="(async()=> await AddFriend(_enteredFriendId))" class="btn btn-primary w-100">Add friend</button></td>
+                    <th class="fs-small">Friend Id </th>
+                    <td><input type="text" class="form-control fs-small " placeholder="Add your friend Id here" @bind-value="_enteredFriendId" /></td>
+                    <td><button @onclick="(async()=> await AddFriend(_enteredFriendId))" class="btn btn-primary w-100 fs-small">Add friend</button></td>
                 </tr>
                 @if (ValidationMessage != "")
                 {
@@ -58,23 +58,23 @@
 
 
 
-    <h4 class="mb-5">List of your friends</h4>
-    <div class="px-5">
+    <h4 class="mb-5 fs-huge">List of your friends</h4>
+    <div class="p-r">
         <table class="table   ">
             <tbody>
                 @if (FriendsLogic.Friends_UserAchievements_List(_UserFriendsModel.FriendsString, UsersAchievementsList).Count() == 0)
                 {
                      <tr>
-                <td colspan="2">You haven't added any friend yet!</td>
+                        <td class="fs-small" colspan="2">You haven't added any friend yet!</td>
                     </tr>
 
                 }
                 @foreach (var userAch in FriendsLogic.Friends_UserAchievements_List(_UserFriendsModel.FriendsString, UsersAchievementsList))
                 {
                     <tr>
-                        
-                        <th class="w-50">@userAch.UserName</th>
-                        <td class="w-50"><button @onclick="(async()=>await DeleteFriendAsync(userAch.UserId))" class="btn btn-danger">Delete from your friends list</button></td>
+
+                        <th class="w-50 fs-small">@userAch.UserName</th>
+                        <td class="w-50 fs-small"><button @onclick="(async()=>await DeleteFriendAsync(userAch.UserId))" class="btn btn-danger fs-small">Delete friend</button></td>
                     </tr>
                 }
 

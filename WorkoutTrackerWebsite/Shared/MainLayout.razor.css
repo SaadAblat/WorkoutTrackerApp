@@ -118,11 +118,13 @@ main {
 
 .footer-row {
     display: flex;
-    justify-content: space-around;
+    align-items: end;
+    
 }
 
 .footer-text {
     font-weight: 600;
+    margin:auto;
 }
 
 @media(max-width:900px) {
