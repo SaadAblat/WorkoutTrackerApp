@@ -2,30 +2,33 @@
 @using WorkoutTrackerWebsite.Models.LogicModels;
 
  <div id="LinearGraph">
-        <h3 class="text-start m-2">Choose Exercise To show on graph </h3>
-        <div class=" m-2 fs-3 mb-4 text-start w-50">
-            <RadzenCard>
-                <RadzenDropDown Style="width:100%;" TValue="string" @bind-Value="_filteredExerciseName" Placeholder="Select Exercise" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_trainedExerciseInfo.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Name" />
-            </RadzenCard>
+        <h3 class="text-start m-2 fs-medium">Choose Exercise To show on graph </h3>
+        <div class="choose-graph-container ">
+
+                <RadzenDropDown  TValue="string" @bind-Value="_filteredExerciseName" Placeholder="Select Exercise" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@(_trainedExerciseInfo.OrderBy(x=>x.Name))" TextProperty="Name" ValueProperty="Name" />
+
         </div>
         <div class="row">
-            <div class="col-sm-12 my-5 ">
+            <div class="my-5 ">
 
-                <RadzenChart ColorScheme="ColorScheme.Divergent">
+            <RadzenChart ColorScheme="ColorScheme.Divergent">
                 <RadzenLineSeries Smooth="@LineSmooth" Data="@GetAllExerciseWeightsPerDate(_filteredExerciseName,_byVolume)" CategoryProperty="Date" Title="@byWhatString()" LineType="LineType.Dashed" ValueProperty="WeightLifted">
-                        <RadzenMarkers MarkerType="MarkerType.Square" />
-                        <RadzenSeriesDataLabels Visible="@LineShowDataLabels" />
-                    </RadzenLineSeries>
-                    <RadzenCategoryAxis Padding="20" >
-                    <RadzenGridLines Visible="true" />
-                    </RadzenCategoryAxis>
+                    <RadzenMarkers MarkerType="MarkerType.Square" />
+                    <RadzenSeriesDataLabels Visible="@LineShowDataLabels" />
+                </RadzenLineSeries>
+                <RadzenCategoryAxis Visible="@LineShowXAxisValue" Padding="2">
+                    <RadzenGridLines Visible="@ShowGrids" />
+                </RadzenCategoryAxis>
+
+
+              
                 @if (_trainedExerciseInfo.Any(x => x.Name == _filteredExerciseName))
                 {
                     if (_trainedExerciseInfo.First(x => x.Name == _filteredExerciseName).TotalVolume > 0)
                     {
-                        <RadzenValueAxis Min="0" FormatString="{0} kg">
+                        <RadzenValueAxis Visible="@LineShowYAxisValue" Min="0" FormatString="{0} kg">
 
-                            <RadzenGridLines Visible="true" />
+                            <RadzenGridLines Visible="@ShowGrids" />
                             @if (_byVolume)
                             {
                                 <RadzenAxisTitle Text="Session Total Volume" />
@@ -58,13 +61,21 @@
                 }
                 <RadzenLegend Visible="false"/>
                 </RadzenChart>
-                <RadzenCard Style="display: flex; align-items: center; gap: 0.5rem;">
+                <RadzenCard Style="display: flex; flex-direction:column; align-items: center; gap: 0.5rem;">
                 <RadzenCheckBox @bind-Value="@_byVolume" Name="byWhat"></RadzenCheckBox>
                 <RadzenLabel Text="By volume/By max" For="byWhat" Style="margin-right: 1rem;" />
                     <RadzenCheckBox @bind-Value="@LineSmooth" Name="smooth"></RadzenCheckBox>
                     <RadzenLabel Text="Smooth" For="smooth" Style="margin-right: 1rem;" />
                     <RadzenCheckBox @bind-Value="@LineShowDataLabels" Name="dataLabels"></RadzenCheckBox>
                     <RadzenLabel Text="Show Data Labels" For="dataLabels" />
+
+                <RadzenCheckBox @bind-Value="@LineShowYAxisValue" Name="yAxisLabels"></RadzenCheckBox>
+                <RadzenLabel Text="Show Y axis labels" For="yAxisLabels" />
+
+                <RadzenCheckBox @bind-Value="@LineShowXAxisValue" Name="xAxisLabels"></RadzenCheckBox>
+                <RadzenLabel Text="Show X axis labels" For="xAxisLabels" />
+                <RadzenCheckBox @bind-Value="@ShowGrids" Name="grids"></RadzenCheckBox>
+                <RadzenLabel Text="Show grid" For="grids" />
                 </RadzenCard>
             </div>
         </div>
@@ -103,6 +114,9 @@
     //Radzen Chart
     bool LineSmooth = false;
     bool LineShowDataLabels = false;
+    bool LineShowYAxisValue = false;
+    bool LineShowXAxisValue = false;
+    bool ShowGrids = false;
 
     //DATA
     class LinearDataItem

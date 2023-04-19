@@ -11,28 +11,28 @@
 @inject AuthenticationStateProvider GetAuthenticationStateAsync
 @layout UserLayout
 
-<div class=" container bg-white text-dark w-100 p-0 rounded-3 " style="max-width:800px; border:solid white">
+<div class="m-auto  bg-white text-dark w-100 p-0 rounded-3 " style="max-width:800px; border:solid white">
     <h1 class="bg-dark text-light text-center m-4 fs-1 p-3">Manage Workouts</h1>
-    <div class="p-4">
+    <div class="p-r">
         <table class="table table-danger table-bordered">
             <thead>
                 <tr>
-                    <th class="fs-4">Date</th>
-                    <th class="fs-4">Exercises</th>
-                    <th class="fs-4">Delete</th>
+                    <th class="fs-medium">Date</th>
+                    <th class="fs-medium">Exercises</th>
+                    <th class="fs-medium">Delete</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var wrk in _workouts.OrderBy(x => x.Date))
                 {
                     <tr>
-                        <td class="fw-bold">@wrk.Date.ToShortDateString()</td>
-                        <td>
+                        <td class="fw-bold fs-medium">@wrk.Date.ToShortDateString()</td>
+                        <td class="fs-medium">
                             @foreach (var round in wrk.Rounds)
                             {
                                 if (round.RoundNumber == wrk.Rounds.Count)
                                 {
-                                    <span> @round.ExerciseName.</span>
+                                    <span > @round.ExerciseName.</span>
 
                                 }
                                 else
@@ -42,7 +42,7 @@
                                 }
                             }
                         </td>
-                        <td class="p-1" style="cursor:pointer;" @onclick="@(() =>DeleteWorkout(wrk.Id))"><button class="btn btn-danger text-center w-100  ">Delete Workout</button></td>
+                        <td class="p-1" style="cursor:pointer;" @onclick="@(() =>DeleteWorkout(wrk.Id))"><button class="btn btn-danger text-center w-100 fs-medium  ">Delete Workout</button></td>
                     </tr>
                 }
             </tbody>

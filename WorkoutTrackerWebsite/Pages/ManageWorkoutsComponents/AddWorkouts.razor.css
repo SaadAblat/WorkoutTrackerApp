@@ -124,12 +124,15 @@
         transform: translate(1px, -2px) rotate(-1deg);
     }
 }
-.AddWorkoutContainer {
-    width: 85%;
-    border: solid white
-}
-@media (max-width: 1000px) {
+
+@media (max-width: 900px) {
     .AddWorkoutContainer {
         width:100%;
+    }
+}
+@media(min-width : 900px){
+    .AddWorkoutContainer {
+        width: 85%;
+        border: solid white
     }
 }

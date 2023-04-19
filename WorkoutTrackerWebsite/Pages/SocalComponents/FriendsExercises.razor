@@ -3,14 +3,14 @@
 
 @inject NavigationManager navigationManager
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover ">
     <thead>
         <tr>
-            <th>Classement</th>
-            <th style="cursor:pointer;" @onclick="SortTableByUserName">Name</th>
-            <th style="cursor:pointer" @onclick="SortTableByPeriodTrained">Period Training</th>
-            <th style="cursor:pointer" @onclick="SortTableByTotalVolume">Total volume</th>
-            <th style="cursor:pointer" @onclick="SortTableByTotalWorkoutSessions">Total workout sessions</th>
+            <th class="fs-small">Classement</th>
+            <th class="fs-small" style="cursor:pointer;" @onclick="SortTableByUserName">Name</th>
+            <th class="fs-small" style="cursor:pointer" @onclick="SortTableByPeriodTrained">Period Training</th>
+            <th class="fs-small" style="cursor:pointer" @onclick="SortTableByTotalVolume">Total volume</th>
+            <th class="fs-small" style="cursor:pointer" @onclick="SortTableByTotalWorkoutSessions">Total workout sessions</th>
 
         </tr>
     </thead>
@@ -18,9 +18,9 @@
         @foreach (var userAch in _friendsListIncludingTheUser)
         {
             <tr>
-                <td>@IncrementNumber()</td>
-                <td class="hoverable" style="cursor:pointer" @onclick="(()=>NavigateToFirendProfile(userAch.UserId,userAch.UserName))">@userAch.UserName</td>
-                <td style="cursor:pointer">
+                <td class="fs-small">@IncrementNumber()</td>
+                <td class="hoverable fs-small" style="cursor:pointer" @onclick="(()=>NavigateToFirendProfile(userAch.UserId,userAch.UserName))">@userAch.UserName</td>
+                <td class="fs-small" style="cursor:pointer">
                     @userAch.PeriodTraining @if (userAch.PeriodTraining == 1)
                     {
                         <span> Day</span>
@@ -31,8 +31,8 @@
                     }
 
                 </td>
-                <td>@userAch.TotalWeightLifted.ToString("0") Kg</td>
-                <td>@userAch.TotalWorkoutSessions</td>
+                <td class="fs-small">@userAch.TotalWeightLifted.ToString("0") Kg</td>
+                <td class="fs-small">@userAch.TotalWorkoutSessions</td>
 
             </tr>
         }

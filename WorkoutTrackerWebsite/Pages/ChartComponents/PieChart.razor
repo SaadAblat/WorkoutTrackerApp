@@ -1,15 +1,23 @@
 ﻿@using WorkoutTrackerWebsite.Models;
 @using WorkoutTrackerWebsite.Models.LogicModels;
 
-<div id="WorkoutsChart1" style="min-width:300px;" class=" w-100 hoverableGetBig p-5 flex-grow-1 shadow d-flex flex-row justify-content-evenly flex-wrap">
-    <div id="Chart Info" style="width:500px;" class="">
+<div id="WorkoutsChart1" class=" vh-100 w-100 hoverableGetBig p-1  shadow d-flex flex-column justify-content-start">
+    <RadzenChart ColorScheme="ColorScheme.Pastel">
+        <RadzenPieSeries Data="@PopulateData()" Title="Category" CategoryProperty="Category" ValueProperty="numberOfExercises">
+            <RadzenSeriesDataLabels Visible="true" />
+        </RadzenPieSeries>
+        <RadzenValueAxis FormatString="{0} kg" />
+
+        <RadzenLegend  Position="LegendPosition.Top" Visible="true"></RadzenLegend>
+    </RadzenChart>
+    <div  class="m-auto">
         
-        <div>
+        <div class="fs-medium">
 
             This is your total muscle group training volume, excluding bodyweight exercises. We determine muscle group based on the main muscle targeted by an exercise (e.g. bench press counts only for chest). See below for total volumes by muscle group:
         </div>
 
-        <ul>
+        <ul class="fs-medium">
             @foreach (var category in Categories)
             {
                 <li>
@@ -28,20 +36,17 @@
         </ul>
     </div>
     
-    <div class="flex-grow-1  ">
-        <RadzenChart  Style="min-width:200px;">
-            <RadzenPieSeries Data="@PopulateData()" Title="Category" CategoryProperty="Category" ValueProperty="numberOfExercises">
-                <RadzenSeriesDataLabels  Visible="true" />
-            </RadzenPieSeries>
-            <RadzenValueAxis FormatString="{0} kg" />
-        </RadzenChart>
 
-    </div>
-    
+
+
+
+
 </div>
 
 
 @code {
+
+
     //pie chart
     [Parameter]
     public List<WorkoutModel> UserWorkouts { get; set; }
